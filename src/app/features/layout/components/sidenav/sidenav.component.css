@@ -1,0 +1,41 @@
+.logo-container {
+    align-items: center;
+    height: 60px;
+    padding: 0px 16px;
+}
+.logo-container img {
+    height: 50px;
+    width: 50px;
+}
+.logo-container .title {
+    color: var(--primary-color);
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-left: 12px;
+}
+.list-options {
+    flex-direction: column;
+    padding: 16px;
+    row-gap: 10px;
+}
+.option-link {
+    border-radius: 5px;
+    color: var(--secondary-text);
+    font-size: 1rem;
+    padding: 12px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+.option-link:not(.active):hover {
+    background-color: rgb(233, 233, 233);
+}
+.option-link {
+    align-items: center;
+}
+mat-icon {
+    margin-right: 5px;
+}
+.active {
+    background-color: var(--primary-color);
+    color: var(--tertiary-text);
+}

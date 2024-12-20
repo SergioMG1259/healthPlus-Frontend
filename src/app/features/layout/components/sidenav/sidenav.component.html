@@ -1,0 +1,21 @@
+<div class="flex logo-container">
+    <img src="https://cdn-icons-png.flaticon.com/512/3799/3799797.png" alt="HealthPlus logo">
+    <span class="title">HealthPlus</span>
+</div>
+<ul class="flex list-options">
+    <li class="option">
+        <a [routerLink]="['/overview']" routerLinkActive="active" class="flex option-link">
+            <mat-icon>dashboard</mat-icon> Overview
+        </a>
+    </li>
+    <li class="option">
+        <a [routerLink]="['/patients']" routerLinkActive="active" class="flex option-link">
+            <mat-icon>accessible</mat-icon> Patients
+        </a>
+    </li>
+    <li class="option">
+        <a [routerLink]="['/appointments']" routerLinkActive="active" class="flex option-link">
+            <mat-icon>calendar_month</mat-icon> Appointments
+        </a>
+    </li>
+</ul>

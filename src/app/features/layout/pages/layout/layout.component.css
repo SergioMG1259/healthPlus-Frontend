@@ -1,0 +1,30 @@
+.sidenav-container {
+    height: 100vh;
+}
+.expanded {
+    margin-left: 30px;
+}
+.spacer {
+    flex: 1 1 auto;
+}
+.sidenav {
+    background-color: var(--background-components);
+    border: none;
+    width: 220px;
+}
+.toolbar {
+    background-color: var(--background-components);
+    height: 60px;
+}
+.router-outlet {
+    margin-top: 16px;
+}
+.padding {
+    padding: 0px 16px 16px 16px;
+}
+
+@media screen and (max-width : 768px){
+    .router-outlet {
+        padding: 0px 16px 16px 16px;
+    }
+}

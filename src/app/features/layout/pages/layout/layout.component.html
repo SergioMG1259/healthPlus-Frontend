@@ -1,0 +1,22 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav opened [mode]="this.mode" #sidenav class="sidenav background-components">
+      <app-sidenav></app-sidenav>
+    </mat-sidenav>
+  
+    <mat-sidenav-content class="background">
+      <section [ngClass]="{'expanded': sidenav.opened && this.mode == 'side'}">
+
+        <mat-toolbar class="toolbar">
+          <button mat-icon-button (click)="sidenav.toggle()" aria-label="Icon-button with menu icon">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <span class="spacer"></span>
+        </mat-toolbar>
+        
+        <section class="router-outlet" [ngClass]="{'padding': this.mode == 'side' && !sidenav.opened}">
+          <router-outlet></router-outlet>
+        </section>
+      
+      </section>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
