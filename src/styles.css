@@ -14,7 +14,7 @@
 
 :root {
   --background: #e5f0f8;
-  --background-components: #f6f6f6;
+  --background-components: #f5f5f5;
   --primary-text: #2f2f2f;
   --secondary-text: #616161;
   --tertiary-text: #f8f8f8;
@@ -40,7 +40,50 @@ button:not(.mat-button-disabled):active:not([class*=mat-elevation-z]) {
 .flex {
   display: flex;
 }
+.grid {
+  display: grid;
+}
 .background {
   background-color: var(--background);
 }
+.mat-card {
+  background-color: var(--background-components);
+  border-radius: 5px;
+  color: var(--primary-text);
+}
+.mat-card-title {
+  font-size: 1rem;
+}
+.mat-card-subtitle {
+  color: var(--secondary-text);
+}
+.mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: none;
+}
 
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  padding: 8px!important;
+}
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  border-bottom-style: none!important;
+}
+th.mat-header-cell {
+  background-color: var(--primary-color);
+  color: var(--tertiary-text);
+}
+td.mat-cell {
+  /* background-color: var(--background-components); */
+  color: var(--primary-text);
+}
+tr:nth-child(odd) td.mat-cell {
+  background-color: var(--background-components); /*Impar*/
+}
+tr:nth-child(even) td.mat-cell {
+  background-color: rgb(233, 233, 233); /*Par*/
+}
+tr.mat-row:last-child .mat-cell:first-child {
+  border-bottom-left-radius: 5px;
+}
+tr.mat-row:last-child .mat-cell:last-child {
+  border-bottom-right-radius: 5px;
+}

@@ -1,1 +1,74 @@
-<p>overview works!</p>
+<p class="welcome-message">Welcome, Dr. Sergio</p>
+<p class="diary-message">Have a nice day at great work</p>
+
+<section class="metrics">
+    <ng-container *ngFor="let metric of cardMetrics">
+        <app-card-metric [metric]="metric" ></app-card-metric>
+    </ng-container>
+</section>
+
+<section class="grid graphics">
+    <mat-card>
+        <mat-card-title>Earning ratio</mat-card-title>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-title>Patients Buttons</mat-card-title>
+    </mat-card>
+</section>
+
+<section class="flex bottom">
+    <mat-card class="card-graphic-circle">
+        <mat-card-title>Earning ratio</mat-card-title>
+    </mat-card>
+
+    <mat-card class="card-appointment">
+        <mat-card-title>Patients Buttons</mat-card-title>
+    </mat-card>
+
+    <mat-card class="card-table">
+        <mat-card-title-group class="group-title">
+            <mat-card-title class="title-no-margin">Recent patients</mat-card-title>
+            <a href="" class="link">Show all</a>
+        </mat-card-title-group>
+        <mat-card-content class="card-content-table">
+            
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 table">
+              
+                <!-- Position Column -->
+                <ng-container matColumnDef="patientName">
+                  <th mat-header-cell *matHeaderCellDef> Patient name </th>
+                  <td mat-cell *matCellDef="let element"> {{element.patientName}} </td>
+                </ng-container>
+              
+                <!-- Name Column -->
+                <ng-container matColumnDef="gender">
+                  <th mat-header-cell *matHeaderCellDef> Gender </th>
+                  <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+                </ng-container>
+              
+                <!-- Weight Column -->
+                <ng-container matColumnDef="age">
+                  <th mat-header-cell *matHeaderCellDef> Age </th>
+                  <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+                </ng-container>
+              
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="phone">
+                  <th mat-header-cell *matHeaderCellDef> Phone </th>
+                  <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="createdAt">
+                    <th mat-header-cell *matHeaderCellDef> Created at </th>
+                    <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
+                  </ng-container>
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+        </mat-card-content>
+    </mat-card>
+
+</section>

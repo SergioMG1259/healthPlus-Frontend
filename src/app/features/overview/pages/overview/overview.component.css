@@ -1,0 +1,60 @@
+.welcome-message {
+    color: var(--primary-text);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+.diary-message {
+    color: var(--secondary-text);
+    line-height: 2;
+}
+.metrics {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    grid-auto-flow:  unset;
+    margin-top: 10px;
+}
+.graphics {
+    margin-top: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+.link {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+.bottom {
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
+}
+.card-graphic-circle, .card-appointment {
+    flex: 1 1 260px;
+}
+.card-table {
+    flex: 1 1 400px;
+    width: 100%;
+}
+.title-no-margin {
+    margin-bottom: 0px;
+}
+.group-title {
+    margin-bottom: 8px;
+}
+.card-content-table {
+    border-radius: 5px;
+}
+.table {
+    width: 100%;
+}
+.mat-card-content {
+    overflow-x: auto;
+}
+
+@media screen and (max-width : 768px) {
+    .graphics {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

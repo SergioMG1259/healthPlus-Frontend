@@ -1,0 +1,87 @@
+.card {
+    border-radius: 5px;
+    height: 150px;
+    padding: 20px;
+    position: relative;
+}
+.trending {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+.trending span {
+    color: var(--tertiary-text);
+    font-size: 1rem;
+}
+.icon-container {
+    align-items: center;
+    background-color: var(--tertiary-text);
+    border-radius: 8px;
+    height: 46px;
+    justify-content: center;
+    width: 46px;
+}
+.category {
+    color: var(--tertiary-text);
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 15px 0px 0px 5px;
+}
+.amount {
+    color: var(--tertiary-text);
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 8px 0px 0px 5px
+}
+.appointments .icon-container mat-icon{
+    color: #4db0c4;
+}
+.appointments {
+    background: #2e839b;
+    background: -webkit-linear-gradient(to top right, #2e839b,#4daec2,#62cfe0);
+    background: linear-gradient(to top right,#2e839b,#4daec2,#62cfe0);  
+}
+.appointments .icon-container {
+    box-shadow: 5px 5px 0px 0px #53b8cb;
+    -webkit-box-shadow: 5px 5px 0px 0px #53b8cb;
+    -moz-box-shadow: 5px 5px 0px 0px #53b8cb;
+}
+.patients .icon-container mat-icon {
+    color: #9f6af5;
+}
+.patients {
+    background: #7555f9;
+    background: -webkit-linear-gradient(to top right, #7555f9,#9f6af5,#d384f1);
+    background: linear-gradient(to top right,#7555f9,#9f6af5,#d384f1);  
+}
+.patients .icon-container {
+    box-shadow: 5px 5px 0px 0px #af7ef4;
+    -webkit-box-shadow: 5px 5px 0px 0px #af7ef4;
+    -moz-box-shadow: 5px 5px 0px 0px #af7ef4;
+}
+.predicts .icon-container mat-icon {
+    color: #5d9bca;
+}
+.predicts {
+    background: #1f6fa6;
+    background: -webkit-linear-gradient(to top right, #1f6fa6,#5d9bca,#8bbbe5);
+    background: linear-gradient(to top right,#1f6fa6,#5d9bca,#8bbbe5);  
+}
+.predicts .icon-container {
+    box-shadow: 5px 5px 0px 0px #68a7db;
+    -webkit-box-shadow: 5px 5px 0px 0px #68a7db;
+    -moz-box-shadow: 5px 5px 0px 0px #68a7db;
+}
+.earning .icon-container mat-icon {
+    color: #ed874c;
+}
+.earning {
+    background: #eb6842;
+    background: -webkit-linear-gradient(to top right, #eb6842,#ed874c,#efa054);
+    background: linear-gradient(to top right,#eb6842,#ed874c,#efa054);  
+}
+.earning .icon-container {
+    box-shadow: 5px 5px 0px 0px #f1965f;
+    -webkit-box-shadow: 5px 5px 0px 0px #f1965f;
+    -moz-box-shadow: 5px 5px 0px 0px #f1965f;
+}
