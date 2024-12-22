@@ -1,0 +1,25 @@
+<div class="flex">
+    <p class="current-week">{{this.currentWeekRange}}</p>
+</div>
+
+<div class="grid days-number">
+    <div class="day" *ngFor="let day of weekDays; index as i" [ngClass]="{'select': this.today == day.date}">
+        <p>{{ day.letter }}</p>
+        <p class="number">{{ day.date }}</p>
+    </div>
+</div>
+
+<div class="flex patients-appointment-wrapper">
+    <div class="flex patient-appointment" *ngFor="let item of [0,1,2]">
+        <div class="flex">
+            <img class="patient-image" src="https://cdn-icons-png.flaticon.com/512/1430/1430453.png" alt="patient image">
+            <div class="info">
+                <p class="patient-name">David</p>
+                <p class="patient-issue">Clinic consulting</p>
+            </div>
+        </div>
+        <span class="hour">
+            10:25
+        </span>
+    </div>
+</div>

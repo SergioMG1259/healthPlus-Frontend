@@ -41,10 +41,10 @@ export class OverviewComponent implements OnInit {
 
 }
 const ELEMENT_DATA: any[] = [
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: 31/12/2024},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: 31/12/2024},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: 31/12/2024},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: 31/12/2024},
-  // {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: 31/12/2024},
-  // {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: 31/12/2024}
+  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
+  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
+  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
+  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
+  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
+  // {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'}
 ];

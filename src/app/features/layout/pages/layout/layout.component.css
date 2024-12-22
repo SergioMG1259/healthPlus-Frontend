@@ -10,7 +10,7 @@
 .sidenav {
     background-color: var(--background-components);
     border: none;
-    width: 220px;
+    width: 210px;
 }
 .toolbar {
     background-color: var(--background-components);
@@ -29,6 +29,10 @@
 
 @media screen and (max-width : 768px){
     .router-outlet {
-        padding: 0px 16px 16px 16px;
+        padding: 0px 10px 10px 10px;
+    }
+    .toolbar {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }

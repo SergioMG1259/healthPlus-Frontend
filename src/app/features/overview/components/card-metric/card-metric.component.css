@@ -30,7 +30,7 @@
 .amount {
     color: var(--tertiary-text);
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 500;
     margin: 8px 0px 0px 5px
 }
 .appointments .icon-container mat-icon{
