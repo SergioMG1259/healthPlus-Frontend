@@ -24,7 +24,9 @@
 button:not([class*=mat-elevation-z]) {
   &.mat-button,
   &.mat-raised-button,
-  &.mat-flat-button {
+  &.mat-flat-button,
+  &.mat-fab,
+  &.mat-mini-fab {
     box-shadow: none;
   }
 }
@@ -32,9 +34,23 @@ button:not([class*=mat-elevation-z]) {
 button:not(.mat-button-disabled):active:not([class*=mat-elevation-z]) {
   &.mat-button,
   &.mat-raised-button,
-  &.mat-flat-button {
+  &.mat-flat-button,
+  &.mat-fab,
+  &.mat-mini-fab {
     box-shadow: none;
   }
+}
+
+input {
+  outline: none;
+}
+input[type="search"],
+input[type="text"] {
+  color: var(--primary-text);
+}
+input[type="search"]::placeholder,
+input[type="text"]::placeholder {
+  color: var(--secondary-text);
 }
 
 .flex {
@@ -86,4 +102,55 @@ tr.mat-row:last-child .mat-cell:first-child {
 }
 tr.mat-row:last-child .mat-cell:last-child {
   border-bottom-right-radius: 5px;
+}
+
+/* .mat-paginator-outer-container {
+  margin-top: 2px;
+} */
+.mat-paginator-range-actions {
+  flex-wrap: wrap;
+}
+.mat-paginator {
+  background-color: transparent;
+}
+.pages-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding-top: 3px;
+}
+.custom-page {
+  background-color: var(--background-components);
+  border: solid 1px var(--secondary-text);
+  border-radius: 8px;
+  cursor: pointer;
+  height: 28px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  transition: color 0.0 ease;
+  vertical-align: middle;
+  width: 28px;
+}
+.custom-page:active {
+  background-color: #dddddd;
+}
+.page-active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--tertiary-text);
+}
+.page-active:active{
+  background-color: #3b93ea;
+}
+.custom-dots {
+  font-size: 20px;
+  height: 28px;
+  text-align: center;
+  width: 28px;
+}
+
+@media screen and (max-width : 412px) {
+  .mat-paginator-range-label {
+    display: none;
+  }
 }

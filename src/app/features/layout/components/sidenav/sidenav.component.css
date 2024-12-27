@@ -23,7 +23,7 @@
     color: var(--secondary-text);
     font-size: 1rem;
     padding: 12px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.0s ease;
     width: 100%;
 }
 .option-link:not(.active):hover {
