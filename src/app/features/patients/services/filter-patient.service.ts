@@ -54,10 +54,10 @@ export class FilterPatientService {
   }
 
   handleScreenResize(): void {
-    // if (this._isOpen) {
-    //   this.closeFilter()
-    //   this.updateOverlayPosition()
-    // }
+    if (this._isOpen) {
+      this.closeFilter()
+      this.updateOverlayPosition()
+    }
   }
 
   private initializeOverlay(): void {
