@@ -1,14 +1,16 @@
 <section class="flex top">
     <div class="left">
         <form class="flex">
-            <input type="search" placeholder="Search" class="search-bar">
-            <button mat-mini-fab color="primary" class="custom-button-icon" aria-label="search patient by name">
+            <input type="search" placeholder="Search" class="search-bar" name="search" [(ngModel)]="this.inputSearch">
+            <button mat-mini-fab color="primary" class="custom-button-icon" 
+                aria-label="search patient by name" (click)="onClickSearch()">
                 <mat-icon>search</mat-icon>
             </button>
         </form>
     </div>
     <div class="flex right">
-        <button mat-flat-button color="accent" class="custom-button" aria-label="open filters">
+        <button mat-flat-button color="accent" class="custom-button" aria-label="open filters" #filterButton 
+            (click)="openFilter()">
             <mat-icon>filter_list</mat-icon>
             Filter
         </button>
@@ -60,7 +62,8 @@
         </table>
     </div>
     <mat-paginator pageSize="10"
-        appCustomPaginator [appCustomLength]="this.dataSource.data.length" (page)="changePage($event)" [pageIndex]="this.pageIndex"
+        appCustomPaginator [appCustomLength]="this.dataSource.data.length" 
+        (page)="changePage($event)" [pageIndex]="this.pageIndex"
         aria-label="Select page of patients list">
     </mat-paginator>
 </section>
