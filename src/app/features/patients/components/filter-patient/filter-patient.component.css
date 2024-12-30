@@ -44,6 +44,7 @@
     background-color: var(--background-components);
     border: solid 1px var(--secondary-text);
     border-radius: 5px;
+    color: var(--primary-text);
     padding: 8px;
     width: 55px;
 }
@@ -52,9 +53,12 @@ input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 .separator {
-    border: solid 1px var(--primary-text);
+    border: solid 1px var(--secondary-text);
     margin: 0 5px;
     width: 10px;
+}
+.buttons {
+    justify-content: space-between;
 }
 
 @media screen and (max-width : 412px){
@@ -62,6 +66,6 @@ input[type="number"]::-webkit-inner-spin-button {
         border-radius: 5px 0px 0px 0px;
         min-height: 100vh;
         margin-top: 0px;
-        width: 220px;
+        width: 210px;
     }
 }

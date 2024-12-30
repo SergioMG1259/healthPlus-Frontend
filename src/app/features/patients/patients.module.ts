@@ -24,8 +24,8 @@ import { A11yModule } from '@angular/cdk/a11y';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    OverlayModule,
-    A11yModule
+    A11yModule,
+    OverlayModule
   ]
 })
 export class PatientsModule { }

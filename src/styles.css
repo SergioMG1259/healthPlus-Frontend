@@ -20,6 +20,7 @@
   --secondary-text: #616161;
   --tertiary-text: #f8f8f8;
   --primary-color: #0b7beb;
+  --warn-color: #ff2b2b;
 }
 
 .dialog-bg {
@@ -151,6 +152,75 @@ tr.mat-row:last-child .mat-cell:last-child {
   height: 28px;
   text-align: center;
   width: 28px;
+}
+
+.mat-menu-panel {
+  box-shadow: 0px 5px 7px 2px rgba(0,0,0,0.1) !important;
+}
+.mat-menu-content:not(:empty) {
+  background-color: var(--background-components) !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.mat-select-panel {
+  background-color: var(--background-components);
+  font-size: 0.9rem !important;
+  margin-top: 24px !important; 
+}
+.mat-select-panel:not([class*=mat-elevation-z]) {
+  box-shadow: 0px 5px 7px 2px rgba(0,0,0,0.1) !important;
+}
+.mat-option-text {
+  color: var(--primary-text);
+}
+.mat-form-field-outline {
+  background-color: var(--background-components);
+  border-radius: 5px;
+}
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
+  border-radius: 5px;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: var(--secondary-text)
+}
+.mat-form-field-wrapper {
+  padding-bottom: 0px;
+}
+
+
+.mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
+.mat-form-field-appearance-outline .mat-form-field-label { margin-top: -1px; font-size: 14px; }
+/* label.ng-star-inserted { transform: translateY(-0.59375em) scale(.75) !important; } */
+
+.mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
+.mat-form-field-label-wrapper { top: -1.4em; }
+
+.mat-form-field-should-float .mat-form-field-label-wrapper {
+  top: -1em;
+}
+/* .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-1.1em) scale(.75);
+    width: 133.33333%;
+} */
+.mat-select-placeholder {
+  font-size: 0.9rem;
+  position: absolute;
+  top: -9px;
+}
+.mat-select-value-text {
+  color: var(--primary-text);
+  font-size: 0.9rem;
+  height: 100%;
+  position: absolute;
+  top: -9px;
+  width: 88%;
+}
+.mat-form-field-appearance-outline .mat-select-arrow-wrapper {
+  transform: translateY(-55%) !important;
+}
+.mat-form-field-flex {
+  height: 41px;
 }
 
 @media screen and (max-width : 412px) {

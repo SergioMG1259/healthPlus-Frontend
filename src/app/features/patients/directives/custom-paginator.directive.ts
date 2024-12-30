@@ -182,7 +182,7 @@ export class CustomPaginatorDirective {
       map((e) => [e.previousPageIndex?? 0, e.pageIndex]),
       startWith([this.matPaginator.pageIndex, this.matPaginator.pageIndex])
     )
-    .subscribe(([prev,current]) => { console.log(prev + " "+ current); this.changeActiveButtonStyles(prev,current)})
+    .subscribe(([prev,current]) => {this.changeActiveButtonStyles(prev,current)})
   }
 
 }

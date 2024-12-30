@@ -6,7 +6,6 @@ import { LayoutComponent } from './pages/layout/layout.component';
 import { MaterialModule } from 'src/app/core/material/material.module';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 
-
 @NgModule({
   declarations: [
     LayoutComponent,

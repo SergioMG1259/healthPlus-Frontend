@@ -17,19 +17,19 @@ export class PatientListComponent implements OnInit {
   dataSource = new MatTableDataSource<any>(ELEMENT_DATA)
   pageIndex: number = 0
   inputSearch:string|null = null
+  orderBy: string = 'default'
 
   private flag:boolean = false
-
   private _queryParamsSubscription!: Subscription
   private _filterResizeSub!: Subscription
 
   @ViewChild(MatPaginator) paginator!: MatPaginator
   @ViewChild('filterButton', {read: ElementRef}) private _filterButton!: ElementRef
-  
+
   constructor(private _router:Router,private _route:ActivatedRoute, private _filterService:FilterPatientService, 
     private _cdr: ChangeDetectorRef, private _breakpointObserver: BreakpointObserver) { }
 
-  openFilter(): void {
+  toggleFilter(): void {
     if (this._filterService.panelOpen == false) {
       this._filterService.openFilter(this._filterButton)
     }else {
@@ -69,6 +69,22 @@ export class PatientListComponent implements OnInit {
     })
   } 
 
+  changeOrderBy(orderBy:string) {
+    const queryParams: any = {}
+    this.orderBy = orderBy
+    if(this.orderBy == "default")
+      queryParams['orderby'] = null
+    else
+      queryParams['orderby'] = this.orderBy
+  
+    queryParams['page'] = null
+
+    this._router.navigate([], {
+      queryParams: queryParams,
+      queryParamsHandling: 'merge',
+    })
+  }
+
   ngOnInit(): void {
 
   }
@@ -83,7 +99,8 @@ export class PatientListComponent implements OnInit {
       }
 
       this.inputSearch = params['search']? params['search'] : null
-
+      this.orderBy = params['orderby']? params['orderby'] : 'default'
+      
       if (this.paginator) {
         // Se guarda el valor de la página actual antes de cambiarlo
         const previousPageIndex = this.paginator.pageIndex

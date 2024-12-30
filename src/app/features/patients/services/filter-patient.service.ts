@@ -1,7 +1,8 @@
 import { Overlay, OverlayRef, PositionStrategy, ScrollStrategy } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, Injectable} from '@angular/core';
 import { FilterPatientComponent } from '../components/filter-patient/filter-patient.component';
+import { filter } from 'rxjs';
 
 // @Injectable({
 //   providedIn: 'root'
@@ -35,6 +36,13 @@ export class FilterPatientService {
     this._overlayRef.attach(componentPortal)
 
     this._overlayRef.backdropClick().subscribe(() => this.closeFilter())
+    
+    this._overlayRef
+    .keydownEvents()
+    .pipe(
+      filter((event: KeyboardEvent) => event.key === 'Escape')
+    )
+    .subscribe(() => this.closeFilter())
   }
 
   closeFilter(): void {

@@ -1,5 +1,5 @@
-<section cdkTrapFocus cdkTrapFocusAutoCapture="true" class="wrapper flex" role="dialog" 
-aria-modal = true aria-label="filter by gender and age">
+<section cdkTrapFocus cdkTrapFocusAutoCapture="true" class="wrapper flex" role="dialog"
+    aria-modal = true aria-label="filter by gender and age">
 
     <div>
         <span tabindex="-6" cdkFocusInitial></span>
@@ -14,14 +14,20 @@ aria-modal = true aria-label="filter by gender and age">
         <p class="title" id="age-range-label">Age Range</p>
         <div class="filter-section flex" aria-labelledby="age-range-label">
             <label class="text-input" for="min-age">min</label>
-            <input aria-label="minimum age" id="min-age" type="number" class="custom-input left" placeholder="0">
+            <input aria-label="minimum age" id="min-age" type="number" class="custom-input left" 
+                placeholder="0" [(ngModel)]="this.minAge">
             
             <div class="separator">
             </div>
             
-            <input aria-label="maximum age" id="max-age" type="number" class="custom-input right" placeholder="999">
+            <input aria-label="maximum age" id="max-age" type="number" class="custom-input right" 
+                placeholder="999" [(ngModel)]="this.maxAge">
             <label class="text-input" for="max-age">max</label>
         </div>
     </div>
 
+    <div class="buttons flex">
+        <button mat-button color="primary" (click)="this.onClickResetFilters()">Reset</button>
+        <button mat-flat-button color="primary" (click)="this.onClickCloseFilter()">Apply</button>
+    </div>
 </section>

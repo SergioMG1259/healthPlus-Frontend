@@ -5,7 +5,8 @@
     width: 100%;
 }
 .right {
-    column-gap: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 .custom-button {
     border: solid 1px #616161;
@@ -30,14 +31,24 @@ mat-icon {
     height: 37px;
 }
 
+.dropdown {
+    margin-top: -4px;
+    width: 140px;
+}
+
 .section-table {
     margin-top: 20px;
 }
-.card-content-table {
+/* .card-content-table {
     border-radius: 5px;
-}
+} */
 .mat-table {
     border-radius: 5px;
+    width: 100%;
+}
+.wrapper-dropdown {
+    margin-bottom: 10px;
+    text-align: end;
     width: 100%;
 }
 .wrapper-table {
@@ -52,9 +63,20 @@ mat-icon {
     border-top-right-radius: 5px;
 }
 
+.custom-button-menu mat-icon {
+    color: var(--secondary-text);
+}
+.custom-button-menu span{
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+}
+.delete-button span, .delete-button mat-icon{
+    color: var(--warn-color);
+}
+
 @media screen and (max-width : 412px) {
     .top {
-        row-gap: 10px;
+        gap: 15px;
     }
     .right {
         column-gap: 5px;
@@ -63,12 +85,15 @@ mat-icon {
     .left {
         width: 100%;
     }
-    .right button {
+    .custom-button {
         width: 50%;
     }
-    /* .right button {
+    .add-button {
         width: 100%;
-    } */
+    }
+    .dropdown {
+        width: calc(50% - 5px);
+    }
     .search-bar {
         flex: 1 1;
     }
