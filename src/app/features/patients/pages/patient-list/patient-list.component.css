@@ -10,31 +10,31 @@
 }
 .custom-button {
     border: solid 1px #616161;
-    height: 37px;
 }
 mat-icon {
     font-size: 21px;
 }
 .custom-button-icon {
     border-radius: 0px 5px 5px 0px;
-    height: 37px;
+    height: 38px;
 }
 .search-bar {
     background-color: var(--background-components);
     border: solid 1px var(--secondary-text);
     border-radius: 5px 0px 0px 5px;
-    height: 37px;
+    height: 38px;
     padding: 0px 8px;
     width: 100%;
 }
 .right button {
-    height: 37px;
+    height: 38px;
 }
 
 .dropdown {
     margin-top: -4px;
     width: 140px;
 }
+
 
 .section-table {
     margin-top: 20px;

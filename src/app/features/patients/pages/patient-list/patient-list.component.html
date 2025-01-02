@@ -9,9 +9,9 @@
         </form>
     </div>
     <div class="flex right">
-        <mat-form-field appearance="outline" class="dropdown">
+        <mat-form-field appearance="outline" class="ads dropdown">
             <mat-label>Order by</mat-label>
-            <mat-select disableOptionCentering placeholder="order by" [ngModel]="this.orderBy" 
+            <mat-select disableOptionCentering placeholder="Order by" [ngModel]="this.orderBy" 
             (ngModelChange)="this.changeOrderBy($event)">
               <mat-option value="default">Default</mat-option>
               <mat-option value="age asc">Younger to older</mat-option>
@@ -25,7 +25,7 @@
             <mat-icon>filter_list</mat-icon>
             Filter
         </button>
-        <button mat-raised-button color="primary" class="add-button">
+        <button mat-raised-button color="primary" class="add-button" (click)="this.onClickGoToAddPatient()">
             <!-- <mat-icon>add</mat-icon> -->
             Add patient
         </button>

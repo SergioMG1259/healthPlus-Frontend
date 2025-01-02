@@ -85,8 +85,11 @@ export class PatientListComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
+  onClickGoToAddPatient() {
+    this._router.navigate(['/patients/add'])
+  }
 
+  ngOnInit(): void {
   }
 
   ngAfterViewInit():void {
@@ -100,7 +103,7 @@ export class PatientListComponent implements OnInit {
 
       this.inputSearch = params['search']? params['search'] : null
       this.orderBy = params['orderby']? params['orderby'] : 'default'
-      
+
       if (this.paginator) {
         // Se guarda el valor de la página actual antes de cambiarlo
         const previousPageIndex = this.paginator.pageIndex

@@ -1,0 +1,38 @@
+.info {
+    flex-direction: column;
+    gap: 10px;
+}
+.row {
+    flex-direction: row;
+    gap: 10px;
+}
+.input {
+    width: 230px;
+}
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+label {
+    color: var(--primary-text);
+    font-size: 1rem;
+}
+.radio-group {
+    flex-direction: column;
+    gap: 10px;
+}
+.textarea {
+    color: var(--primary-text);
+    width: 470px;
+}
+.footer {
+    /* text-align: end; */
+    width: 100%;
+}
+.button-margin-left {
+    margin-left: 10px;
+}
+.input-array {
+    align-items: center;
+    column-gap: 8px;
+    flex-direction: row;
+}

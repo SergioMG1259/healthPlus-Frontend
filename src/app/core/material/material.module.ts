@@ -12,6 +12,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSelectModule} from '@angular/material/select';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [],
@@ -33,7 +37,11 @@ import {MatSelectModule} from '@angular/material/select';
     MatPaginatorModule,
     MatCheckboxModule,
     MatMenuModule,
-    MatSelectModule
+    MatSelectModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRadioModule,
   ]
 })
 export class MaterialModule { }

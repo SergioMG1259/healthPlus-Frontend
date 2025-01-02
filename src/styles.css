@@ -163,14 +163,7 @@ tr.mat-row:last-child .mat-cell:last-child {
   padding-bottom: 0px !important;
 }
 
-.mat-select-panel {
-  background-color: var(--background-components);
-  font-size: 0.9rem !important;
-  margin-top: 24px !important; 
-}
-.mat-select-panel:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 5px 7px 2px rgba(0,0,0,0.1) !important;
-}
+
 .mat-option-text {
   color: var(--primary-text);
 }
@@ -188,43 +181,138 @@ tr.mat-row:last-child .mat-cell:last-child {
   padding-bottom: 0px;
 }
 
+/*DROPDOWN*/
+.mat-select-panel {
+  background-color: var(--background-components);
+  font-size: 0.9rem !important;
+  margin-top: 24px !important; 
+}
+.mat-select-panel:not([class*=mat-elevation-z]) {
+  box-shadow: 0px 5px 7px 2px rgba(0,0,0,0.1) !important;
+}
 
-.mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
-.mat-form-field-appearance-outline .mat-form-field-label { margin-top: -1px; font-size: 14px; }
+/* .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;} */
+.dropdown .mat-form-field-appearance-outline .mat-form-field-label { margin-top: -1px; font-size: 14px; }
 /* label.ng-star-inserted { transform: translateY(-0.59375em) scale(.75) !important; } */
 
-.mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
-.mat-form-field-label-wrapper { top: -1.4em; }
+.dropdown .mat-form-field-flex > .mat-form-field-infix { padding: 0.32em 0px !important;}
+.dropdown .mat-form-field-label-wrapper { font-size: 0.9rem; top: -1.3em; }
 
-.mat-form-field-should-float .mat-form-field-label-wrapper {
+.dropdown .mat-form-field-should-float .mat-form-field-label-wrapper {
   top: -1em;
 }
-/* .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-    transform: translateY(-1.1em) scale(.75);
-    width: 133.33333%;
-} */
-.mat-select-placeholder {
+.dropdown.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  transform: translateY(-1.2em) scale(.75) !important;
+  width: 133.33333%;
+}
+.dropdown .mat-select-placeholder {
+  color: var(--secondary-text);
   font-size: 0.9rem;
   position: absolute;
-  top: -9px;
+  top: -5px;
 }
-.mat-select-value-text {
+.dropdown .mat-select-value-text {
   color: var(--primary-text);
   font-size: 0.9rem;
   height: 100%;
   position: absolute;
-  top: -9px;
+  top: -5px;
   width: 88%;
 }
 .mat-form-field-appearance-outline .mat-select-arrow-wrapper {
-  transform: translateY(-55%) !important;
+  transform: translateY(-30%) !important;
 }
-.mat-form-field-flex {
-  height: 41px;
+.dropdown .mat-form-field-flex {
+  height: 42px;
+}
+
+/*INPUT*/
+.mat-input-element {
+  color: var(--primary-text) !important;
+  font-size: 1rem;
+}
+.mat-input-element::placeholder {
+  color: var(--secondary-text) !important;
+  font-size: 0.9rem;
+}
+/* .mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0 0 !important;
+} */
+.mat-form-field {
+  font-size: 0.9rem;
+  line-height: 1.23;
+}
+.dropdown.mat-form-field {
+  line-height: 1.1 !important;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+/*INPUT CALENDAR*/
+.mat-calendar-period-button .mat-button-wrapper {
+  color: var(--primary-color) !important;
+}
+.mat-calendar-table-header .ng-star-inserted {
+  color: var(--secondary-text) !important;
+}
+.mat-calendar-body-cell .mat-calendar-body-cell-content:not(.mat-calendar-body-selected){
+  color: var(--primary-text) !important;
+}
+/* .mat-calendar-body-selected {
+  color: var(--tertiary-text) !important;
+} */
+.mat-datepicker-content .mat-calendar {
+  height: 354px !important;
+  width: 296px !important;
+}
+.mat-datepicker-content {
+  box-shadow: 0px 5px 7px 2px rgba(0,0,0,0.1) !important;
+}
+.mat-datepicker-popup {
+  margin-top: 5px !important;
+}
+
+/*CHECKBOX*/
+.checkbox {
+  color: var(--secondary-text) !important;
+  font-size: 0.9rem !important;
+}
+
+/*RADIO BUTTON*/
+.mat-radio-label-content {
+  font-size: 0.9rem;
+  color: var(--secondary-text);
+}
+
+/*TEXTAREA*/
+textarea {
+  height: 100px;
+  resize: none !important;
+}
+
+/*STEPPER*/
+.mat-step-header {
+  border-radius: 5px;
+}
+.mat-horizontal-content-container {
+  margin-top: 10px;
+}
+.mat-stepper-horizontal, .mat-stepper-vertical {
+  background-color: transparent !important;
+}
+.mat-horizontal-content-container {
+  overflow: hidden;
+  padding: 0 !important;
 }
 
 @media screen and (max-width : 412px) {
   .mat-paginator-range-label {
     display: none;
+  }
+  .mat-datepicker-content .mat-calendar {
+    height: 314px !important;
+    width: 256px !important;
   }
 }

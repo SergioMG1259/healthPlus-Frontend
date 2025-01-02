@@ -23,10 +23,6 @@
     flex-direction: column;
     row-gap: 5px;
 }
-.checkbox {
-    color: var(--secondary-text);
-    font-size: 0.9rem;
-}
 .filter-section {
     align-items: center;
 }
@@ -47,10 +43,6 @@
     color: var(--primary-text);
     padding: 8px;
     width: 55px;
-}
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
 }
 .separator {
     border: solid 1px var(--secondary-text);

@@ -10,13 +10,15 @@ import { FilterPatientComponent } from './components/filter-patient/filter-patie
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FilterPatientService } from './services/filter-patient.service';
 import { A11yModule } from '@angular/cdk/a11y';
+import { AddPatientComponent } from './pages/add-patient/add-patient.component';
 
 @NgModule({
   providers:[FilterPatientService],
   declarations: [
     PatientListComponent,
     CustomPaginatorDirective,
-    FilterPatientComponent
+    FilterPatientComponent,
+    AddPatientComponent
   ],
   imports: [
     CommonModule,
