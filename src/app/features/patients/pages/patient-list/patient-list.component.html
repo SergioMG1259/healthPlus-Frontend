@@ -79,7 +79,7 @@
                         <mat-icon>more_horiz</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
-                        <button mat-menu-item class="custom-button-menu">
+                        <button mat-menu-item class="custom-button-menu" (click)="this.onClickGoToPatientDetails()">
                           <mat-icon>find_in_page</mat-icon>
                           <span>View details</span>
                         </button>

@@ -74,7 +74,13 @@ input[type="text"]::placeholder {
   color: var(--primary-text);
 }
 .mat-card-title {
-  font-size: 1rem;
+  font-size: 1.0rem;
+}
+.title-no-margin {
+  margin-bottom: 0px !important;
+}
+.group-title {
+  margin-bottom: 8px !important;
 }
 .mat-card-subtitle {
   color: var(--secondary-text);
@@ -202,7 +208,7 @@ tr.mat-row:last-child .mat-cell:last-child {
   top: -1em;
 }
 .dropdown.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  transform: translateY(-1.2em) scale(.75) !important;
+  transform: translateY(-1.15em) scale(.75) !important;
   width: 133.33333%;
 }
 .dropdown .mat-select-placeholder {
@@ -288,7 +294,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /*TEXTAREA*/
 textarea {
-  height: 100px;
+  /* height: 100px; */
   resize: none !important;
 }
 
@@ -306,7 +312,20 @@ textarea {
   overflow: hidden;
   padding: 0 !important;
 }
+.mat-vertical-stepper-header {
+  padding: 24px 0px !important;
+}
+.mat-vertical-content {
+  padding: 8px 0px 12px 12px !important;
+}
+.mat-vertical-content-container {
+  margin-left: 12px !important;
+}
 
+/*TAB*/
+.mat-tab-label {
+  border-radius: 5px 5px 0px 0px !important;
+}
 @media screen and (max-width : 412px) {
   .mat-paginator-range-label {
     display: none;

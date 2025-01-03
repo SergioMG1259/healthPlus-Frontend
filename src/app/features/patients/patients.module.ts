@@ -11,6 +11,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { FilterPatientService } from './services/filter-patient.service';
 import { A11yModule } from '@angular/cdk/a11y';
 import { AddPatientComponent } from './pages/add-patient/add-patient.component';
+import { PatientDetailsComponent } from './pages/patient-details/patient-details.component';
 
 @NgModule({
   providers:[FilterPatientService],
@@ -18,7 +19,8 @@ import { AddPatientComponent } from './pages/add-patient/add-patient.component';
     PatientListComponent,
     CustomPaginatorDirective,
     FilterPatientComponent,
-    AddPatientComponent
+    AddPatientComponent,
+    PatientDetailsComponent
   ],
   imports: [
     CommonModule,

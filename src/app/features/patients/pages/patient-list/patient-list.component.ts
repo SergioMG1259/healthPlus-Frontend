@@ -89,6 +89,10 @@ export class PatientListComponent implements OnInit {
     this._router.navigate(['/patients/add'])
   }
 
+  onClickGoToPatientDetails() {
+    this._router.navigate(['/patients/details']);
+  }
+
   ngOnInit(): void {
   }
 

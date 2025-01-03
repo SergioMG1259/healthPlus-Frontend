@@ -37,12 +37,6 @@
     flex: 1 1 400px;
     width: 100%;
 }
-.title-no-margin {
-    margin-bottom: 0px;
-}
-.group-title {
-    margin-bottom: 8px;
-}
 .card-content-table {
     border-radius: 5px;
 }

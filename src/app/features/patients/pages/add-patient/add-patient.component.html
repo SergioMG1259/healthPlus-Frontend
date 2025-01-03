@@ -1,5 +1,4 @@
-<mat-stepper [linear]="true" #stepper>
-
+<mat-stepper [linear]="true" #stepper [orientation] = "this.orientation">
     <mat-step [stepControl]="this.firstStep">
       <form [formGroup]="this.firstStep" >
         <ng-template matStepLabel>Basic info</ng-template>
@@ -32,11 +31,11 @@
                 </mat-form-field>
               </div>
     
+              <label id="radio-group-label">Pick a gender</label>
               <div class="flex radio-group">
-                <label id="radio-group-label">Pick a gender</label>
                 <mat-radio-group formControlName="gender"
                   aria-labelledby="radio-group-label"
-                  class="example-radio-group">
+                  class="flex radio-group">
                   <mat-radio-button value="FEMALE" color="primary">Female</mat-radio-button>
                   <mat-radio-button value="MALE" color="primary">Male</mat-radio-button>
                 </mat-radio-group>
@@ -44,7 +43,7 @@
     
               <mat-form-field appearance="outline" class="textarea">
                   <mat-label>Notes</mat-label>
-                  <textarea matInput placeholder="Notes" formControlName="notes" required></textarea>
+                  <textarea matInput placeholder="Notes" formControlName="notes"></textarea>
               </mat-form-field>
     
               <div class="footer">
@@ -53,7 +52,6 @@
             </div>
           </mat-card-content>
         </mat-card>
-        
       </form>
     </mat-step>
 
@@ -65,7 +63,7 @@
             <div class="flex info">
               <mat-form-field appearance="outline" class="input">
                 <mat-label>Phone</mat-label>
-                <input matInput placeholder="Phone" formControlName="phone" required>
+                <input matInput placeholder="Phone" formControlName="phone" type="number" required>
               </mat-form-field>
       
               <mat-form-field appearance="outline" class="input">
@@ -93,47 +91,80 @@
 
     <mat-step [stepControl]="this.allergiesForm" optional>
       <ng-template matStepLabel>Allergies</ng-template>
-      <mat-card>
-        <mat-card-content>
-          <form [formGroup]="this.allergiesForm" class="flex info">
-            <div formGroupName="allergies" class="flex info">
-              <mat-checkbox color="primary" class="checkbox" formControlName="penicillin">Penicillin</mat-checkbox>
-              <mat-checkbox color="primary" class="checkbox" formControlName = "aspirin">Aspirin</mat-checkbox>
-              <mat-checkbox color="primary" class="checkbox" formControlName = "sulfonamides">Sulfonamides</mat-checkbox>
-              <mat-checkbox color="primary" class="checkbox" formControlName = "cephalosporins">Cephalosporins</mat-checkbox>
-              <mat-checkbox color="primary" class="checkbox" formControlName = "nsaids">Nonsteroidal Anti-Inflammatory Drugs (NSAIDs)</mat-checkbox>
-              <mat-checkbox color="primary" class="checkbox" formControlName = "opioids">Opioids (e.g., Morphine, Codeine)</mat-checkbox>
-              <mat-checkbox color="primary" class="checkbox" formControlName = "tetracyclines">Tetracyclines</mat-checkbox>
-              <mat-checkbox color="primary" class="checkbox" formControlName = "other" (change)="this.onOtherCheckboxChange()">Other</mat-checkbox>
-            </div>
-    
-            <div *ngIf="this.showOtherInput" 
-              formArrayName="additionalAllergies" class="flex info" role="list">
-    
-              <div *ngFor="let control of additionalAllergies.controls; let i = index" class="flex" role="listitem">
-                <div class="flex input-array">
-                  <mat-form-field appearance="outline" class="input">
-                    <mat-label>Specify allergy</mat-label>
-                    <input matInput placeholder="Specify allergy" [formControlName]="i" required>
-                  </mat-form-field>
-    
-                  <button mat-icon-button (click)="removeAdditionalAllergy(i)"
-                    [attr.aria-label]="'delete allergie at position' + (i + 1) ">
-                    <mat-icon color="warn">delete</mat-icon>
-                  </button>
-                </div>
+      <form [formGroup]="this.allergiesForm">
+        <mat-card>
+          <mat-card-content>
+            <div class="flex info">
+              <div formGroupName="allergies" class="flex info">
+                <mat-checkbox color="primary" class="checkbox" formControlName="penicillin">
+                  <div class="text-wrapper">
+                    Penicillin
+                  </div>
+                </mat-checkbox>
+                <mat-checkbox color="primary" class="checkbox" formControlName = "aspirin">
+                  <div class="text-wrapper">
+                    Aspirin
+                  </div>
+                </mat-checkbox>
+                <mat-checkbox color="primary" class="checkbox" formControlName = "sulfonamides">
+                  <div class="text-wrapper">
+                    Sulfonamides
+                  </div>
+                </mat-checkbox>
+                <mat-checkbox color="primary" class="checkbox" formControlName = "cephalosporins">
+                  <div class="text-wrapper">
+                    Cephalosporins
+                  </div>
+                </mat-checkbox>
+                <mat-checkbox color="primary" class="checkbox" formControlName = "nsaids">
+                  <div class="text-wrapper">
+                    Nonsteroidal Anti-Inflammatory Drugs (NSAIDs)
+                  </div>
+                </mat-checkbox>
+                <mat-checkbox color="primary" class="checkbox" formControlName = "opioids">
+                  <div class="text-wrapper">
+                    Opioids (e.g., Morphine, Codeine)
+                  </div>
+                </mat-checkbox>
+                <mat-checkbox color="primary" class="checkbox" formControlName = "tetracyclines">
+                  <div class="text-wrapper">
+                    Tetracyclines
+                  </div>
+                </mat-checkbox>
+                <mat-checkbox color="primary" class="checkbox" formControlName = "other" (change)="this.onOtherCheckboxChange()">
+                  <div class="text-wrapper">
+                    Other
+                  </div>
+                </mat-checkbox>
               </div>
-    
-              <button mat-mini-fab color="primary" aria-label="add a new allergy input" (click)="addAdditionalAllergy()">
-                <mat-icon>add</mat-icon>
-              </button>
+        
+              <div *ngIf="this.showOtherInput" 
+                formArrayName="additionalAllergies" class="flex info" role="list">
+                <ng-container *ngFor="let control of additionalAllergies.controls; let i = index" role="listitem">
+                  <div class="flex input-array">
+                    <mat-form-field appearance="outline" class="input">
+                      <mat-label>Specify allergy</mat-label>
+                      <input matInput placeholder="Specify allergy" [formControlName]="i" required>
+                    </mat-form-field>
+  
+                    <button mat-icon-button (click)="removeAdditionalAllergy(i)"
+                      [attr.aria-label]="'delete allergie at position' + (i + 1) ">
+                      <mat-icon color="warn">delete</mat-icon>
+                    </button>
+                  </div>
+                </ng-container>
+        
+                <button mat-mini-fab color="primary" aria-label="add a new allergy input" (click)="addAdditionalAllergy()">
+                    <mat-icon>add</mat-icon>
+                </button>
+              </div>
+              <div class="footer">
+                  <button mat-flat-button matStepperPrevious color="primary">Back</button>
+                  <button mat-flat-button color="primary" class="button-margin-left" [disabled]="!this.allergiesForm.valid">Create</button>
+              </div> 
             </div>
-            <div class="footer">
-              <button mat-flat-button matStepperPrevious color="primary">Back</button>
-              <button mat-flat-button color="primary" class="button-margin-left" [disabled]="!this.allergiesForm.valid">Create</button>
-            </div> 
-          </form>
         </mat-card-content>
       </mat-card>
-    </mat-step>
-  </mat-stepper>
+    </form>
+  </mat-step>
+</mat-stepper>

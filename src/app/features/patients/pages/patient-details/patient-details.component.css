@@ -1,0 +1,123 @@
+.wrapper {
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.personal-info-wrapper, .conditions-wrapper {
+    flex: 2 1 540px;
+}
+.conditions-wrapper {
+    min-width: 0;
+}
+.notes-wrapper, .medical-information-wrapper {
+    flex: 1 1 240px;
+}
+.setting-icon {
+    color: var(--secondary-text);
+}
+.edit-button {
+    margin-top: -5px !important;
+}
+/*BASIC INFORMATION*/
+.basic-items {
+    column-gap: 20px;
+    flex-wrap: wrap;
+    row-gap: 30px;
+}
+.personal-info-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 18%;
+    min-width: 160px;
+    row-gap: 10px;
+}
+.category-info {
+    color: var(--secondary-text);
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.personal-info {
+    font-size: 14px;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.line {
+    border: solid 1px #ececec;
+    width: 100%;
+}
+/*MEDICAL INFORMATION*/
+.items {
+    display: flex;
+    row-gap: 10px;
+    flex-direction: column;
+}
+.medical-info-item {
+    display: flex;
+    justify-content: space-between;
+}
+/*APPOINTMENTS LIST*/
+.appointments-wrapper {
+    background-color: var(--background);
+    border-radius: 5px;
+    flex-direction: column;
+    height: 310px;
+    overflow-y: auto;
+    overflow-x: auto;
+    padding: 10px;
+    row-gap: 10px;
+}
+.appointment-card {
+    background-color: var(--background-components);
+    border-radius: 5px;
+    column-gap: 28px;
+    margin: auto;
+    padding: 18px 32px;
+    width: fit-content;
+}
+.group {
+    flex-direction: column;
+    gap: 8px;
+}
+.title {
+    font-size: 1.1rem;
+}
+.sub-title {
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+}
+.text {
+    color: var(--primary-text);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+/*ALLERGIES*/
+.wrapper-allergies {
+    height: 310px;
+    overflow-y: auto;
+    overflow-x: auto;
+    padding: 8px 12px;
+}
+.info {
+    flex-direction: column;
+    gap: 10px;
+}
+.input-array {
+    align-items: center;
+    column-gap: 8px;
+    flex-direction: row;
+}
+.text-wrapper {
+    white-space: normal;
+}
+/*NOTES*/
+.textarea {
+    width: 100%;
+}
+textarea {
+    height: 235px
+}
+.button-wrapper {
+    margin-top: 10px;
+    text-align: end;
+}

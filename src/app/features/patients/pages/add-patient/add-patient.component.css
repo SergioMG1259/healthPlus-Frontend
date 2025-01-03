@@ -4,14 +4,17 @@
 }
 .row {
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
 }
 .input {
-    width: 230px;
+    max-width: 230px;
+    min-width: 0;
+    width: 100%;
 }
-.mat-radio-button ~ .mat-radio-button {
+/* .mat-radio-button ~ .mat-radio-button {
     margin-left: 16px;
-}
+} */
 label {
     color: var(--primary-text);
     font-size: 1rem;
@@ -22,11 +25,20 @@ label {
 }
 .textarea {
     color: var(--primary-text);
-    width: 470px;
+    max-width: 470px;
+    width: 100%;
+}
+textarea {
+    height: 150px
 }
 .footer {
     /* text-align: end; */
     width: 100%;
+}
+.radio-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 .button-margin-left {
     margin-left: 10px;
@@ -35,4 +47,10 @@ label {
     align-items: center;
     column-gap: 8px;
     flex-direction: row;
+}
+.text-wrapper {
+    white-space: normal;
+}
+@media screen and (max-width : 412px) {
+
 }

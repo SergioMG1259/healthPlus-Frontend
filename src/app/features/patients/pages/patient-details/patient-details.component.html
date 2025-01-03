@@ -1,0 +1,204 @@
+<section class="flex wrapper">
+    <mat-card class="personal-info-wrapper">
+        <mat-card-title-group class="group-title">
+            <mat-card-title class="title-no-margin">Basic information</mat-card-title>
+            <button mat-icon-button aria-label="open edit basic information" class="edit-button">
+                <mat-icon class="setting-icon">settings</mat-icon>
+            </button>
+        </mat-card-title-group>
+        <mat-card-content>
+            <div class="flex basic-items">
+                <div class="personal-info-item">
+                    <p class="category-info">Names</p>
+                    <p class="personal-info">Alfreds Futterkiste</p>
+                    <span class="line"></span>
+                </div>
+                <div class="personal-info-item">
+                    <p class="category-info">Birthday</p>
+                    <p class="personal-info">05/15/2001</p>
+                    <span class="line"></span>
+                </div>
+                <div class="personal-info-item">
+                    <p class="category-info">Gender</p>
+                    <p class="personal-info">Male</p>
+                    <span class="line"></span>
+                </div>
+                <div class="personal-info-item">
+                    <p class="category-info">DNI</p>
+                    <p class="personal-info">78021192</p>
+                    <span class="line"></span>
+                </div>
+                <div class="personal-info-item">
+                    <p class="category-info">Phone</p>
+                    <p class="personal-info">939192382</p>
+                    <span class="line"></span>
+                </div>
+                <div class="personal-info-item">
+                    <p class="category-info">Email</p>
+                    <p class="personal-info">Examplaeemail@gmail.com</p>
+                    <span class="line"></span>
+                </div>
+                <div class="personal-info-item">
+                    <p class="category-info">Adress</p>
+                    <p class="personal-info">Jorge Desmaison 538</p>
+                    <span class="line"></span>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="medical-information-wrapper">
+        <mat-card-title-group class="group-title">
+            <mat-card-title class="title-no-margin">Medical info</mat-card-title>
+            <button mat-icon-button aria-label="open edit medical information" class="edit-button">
+                <mat-icon class="setting-icon">settings</mat-icon>
+            </button>
+        </mat-card-title-group>
+        <mat-card-content>
+            <div class="items">
+                <div class="medical-info-item">
+                    <p class="category-info">Weight (kg)</p>
+                    <p>80.5</p>
+                </div>
+                <div class="medical-info-item">
+                    <p class="category-info">Height (cm)</p>
+                    <p>175.3</p>
+                </div>
+                <div class="medical-info-item">
+                    <p class="category-info">BMI</p>
+                    <p>18.5</p>
+                </div>
+                <div class="medical-info-item">
+                    <p class="category-info">Cholesterol</p>
+                    <p>200</p>
+                </div>
+        
+                <div class="medical-info-item">
+                    <p class="category-info">Blood sugar</p>
+                    <p>110</p>
+                </div>
+                <div class="medical-info-item">
+                    <p class="category-info">Blood pressure</p>
+                    <p>158/88</p>
+                </div>
+                <div class="medical-info-item">
+                    <p class="category-info">Heart rate</p>
+                    <p>72</p>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="conditions-wrapper">
+        <mat-tab-group>
+            <mat-tab label="Appointments">
+                <ul class="flex appointments-wrapper" aria-label="list of appointments">
+                    <li class="flex appointment-card" *ngFor="let item of [1,2,3,4,5]">
+                        <div class="flex appointment-column">
+                            <div class="flex group">
+                                <p class="title">05/21/2024</p>
+                                <p class="sub-title">9:00 - 10:00</p>
+                            </div>
+                        </div>
+                        <div class="flex appointment-column">
+                            <div class="flex group">
+                                <p class="sub-title">Issue</p>
+                                <p class="text">Clinic consulting</p>
+                            </div>
+                        </div>
+                        <div class="flex appointment-column">
+                            <div class="flex group">
+                                <p class="sub-title">Price</p>
+                                <p class="text">S/ 100</p>
+                            </div>
+                        </div>
+                        <div class="flex appointment-column">
+                            <div class="flex group">
+                                <p class="sub-title">Created at</p>
+                                <p>05/15/2024</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </mat-tab>
+            <mat-tab label="Allergies">
+                <div class="wrapper-allergies">
+                    <form [formGroup]="this.allergiesForm" class="flex info">
+                        <div class="flex info">
+                            <div formGroupName="allergies" class="flex info">
+                                <mat-checkbox color="primary" class="checkbox" formControlName="penicillin">
+                                    <div class="text-wrapper">
+                                      Penicillin
+                                    </div>
+                                </mat-checkbox>
+                                <mat-checkbox color="primary" class="checkbox" formControlName = "aspirin">
+                                    <div class="text-wrapper">
+                                      Aspirin
+                                    </div>
+                                </mat-checkbox>
+                                <mat-checkbox color="primary" class="checkbox" formControlName = "sulfonamides">
+                                    <div class="text-wrapper">
+                                      Sulfonamides
+                                    </div>
+                                </mat-checkbox>
+                                <mat-checkbox color="primary" class="checkbox" formControlName = "cephalosporins">
+                                    <div class="text-wrapper">
+                                      Cephalosporins
+                                    </div>
+                                </mat-checkbox>
+                                <mat-checkbox color="primary" class="checkbox" formControlName = "nsaids">
+                                    <div class="text-wrapper">
+                                      Nonsteroidal Anti-Inflammatory Drugs (NSAIDs)
+                                    </div>
+                                </mat-checkbox>
+                                <mat-checkbox color="primary" class="checkbox" formControlName = "opioids">
+                                    <div class="text-wrapper">
+                                      Opioids (e.g., Morphine, Codeine)
+                                    </div>
+                                </mat-checkbox>
+                                <mat-checkbox color="primary" class="checkbox" formControlName = "tetracyclines">
+                                    <div class="text-wrapper">
+                                      Tetracyclines
+                                    </div>
+                                </mat-checkbox>
+                                <mat-checkbox color="primary" class="checkbox" formControlName = "other" (change)="this.onOtherCheckboxChange()">
+                                    <div class="text-wrapper">
+                                      Other
+                                    </div>
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div *ngIf="this.showOtherInput" 
+                            formArrayName="additionalAllergies" class="flex info" role="list">
+                            <ng-container *ngFor="let control of additionalAllergies.controls; let i = index" role="listitem">
+                                <div class="flex input-array">
+                                    <mat-form-field appearance="outline" class="input">
+                                        <mat-label>Specify allergy</mat-label>
+                                        <input matInput placeholder="Specify allergy" [formControlName]="i" required>
+                                    </mat-form-field>
+                
+                                    <button mat-icon-button (click)="removeAdditionalAllergy(i)"
+                                    [attr.aria-label]="'delete allergie at position' + (i + 1) ">
+                                    <mat-icon color="warn">delete</mat-icon>
+                                    </button>
+                                </div>
+                            </ng-container>
+                
+                            <button mat-mini-fab color="primary" aria-label="add a new allergy input" (click)="addAdditionalAllergy()">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </mat-tab>
+          </mat-tab-group>
+    </mat-card>
+    <mat-card class="notes-wrapper">
+        <mat-card-title>Notes</mat-card-title>
+        <mat-form-field appearance="outline" class="textarea">
+            <mat-label>Notes</mat-label>
+            <textarea matInput placeholder="Notes"></textarea>
+        </mat-form-field>
+        <div class="button-wrapper">
+            <button mat-flat-button color="primary">Save</button>
+        </div>
+    </mat-card>
+</section>

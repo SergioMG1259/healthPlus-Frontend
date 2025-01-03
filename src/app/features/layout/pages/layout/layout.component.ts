@@ -27,7 +27,7 @@ export class LayoutComponent implements OnInit {
         this.sidenav.open()
         this.mode = 'side'
       }
-    });  
+    })
   }
 
   ngOnDestroy():void {
