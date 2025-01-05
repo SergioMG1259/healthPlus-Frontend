@@ -1,0 +1,41 @@
+.hour-column {
+    width: 90px;
+}
+.header-hour {
+    height: 53.2px;
+}
+.hour {
+    height: 40px;
+}
+
+.wrapper-week {
+    overflow-x: auto;
+    width: 100%;
+}
+.header-cells {
+    color: var(--primary-text);
+    grid-template-columns: repeat(7, minmax(110px, 1fr));
+}
+.header-cell {
+    padding: 5px;
+    text-align: center;
+}
+.today{
+    color: var(--primary-color);
+}
+
+.container-cells {
+    grid-template-columns: repeat(7, minmax(110px, 1fr));
+    grid-template-rows: repeat(17,40px);
+}
+.cell {
+    background-color: var(--background-components);
+    border: solid 1px var(--secondary-text);
+}
+/* Quitar bordes colisionantes */
+.cell:not(:nth-child(7n)) {
+    border-right: none; /* Quita el borde derecho excepto la última celda de cada fila */
+}
+.cell:not(:nth-last-child(-n+7)) {
+    border-bottom: none; /* Quita el borde inferior excepto en la última fila */
+}

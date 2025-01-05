@@ -1,0 +1,28 @@
+<div class="grid header-cells">
+    <div class="day-name">Sun</div>
+    <div class="day-name">Mon</div>
+    <div class="day-name">Tue</div>
+    <div class="day-name">Wed</div>
+    <div class="day-name">Thu</div>
+    <div class="day-name">Fri</div>
+    <div class="day-name">Sat</div>
+</div>
+<div class="wrapper">
+    <div class="grid container-cells">
+        <!-- <div class="cell" *ngFor="let item of this.gridData; let i = index" #cellRef (mousedown)="startResize($event, i, cellRef)"> -->
+        <div class="cell" *ngFor="let cell of this.gridData; let i = index" [ngClass]="cell.isOtherMonth? 'other-month':'current-month'">
+            <div class="day-number">
+                {{cell.day.getDate()}}
+            </div>
+            <div class="cell-footer">
+
+            </div>
+        </div>
+    </div>
+    <!-- <div
+    class="resizable-div"
+    *ngFor="let div of resizableDivs"
+    [ngStyle]="{ top: div.top + 'px', left: div.left + 'px', height: div.height + 'px', width: div.width + 'px' }"
+  ></div> -->
+</div>
+

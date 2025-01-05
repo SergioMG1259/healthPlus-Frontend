@@ -1,0 +1,19 @@
+<div class="flex">
+    <div class="hour-column">
+        <div class="header-hour"></div>
+        <div class="hour" *ngFor="let hour of [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]; let i = index">
+            <p>{{i}}</p>
+        </div>
+    </div>
+    <div class="wrapper-week">
+        <div class="grid header-cells">
+            <div class="header-cell"  *ngFor="let day of daysWeek; let i = index" [ngClass]="{'today': this.areDatesEqual(day)}">
+                <p>{{this.daysName[i]}}</p>
+                <p>{{this.daysWeek[i].getDate()}}</p>
+            </div>
+        </div>
+        <div class="grid container-cells">
+            <div class="cell" *ngFor="let item of cells"></div>
+        </div>
+    </div>
+</div>

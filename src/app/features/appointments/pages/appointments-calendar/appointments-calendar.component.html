@@ -1,0 +1,15 @@
+<section class="flex header">
+    <div>
+        {{this.dateRange}}
+    </div>
+    <mat-button-toggle-group name="calendarTypes" aria-label="Calendar types" [(ngModel)]="this.type">
+        <mat-button-toggle value="month">Month</mat-button-toggle>
+        <mat-button-toggle value="week">Weekly</mat-button-toggle>
+        <mat-button-toggle value="day">Day</mat-button-toggle>
+    </mat-button-toggle-group>
+</section>
+
+<section class="calendar">
+    <app-monthly-calendar [indexDate]="this.indexDate" *ngIf="this.type === 'month'"></app-monthly-calendar>
+    <app-weekly-calendar *ngIf="this.type === 'week'"></app-weekly-calendar>
+</section>

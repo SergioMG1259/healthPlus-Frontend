@@ -257,6 +257,10 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /*INPUT CALENDAR*/
+.mat-calendar {
+  background-color: var(--background-components);
+  border-radius: 5px;
+}
 .mat-calendar-period-button .mat-button-wrapper {
   color: var(--primary-color) !important;
 }
@@ -326,6 +330,22 @@ textarea {
 .mat-tab-label {
   border-radius: 5px 5px 0px 0px !important;
 }
+
+/*BUTTON TOGGLE*/
+.mat-button-toggle {
+  background-color: var(--background-components);
+}
+.mat-button-toggle-checked {
+  background-color: var(--primary-color);
+  color: var(--tertiary-text);
+}
+.mat-button-toggle-button {
+  color: var(--primary-text) !important;
+}
+.mat-button-toggle-checked .mat-button-toggle-button {
+  color: var(--tertiary-text) !important;
+}
+
 @media screen and (max-width : 412px) {
   .mat-paginator-range-label {
     display: none;

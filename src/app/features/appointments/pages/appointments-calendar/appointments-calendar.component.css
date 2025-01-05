@@ -1,0 +1,8 @@
+.header {
+    border: solid 1px rebeccapurple;
+}
+.calendar {
+    font-size: 0.9rem;
+    overflow-x: auto;
+    width: 100%;
+}
