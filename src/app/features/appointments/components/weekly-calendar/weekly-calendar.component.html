@@ -2,7 +2,7 @@
     <div class="hour-column">
         <div class="header-hour"></div>
         <div class="hour" *ngFor="let hour of [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]; let i = index">
-            <p>{{i}}</p>
+            <p>{{i + 6}}</p>
         </div>
     </div>
     <div class="wrapper-week">
@@ -12,8 +12,49 @@
                 <p>{{this.daysWeek[i].getDate()}}</p>
             </div>
         </div>
-        <div class="grid container-cells">
-            <div class="cell" *ngFor="let item of cells"></div>
+        <div class="grid container-cells" #containerCells>
+            <div class="cell" *ngFor="let item of cells" (mousedown)="onMouseDown($event)">
+                
+            </div>
         </div>
     </div>
 </div>
+
+<ng-template #overlayTemplate>
+    <!-- Tu contenido dinámico -->
+    <div class="appointment-overlay-add shadow">
+        <div class="flex day">
+            <mat-icon class="icon">calendar_month</mat-icon>
+            <span>17/01/2025</span>
+        </div>
+        <div class="start-end-hours">
+            <div class="flex row">
+                <p>Start:</p>
+                <span>9:00</span>
+            </div>
+            <div class="flex row">
+                <p>End:</p>
+                <span>10:00</span>
+            </div>
+        </div>
+        <mat-form-field appearance="outline" class="small">
+            <mat-label>Issue</mat-label>
+            <mat-select disableOptionCentering placeholder="Issue">
+              <mat-option value="default">Default</mat-option>
+              <mat-option value="age asc">Younger to older</mat-option>
+              <mat-option value="age dsc">Older to younger</mat-option>
+              <mat-option value="created asc">Created asc</mat-option>
+              <mat-option value="created dsc"> Created dsc</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline">
+            <mat-label>Price</mat-label>
+            <input matInput placeholder="Price" type="number">
+        </mat-form-field> -->
+        <footer class="flex footer-overlay">
+            <button mat-button color="primary" (click)="closeOverlay()">Cancel</button>
+            <button mat-flat-button color="primary">Save</button>
+        </footer>
+        <!-- Más contenido dinámico aquí -->
+    </div>
+</ng-template>

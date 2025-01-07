@@ -1,5 +1,5 @@
 .sidenav-container {
-    background-color: var(--background);
+   background-color: var(--background);
    min-height: 100vh;
 }
 .expanded {

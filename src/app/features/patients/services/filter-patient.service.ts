@@ -10,7 +10,7 @@ import { filter } from 'rxjs';
 @Injectable()
 export class FilterPatientService {
 
-  private _overlayRef!: OverlayRef
+  private _overlayRef: OverlayRef | null = null
   private _positionStrategy: PositionStrategy | null = null
   private _scrollStrategy: ScrollStrategy | null = null
   private _origin!: ElementRef
@@ -28,16 +28,18 @@ export class FilterPatientService {
   openFilter(origin: ElementRef): void {
     if (this._isOpen) return
 
-    this._isOpen = true
-    this._origin = origin
-    this.initializeOverlay()
+    if (!this._overlayRef) {
+      this._isOpen = true
+      this._origin = origin
+      this.initializeOverlay()
+    }
 
     const componentPortal = new ComponentPortal(FilterPatientComponent)
-    this._overlayRef.attach(componentPortal)
+    this._overlayRef!.attach(componentPortal)
 
-    this._overlayRef.backdropClick().subscribe(() => this.closeFilter())
+    this._overlayRef!.backdropClick().subscribe(() => this.closeFilter())
     
-    this._overlayRef
+    this._overlayRef!
     .keydownEvents()
     .pipe(
       filter((event: KeyboardEvent) => event.key === 'Escape')
@@ -51,6 +53,7 @@ export class FilterPatientService {
     this._overlayRef.detach()
     this._overlayRef.dispose()
     this._isOpen = false
+    this._overlayRef = null
   }
 
   updateOverlayPosition(): void {

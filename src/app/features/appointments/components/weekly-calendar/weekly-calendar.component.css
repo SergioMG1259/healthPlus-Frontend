@@ -1,20 +1,21 @@
 .hour-column {
-    width: 90px;
+    width: 60px;
 }
 .header-hour {
     height: 53.2px;
 }
 .hour {
-    height: 40px;
+    height: 60px;
 }
 
 .wrapper-week {
     overflow-x: auto;
+    overflow-y: hidden;
     width: 100%;
 }
 .header-cells {
     color: var(--primary-text);
-    grid-template-columns: repeat(7, minmax(110px, 1fr));
+    grid-template-columns: repeat(7, minmax(120px, 1fr));
 }
 .header-cell {
     padding: 5px;
@@ -25,12 +26,13 @@
 }
 
 .container-cells {
-    grid-template-columns: repeat(7, minmax(110px, 1fr));
-    grid-template-rows: repeat(17,40px);
+    grid-template-columns: repeat(7, minmax(120px, 1fr));
+    grid-template-rows: repeat(17, 60px);
 }
 .cell {
     background-color: var(--background-components);
     border: solid 1px var(--secondary-text);
+    position: relative;
 }
 /* Quitar bordes colisionantes */
 .cell:not(:nth-child(7n)) {
@@ -38,4 +40,74 @@
 }
 .cell:not(:nth-last-child(-n+7)) {
     border-bottom: none; /* Quita el borde inferior excepto en la última fila */
+}
+.cell:first-child {
+    border-top-left-radius: 5px;
+}
+.cell:nth-child(7) {
+    border-top-right-radius: 5px;
+}
+.cell:nth-last-child(-7n + 7){
+    border-bottom-left-radius: 5px;
+}
+.cell:last-child {
+    border-bottom-right-radius: 5px;
+}
+
+.appointment-overlapping {
+    padding: 5px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 60px;
+    /* bottom: 0px; */
+    background-color: #0b7bebd9;
+    z-index: 1;
+}
+.appointment-overlapping span {
+    color: var(--tertiary-text);
+    font-size: 0.9rem;
+    user-select: none; /* Deshabilita la selección de texto en el span */
+}
+
+.appointment-overlay-add {
+    background-color: var(--background-components);
+    border-radius: 5px;
+    height: 280px;
+    padding: 10px;
+    width: 220px;
+}
+.appointment-overlay-add .day {
+    color: var(--primary-text);
+    column-gap: 5px;
+    width: 100%;
+}
+.appointment-overlay-add .day span{
+    font-size: 0.9rem;
+}
+.appointment-overlay-add .icon{
+    color: var(--primary-color);
+    font-size: 21px;
+}
+.start-end-hours {
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+.start-end-hours .row {
+    column-gap: 5px;
+}
+.start-end-hours .row:nth-child(2) {
+    margin-top: 5px;
+}
+.start-end-hours p {
+    color: var(--secondary-text);
+    width: 42px;
+}
+.start-end-hours span {
+    color: var(--primary-text);
+}
+
+.footer-overlay {
+    justify-content: space-between;
 }
