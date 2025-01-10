@@ -18,6 +18,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [],
@@ -45,7 +46,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatNativeDateModule,
     MatRadioModule,
     MatTabsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatListModule
   ]
 })
 export class MaterialModule { }

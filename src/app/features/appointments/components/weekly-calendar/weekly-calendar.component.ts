@@ -1,5 +1,8 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { AppointmentOverlayCalendarService } from '../../services/appointment-overlay-calendar.service';
+import { PatientShortDTO } from 'src/app/features/patients/models/PatientShortDTO';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AppointmentResponseDTO } from '../../models/appointmentResponseDTO';
 
 @Component({
   selector: 'app-weekly-calendar',
@@ -11,17 +14,48 @@ export class WeeklyCalendarComponent implements OnInit {
   @Input() indexDate: Date = new Date()
   daysName: string[] = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
   daysWeek: Date [] = []
-  cells: number[] = []
+  cells: Date[] = []
   @ViewChild('containerCells', { static: true }) containerCells!: ElementRef
   @ViewChild('overlayTemplate') overlayTemplate!: TemplateRef<any>
 
   private _cellEventAdd: HTMLElement | null = null
   private _appointmentOverlapping: HTMLElement | null = null
 
-  constructor(private _renderer: Renderer2, private _viewContainerRef: ViewContainerRef, 
-    private _appointmentOverlayService: AppointmentOverlayCalendarService) { }
+  /* Para el input search */
+  isOpenInputSearch: boolean = false
+  patientList:PatientShortDTO[] = [
+    {id: 1, names: "asd1", lastNames: "ddd"},
+    {id: 2, names: "asd2", lastNames: "ddd2"},
+    {id: 3, names: "nbn3", lastNames: "mmm3"},
+    {id: 4, names: "peo4", lastNames: "gnq"}
+  ]
+  selectedPatient: PatientShortDTO | null = null
 
-  fillWeek(): void {
+  form: FormGroup = this._fb.group({
+    issueField: ['', Validators.required],
+    priceField: [null, [Validators.required, Validators.min(1)]],
+    patientField: [null, Validators.required]
+  })
+
+  appointments: AppointmentResponseDTO[] = [
+    {
+      price: 10, startDate: new Date(2025, 0, 10, 8), endDate: new Date(2025, 0, 10, 9), issue: 'FOLLOW_UP', patient: {id: 1, names: "hola", lastNames: "ddddddddd"}
+    },
+    {
+      price: 10, startDate: new Date(2025, 0, 10, 9), endDate: new Date(2025, 0, 10, 12), issue: 'FOLLOW_UP', patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
+    },
+    {
+      price: 10, startDate: new Date(2025, 0, 11, 9), endDate: new Date(2025, 0, 11, 12), issue: 'FOLLOW_UP', patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
+    }
+  ]
+
+  startDateOverlay: Date | null = null
+  endDateOverlay: Date | null = null
+
+  constructor(private _renderer: Renderer2, private _viewContainerRef: ViewContainerRef, 
+    private _appointmentOverlayService: AppointmentOverlayCalendarService, private _fb: FormBuilder) { }
+
+    private fillWeek(): void {
     const startOfWeek = new Date(this.indexDate)
     startOfWeek.setDate(this.indexDate.getDate() - this.indexDate.getDay())
   
@@ -36,6 +70,16 @@ export class WeeklyCalendarComponent implements OnInit {
       this.daysWeek.push(newDay)
       current.setDate(current.getDate() + 1)
     }
+
+    for (let hour = 6; hour < 23; hour++) {
+      for (let day = 0; day < 7; day++) {
+        const cellDate = new Date(startOfWeek)
+        cellDate.setDate(startOfWeek.getDate() + day) // Incrementa por día
+        cellDate.setHours(hour)
+        cellDate.setMinutes(0)
+        this.cells.push(cellDate)
+      }
+    }    
   }
 
   areDatesEqual(date1: Date, date2: Date = new Date()): boolean {
@@ -46,9 +90,8 @@ export class WeeklyCalendarComponent implements OnInit {
     )
   }
 
-  onMouseDown(event: MouseEvent): void {
+  onMouseDown(event: MouseEvent, startDate: Date): void {
     event.preventDefault()
-
     const cell = event.target as HTMLElement
     const appointmentOverlapping = this.createAppointmentOverlapping(cell)
     const span = this._renderer.createElement('span')
@@ -58,13 +101,16 @@ export class WeeklyCalendarComponent implements OnInit {
 
     const initialY = event.clientY
 
-    const cellIndex = Array.from(cell.parentNode!.children).indexOf(cell) // Obtener el índice de la celda
-    const startHour = 6 + Math.floor(cellIndex / 7) // Calcular la hora de inicio
+    const startHour = startDate // Calcular la hora de inicio
     this._renderer.appendChild(appointmentOverlapping, span)
-    this.updateAppointmentOverlappingText(span, startHour, startHour + 1)
+    this.updateAppointmentOverlappingText(span, startHour.getHours(), startHour.getHours() + 1)
     
+    const filteredAppointments: AppointmentResponseDTO[] = this.filterAppointmentsInit(startHour)
+    this.startDateOverlay = startHour
+    this.endDateOverlay = new Date(startHour)
+    this.endDateOverlay.setHours(startHour.getHours() + 1)
 
-    const onMouseMove = this.createMouseMoveHandler(initialY, appointmentOverlapping, cell, startHour, span)
+    const onMouseMove = this.createMouseMoveHandler(initialY, appointmentOverlapping, cell, startHour, span, filteredAppointments)
     const removeMouseMoveListener = this._renderer.listen(document, 'mousemove', onMouseMove)
 
     const onMouseUp = () => {
@@ -88,34 +134,49 @@ export class WeeklyCalendarComponent implements OnInit {
     return appointmentOverlapping
   }
 
+  private filterAppointmentsInit(startDate: Date): AppointmentResponseDTO[] {
+  
+    const endOfDay = new Date(startDate)
+    endOfDay.setHours(23, 59, 59, 999)
+
+    return this.appointments.filter(appointment =>
+      appointment.startDate >= startDate &&
+      appointment.startDate <= endOfDay
+    )
+  }
+
   private createMouseMoveHandler(initialY: number, appointmentOverlapping: HTMLElement, cell: HTMLElement, 
-    startHour: number, span: HTMLElement) {
+    startHour: Date, span: HTMLElement, filteredAppointments:AppointmentResponseDTO[]) {
     return (moveEvent: MouseEvent) => {
-        requestAnimationFrame(() => {
 
-            const heightDifference = moveEvent.clientY - initialY
+      requestAnimationFrame(() => {
 
-            // Verifica que el border inferior del appointment no supere el borde inferior del calendar
-            if (appointmentOverlapping.getBoundingClientRect().bottom - 2 > 
-              this.containerCells.nativeElement.getBoundingClientRect().bottom) {
-              
-              this._renderer.removeChild(cell, appointmentOverlapping)
-              return
-            }
+          const heightDifference = moveEvent.clientY - initialY
+          // Verifica que el border inferior del appointment no supere el borde inferior del calendar
+          if (appointmentOverlapping.getBoundingClientRect().bottom - 2 > 
+            this.containerCells.nativeElement.getBoundingClientRect().bottom) {
+            
+            this._renderer.removeChild(cell, appointmentOverlapping)
+            return
+          }
+          if (heightDifference >= 0) {
+            const newHeight = this.calculateNewHeight(heightDifference)
+            this._renderer.setStyle(appointmentOverlapping, 'height', `${newHeight}px`)
+            const hoursAdded = Math.floor(heightDifference / 60)
+            // const endHour: Date =  startHour.getHours() + hoursAdded + 1
+            const endHour: Date =  new Date(startHour)
+            endHour.setHours(startHour.getHours() + hoursAdded + 1)
+            this.endDateOverlay = endHour
 
-            if (heightDifference >= 0) {
-              
-                const newHeight = this.calculateNewHeight(heightDifference)
-                this._renderer.setStyle(appointmentOverlapping, 'height', `${newHeight}px`)
-
-                const hoursAdded = Math.floor(heightDifference / 60)
-                const endHour = startHour + hoursAdded + 1
-                this.updateAppointmentOverlappingText(span, startHour, endHour)
-                // if (this.isOverlayOverlapping(overlay)) {
-                //     this.renderer.removeChild(cell, overlay);
-                // }
-            }
-        })
+              if (filteredAppointments.length != 0) {
+                if(this.isDateOccupied(endHour, filteredAppointments)) {
+                  this._renderer.removeChild(cell, appointmentOverlapping)
+                  return
+                }
+              }
+            this.updateAppointmentOverlappingText(span, startHour.getHours(), endHour.getHours())
+          }
+      })
     }
   }
 
@@ -123,7 +184,16 @@ export class WeeklyCalendarComponent implements OnInit {
     return 60 + Math.floor(heightDifference / 60) * 60
   }
 
-  updateAppointmentOverlappingText(span: HTMLElement, startHour: number, endHour: number): void {
+  private isDateOccupied(date: Date, list:AppointmentResponseDTO[]): boolean {
+
+    const newDate = new Date(date)
+    newDate.setHours(date.getHours() - 1)
+    return list.some(
+      appointment => appointment.startDate <= newDate && appointment.endDate > newDate
+    )
+  }
+
+  private updateAppointmentOverlappingText(span: HTMLElement, startHour: number, endHour: number): void {
     this._renderer.setProperty(span, 'textContent', `${startHour}:00 - ${endHour}:00`)
   }
 
@@ -135,16 +205,63 @@ export class WeeklyCalendarComponent implements OnInit {
   closeOverlay(): void {
     this._appointmentOverlayService.close()
     this.removeAppointmentRange()
+    this.selectedPatient = null
+    this.form.reset()
+    this.startDateOverlay = null
+    this.endDateOverlay = null
+  }
+
+  saveAppointment(): void {
+
+    this.appointments.push({
+      price: this.form.controls['priceField'].value,
+      startDate: this.startDateOverlay!,
+      endDate: this.endDateOverlay!,
+      issue: this.form.controls['issueField'].value,
+      patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
+    })
+    this.closeOverlay()
   }
 
   removeAppointmentRange(): void {
     this._renderer.removeChild(this._cellEventAdd, this._appointmentOverlapping)
   }
 
+  compareDatesInAppointments(date: Date): AppointmentResponseDTO | null {
+    const appointment = this.appointments.find(
+      (f) =>
+        f.startDate.getFullYear() === date.getFullYear() &&
+        f.startDate.getMonth() === date.getMonth() &&
+        f.startDate.getDate() === date.getDate() &&
+        f.startDate.getHours() === date.getHours()
+    )
+    return appointment || null
+  }
+
+
+
+  onSearchInput(event: Event): void {
+    this.openSearchPatient()
+  }
+
+  onPatientSelect(patient: PatientShortDTO) {
+    this.form.controls['patientField'].setValue(patient)
+    this.selectedPatient = patient
+    this.closeSearchPatient()
+  }
+
+  openSearchPatient(): void {
+    if(this.isOpenInputSearch) return
+    this.isOpenInputSearch = true
+  }
+
+  closeSearchPatient(): void {
+    if(!this.isOpenInputSearch) return
+    this.isOpenInputSearch = false
+  }
+
   ngOnInit(): void {
     this.fillWeek()
-    const totalCells = 17 * 7
-    this.cells = new Array(totalCells).fill(0)
   }
 
 }

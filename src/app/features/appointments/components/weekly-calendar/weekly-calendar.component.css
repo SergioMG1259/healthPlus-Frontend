@@ -1,5 +1,5 @@
 .hour-column {
-    width: 60px;
+    width: 50px;
 }
 .header-hour {
     height: 53.2px;
@@ -54,15 +54,53 @@
     border-bottom-right-radius: 5px;
 }
 
+/*Appointment*/
+.appointment-wrapper {
+    position: absolute;
+    background-color: transparent;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    z-index: 2;
+}
+.appointment {
+    background-color: #fafafa;
+    border-radius: 5px;
+    padding: 0px 2px 2px 2px;
+    width: 100%;
+    z-index: 2;
+}
+.appointment .bar {
+    background-color: #377dc3d9;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    height: 4px;
+    margin-left: -2px;
+    width: calc(100% + 4px);
+}
+.appointment .range-hour {
+    color: var(--secondary-text);
+    font-size: 0.75rem;
+    margin-top: 2px;
+}
+.patient-name {
+    color: var(--primary-text);
+    font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    width: 100%;
+}
+
+/*Appointment overlay*/
 .appointment-overlapping {
+    background-color: #0b7bebd9;
+    height: 60px;
+    left: 0px;
     padding: 5px;
     position: absolute;
     top: 0px;
-    left: 0px;
     width: 100%;
-    height: 60px;
-    /* bottom: 0px; */
-    background-color: #0b7bebd9;
     z-index: 1;
 }
 .appointment-overlapping span {
@@ -72,11 +110,12 @@
 }
 
 .appointment-overlay-add {
-    background-color: var(--background-components);
+    background-color: #fdfdfd;
     border-radius: 5px;
-    height: 280px;
-    padding: 10px;
-    width: 220px;
+    row-gap: 8px;
+    flex-direction: column;
+    padding: 8px;
+    width: 270px;
 }
 .appointment-overlay-add .day {
     color: var(--primary-text);
@@ -89,10 +128,10 @@
 .appointment-overlay-add .icon{
     color: var(--primary-color);
     font-size: 21px;
+    height: 21px;
 }
 .start-end-hours {
     font-size: 0.9rem;
-    margin-top: 8px;
 }
 .start-end-hours .row {
     column-gap: 5px;
@@ -108,6 +147,35 @@
     color: var(--primary-text);
 }
 
+.search-bar {
+    background-color: var(--background-components);
+    border: solid 1px var(--secondary-text);
+    border-radius: 5px;
+    height: 38px;
+    padding: 0px 8px;
+    width: 100%;
+}
+mat-form-field {
+    width: 100%;
+}
+
+.search label {
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+}
+
 .footer-overlay {
     justify-content: space-between;
+}
+
+/*PATIENT LIST OVERLAY*/
+.patient-list {
+    background-color: var(--background-components);
+    border-radius: 5px;
+    margin-top: 5px;
+    max-height: 145px;
+    overflow-y: auto;
+    min-width: 254px;
+    padding: 5px;
+    width: 100%;
 }

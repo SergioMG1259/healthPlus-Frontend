@@ -215,8 +215,11 @@ tr.mat-row:last-child .mat-cell:last-child {
   top: -1em;
 }
 .small.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  transform: translateY(-1.12em) scale(.75) !important;
+  transform: translateY(-1.08em) scale(.75) !important;
   width: 133.33333%;
+}
+.mat-form-field-appearance-outline .mat-form-field-label {
+  margin-top: -0.32em !important;
 }
 .small .mat-select-placeholder {
   color: var(--secondary-text);

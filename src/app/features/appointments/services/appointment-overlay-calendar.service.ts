@@ -1,6 +1,7 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, TemplateRef, ViewContainerRef } from '@angular/core';
+import { filter } from 'rxjs';
 
 // @Injectable({
 //   providedIn: 'root'
@@ -40,7 +41,7 @@ export class AppointmentOverlayCalendarService {
             offsetX: -5,
           }
         ]),
-        scrollStrategy: this.overlay.scrollStrategies.reposition()
+        scrollStrategy: this.overlay.scrollStrategies.noop()
       })
     }
 
@@ -48,6 +49,18 @@ export class AppointmentOverlayCalendarService {
     this._overlayRef.attach(portal)
 
     this._overlayRef.backdropClick().subscribe(() => {
+      if (backdropClickCallback) {
+        backdropClickCallback()
+      }
+      this.close()
+    })
+
+    this._overlayRef!
+      .keydownEvents()
+      .pipe(
+        filter((event: KeyboardEvent) => event.key === 'Escape')
+      )
+    .subscribe(() => {
       if (backdropClickCallback) {
         backdropClickCallback()
       }

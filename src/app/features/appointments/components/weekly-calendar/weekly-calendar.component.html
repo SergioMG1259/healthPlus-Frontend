@@ -2,7 +2,7 @@
     <div class="hour-column">
         <div class="header-hour"></div>
         <div class="hour" *ngFor="let hour of [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]; let i = index">
-            <p>{{i + 6}}</p>
+            <p>{{i + 6 + ":00"}}</p>
         </div>
     </div>
     <div class="wrapper-week">
@@ -13,48 +13,90 @@
             </div>
         </div>
         <div class="grid container-cells" #containerCells>
-            <div class="cell" *ngFor="let item of cells" (mousedown)="onMouseDown($event)">
-                
+            <div class="cell" *ngFor="let cell of cells" (mousedown)="onMouseDown($event, cell)">
+                <div *ngIf="this.compareDatesInAppointments(cell) as appointment" class="appointment-wrapper" 
+                    [ngStyle]="{ height: (appointment.endDate.getHours() - appointment.startDate.getHours())*60 + 'px' }" (mousedown)="$event.stopPropagation()">
+                    <div  class="appointment shadow"
+                    [ngStyle]="{ height: (appointment.endDate.getHours() - appointment.startDate.getHours())*60 - 3 + 'px' }">
+                        <div class="bar"></div>
+                        <p class="range-hour">
+                            {{appointment.startDate.getHours() + ":00 - " + appointment.endDate.getHours() + ":00"}}
+                        </p>
+                        <p class="patient-name">
+                            {{appointment.patient.names + " " + appointment.patient.lastNames}}
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
 
 <ng-template #overlayTemplate>
-    <!-- Tu contenido dinámico -->
-    <div class="appointment-overlay-add shadow">
+
+    <form [formGroup]="form" class="flex appointment-overlay-add shadow" cdkTrapFocus cdkTrapFocusAutoCapture>
+
+        <div class="search">
+            <label for="search-patient">Search patient</label>
+            <input id="search-patient" class="search-bar" type="search" placeholder="Patient names" 
+                cdkOverlayOrigin #trigger="cdkOverlayOrigin" (input)="this.onSearchInput($event)" 
+                [value]="selectedPatient ? (selectedPatient.names + ' ' + selectedPatient.lastNames) : ''">
+        </div>
+
         <div class="flex day">
             <mat-icon class="icon">calendar_month</mat-icon>
-            <span>17/01/2025</span>
+            <span>{{endDateOverlay | date:'MM/dd/yyyy'}}</span>
         </div>
+
         <div class="start-end-hours">
             <div class="flex row">
                 <p>Start:</p>
-                <span>9:00</span>
+                <span>{{this.startDateOverlay?.getHours() + ":00"}}</span>
             </div>
             <div class="flex row">
                 <p>End:</p>
-                <span>10:00</span>
+                <span>{{this.endDateOverlay?.getHours() + ":00"}}</span>
             </div>
         </div>
+
         <mat-form-field appearance="outline" class="small">
             <mat-label>Issue</mat-label>
-            <mat-select disableOptionCentering placeholder="Issue">
-              <mat-option value="default">Default</mat-option>
-              <mat-option value="age asc">Younger to older</mat-option>
-              <mat-option value="age dsc">Older to younger</mat-option>
-              <mat-option value="created asc">Created asc</mat-option>
-              <mat-option value="created dsc"> Created dsc</mat-option>
+            <mat-select disableOptionCentering placeholder="Issue" formControlName="issueField" required>
+              <mat-option value="CLINIC_CONSULTING">Clinic consulting</mat-option>
+              <mat-option value="FOLLOW_UP">Follow up</mat-option>
+              <mat-option value="LAB_TEST">Lab test</mat-option>
+              <mat-option value="EMERGENCY_CARE">Emergency care</mat-option>
             </mat-select>
         </mat-form-field>
-        <!-- <mat-form-field appearance="outline">
-            <mat-label>Price</mat-label>
-            <input matInput placeholder="Price" type="number">
-        </mat-form-field> -->
+
+        <mat-form-field appearance="outline" class="small">
+            <mat-label>Price (S/)</mat-label>
+            <input matInput placeholder="Price" type="number" formControlName="priceField" required>
+        </mat-form-field>
+
         <footer class="flex footer-overlay">
             <button mat-button color="primary" (click)="closeOverlay()">Cancel</button>
-            <button mat-flat-button color="primary">Save</button>
+            <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="this.saveAppointment()">Save</button>
         </footer>
-        <!-- Más contenido dinámico aquí -->
-    </div>
+
+    </form>
+
+    <ng-template
+    cdkConnectedOverlay
+    cdkConnectedOverlayHasBackdrop
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayOpen]="isOpenInputSearch"
+    cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+    (backdropClick)="closeSearchPatient()"
+    (detach)="closeSearchPatient()"
+    >
+
+        <mat-selection-list class="patient-list" [multiple]="false" (selectionChange)="onPatientSelect($event.options[0].value)">
+            <mat-list-option *ngFor="let patient of patientList" [value]="patient">
+                {{patient.names + " " + patient.lastNames}}
+            </mat-list-option>
+        </mat-selection-list>
+    </ng-template>
+    
 </ng-template>
