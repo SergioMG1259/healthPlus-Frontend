@@ -1,6 +1,12 @@
 .header {
     border: solid 1px rebeccapurple;
 }
+.date-range {
+    align-items: center;
+    border: solid 1px red;
+    color: var(--primary-text);
+    column-gap: 5px;
+}
 .calendar {
     font-size: 0.9rem;
     overflow-x: auto;

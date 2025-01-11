@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="grid container-cells" #containerCells>
-            <div class="cell" *ngFor="let cell of cells" (mousedown)="onMouseDown($event, cell)">
+            <div class="cell" *ngFor="let cell of gridData" (mousedown)="onMouseDown($event, cell)">
                 <div *ngIf="this.compareDatesInAppointments(cell) as appointment" class="appointment-wrapper" 
                     [ngStyle]="{ height: (appointment.endDate.getHours() - appointment.startDate.getHours())*60 + 'px' }" (mousedown)="$event.stopPropagation()">
                     <div  class="appointment shadow"
@@ -27,7 +27,6 @@
                         </p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -37,7 +36,8 @@
 
     <form [formGroup]="form" class="flex appointment-overlay-add shadow" cdkTrapFocus cdkTrapFocusAutoCapture>
 
-        <div class="search">
+        <div>
+            <span tabindex="-6" cdkFocusInitial></span>
             <label for="search-patient">Search patient</label>
             <input id="search-patient" class="search-bar" type="search" placeholder="Patient names" 
                 cdkOverlayOrigin #trigger="cdkOverlayOrigin" (input)="this.onSearchInput($event)" 

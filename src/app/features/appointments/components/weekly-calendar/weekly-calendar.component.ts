@@ -3,6 +3,7 @@ import { AppointmentOverlayCalendarService } from '../../services/appointment-ov
 import { PatientShortDTO } from 'src/app/features/patients/models/PatientShortDTO';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppointmentResponseDTO } from '../../models/appointmentResponseDTO';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-weekly-calendar',
@@ -11,10 +12,12 @@ import { AppointmentResponseDTO } from '../../models/appointmentResponseDTO';
 })
 export class WeeklyCalendarComponent implements OnInit {
 
-  @Input() indexDate: Date = new Date()
+  indexDate: Date = new Date()
+  @Input() indexDate$: Observable<Date> = new Observable<Date>()
+  indexDateSub!: Subscription
   daysName: string[] = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
   daysWeek: Date [] = []
-  cells: Date[] = []
+  gridData: Date[] = []
   @ViewChild('containerCells', { static: true }) containerCells!: ElementRef
   @ViewChild('overlayTemplate') overlayTemplate!: TemplateRef<any>
 
@@ -55,7 +58,7 @@ export class WeeklyCalendarComponent implements OnInit {
   constructor(private _renderer: Renderer2, private _viewContainerRef: ViewContainerRef, 
     private _appointmentOverlayService: AppointmentOverlayCalendarService, private _fb: FormBuilder) { }
 
-    private fillWeek(): void {
+  private fillWeek(): void {
     const startOfWeek = new Date(this.indexDate)
     startOfWeek.setDate(this.indexDate.getDate() - this.indexDate.getDay())
   
@@ -64,7 +67,7 @@ export class WeeklyCalendarComponent implements OnInit {
   
     let current = new Date(startOfWeek)
     this.daysWeek = []
-
+    this.gridData = []
     while (current <= endOfWeek) {
       let newDay = new Date(current)
       this.daysWeek.push(newDay)
@@ -77,7 +80,7 @@ export class WeeklyCalendarComponent implements OnInit {
         cellDate.setDate(startOfWeek.getDate() + day) // Incrementa por día
         cellDate.setHours(hour)
         cellDate.setMinutes(0)
-        this.cells.push(cellDate)
+        this.gridData.push(cellDate)
       }
     }    
   }
@@ -203,8 +206,11 @@ export class WeeklyCalendarComponent implements OnInit {
   }
 
   closeOverlay(): void {
-    this._appointmentOverlayService.close()
     this.removeAppointmentRange()
+    this._appointmentOverlayService.close()
+  }
+
+  resetValues(): void {
     this.selectedPatient = null
     this.form.reset()
     this.startDateOverlay = null
@@ -212,7 +218,6 @@ export class WeeklyCalendarComponent implements OnInit {
   }
 
   saveAppointment(): void {
-
     this.appointments.push({
       price: this.form.controls['priceField'].value,
       startDate: this.startDateOverlay!,
@@ -224,6 +229,7 @@ export class WeeklyCalendarComponent implements OnInit {
   }
 
   removeAppointmentRange(): void {
+    this.resetValues()
     this._renderer.removeChild(this._cellEventAdd, this._appointmentOverlapping)
   }
 
@@ -261,7 +267,16 @@ export class WeeklyCalendarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fillWeek()
+    // this.fillWeek()
+    this.indexDateSub = this.indexDate$.subscribe(date => {
+      this.indexDate = date
+      this.fillWeek()
+    })
   }
 
+  ngOnDestroy(): void {
+    if (this.indexDateSub) {
+      this.indexDateSub.unsubscribe()
+    }
+  }
 }

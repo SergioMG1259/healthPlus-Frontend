@@ -1,4 +1,7 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { AddAppointmentDialogComponent } from '../../components/add-appointment-dialog/add-appointment-dialog.component';
 
 @Component({
   selector: 'app-appointments-calendar',
@@ -9,12 +12,13 @@ export class AppointmentsCalendarComponent implements OnInit {
 
   type: 'month'|'week'|'day' = 'week' 
   indexDate: Date = new Date()
+  indexDateSubject: BehaviorSubject<Date> = new BehaviorSubject<Date>(this.indexDate)
 
-  constructor() { }
+  constructor(private _dialog: MatDialog) { }
 
   get dateRange(): string {
 
-    if (this.type === 'day') {
+    if (this.type == 'day') {
       return this.indexDate.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' })
 
     } else if (this.type === 'week') {
@@ -31,7 +35,7 @@ export class AppointmentsCalendarComponent implements OnInit {
       const endYear = endOfWeek.getFullYear()
       return `${startDay} - ${endDay} ${endMonth}, ${endYear}`
 
-    } else if (this.type === 'month') {
+    } else if (this.type == 'month') {
       
       const month = this.indexDate.toLocaleString('en-US', { month: 'long' })
       const year = this.indexDate.getFullYear()
@@ -39,6 +43,39 @@ export class AppointmentsCalendarComponent implements OnInit {
     }
 
     return ''
+  }
+
+  get indexDate$(): Observable<Date> {
+    return this.indexDateSubject as Observable<Date>
+  }
+
+  next(): void {
+    if (this.type == 'week') {
+      this.indexDate.setDate(this.indexDate.getDate() + 7)
+    } else if (this.type == 'month') {
+      this.indexDate.setMonth(this.indexDate.getMonth() + 1)
+    }
+    this.indexDateSubject.next(this.indexDate)
+  }
+
+  prev(): void {
+    if (this.type == 'week') {
+      this.indexDate.setDate(this.indexDate.getDate() - 7)
+    }
+    else if (this.type == 'month') {
+      this.indexDate.setMonth(this.indexDate.getMonth() - 1)
+    }
+    this.indexDateSubject.next(this.indexDate)
+  }
+
+  onClickOpenDialog(): void {
+    const dialogRef = this._dialog.open(AddAppointmentDialogComponent, {
+      backdropClass: 'dialog-bg',
+      width: '400px'
+    })
+    dialogRef.afterClosed().subscribe( () => {
+      console.log("close")
+    })
   }
 
   ngOnInit(): void {

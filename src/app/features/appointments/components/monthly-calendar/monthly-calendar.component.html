@@ -11,7 +11,7 @@
     <div class="grid container-cells">
         <!-- <div class="cell" *ngFor="let item of this.gridData; let i = index" #cellRef (mousedown)="startResize($event, i, cellRef)"> -->
         <div class="cell" *ngFor="let cell of this.gridData; let i = index" [ngClass]="cell.isOtherMonth? 'other-month':'current-month'">
-            <div class="day-number">
+            <div class="day-number" [ngClass]="{'today': areDatesEqual(cell.day) && !cell.isOtherMonth}">
                 {{cell.day.getDate()}}
             </div>
             <div class="cell-footer">
@@ -19,10 +19,5 @@
             </div>
         </div>
     </div>
-    <!-- <div
-    class="resizable-div"
-    *ngFor="let div of resizableDivs"
-    [ngStyle]="{ top: div.top + 'px', left: div.left + 'px', height: div.height + 'px', width: div.width + 'px' }"
-  ></div> -->
 </div>
 

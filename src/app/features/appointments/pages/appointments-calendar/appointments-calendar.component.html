@@ -1,15 +1,24 @@
 <section class="flex header">
-    <div>
-        {{this.dateRange}}
+    <div class="flex date-range">
+        <button mat-icon-button aria-label="prev ..." (click)="this.prev()">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+        <span>{{this.dateRange}}</span>
+        <button mat-icon-button aria-label="next ..." (click)="this.next()">
+            <mat-icon>chevron_right</mat-icon>
+        </button>
     </div>
     <mat-button-toggle-group name="calendarTypes" aria-label="Calendar types" [(ngModel)]="this.type">
         <mat-button-toggle value="month">Month</mat-button-toggle>
         <mat-button-toggle value="week">Weekly</mat-button-toggle>
         <mat-button-toggle value="day">Day</mat-button-toggle>
     </mat-button-toggle-group>
+    <button mat-flat-button color="primary" (click)="this.onClickOpenDialog()">
+        add appointment
+    </button>
 </section>
 
 <section class="calendar">
-    <app-monthly-calendar [indexDate]="this.indexDate" *ngIf="this.type === 'month'"></app-monthly-calendar>
-    <app-weekly-calendar *ngIf="this.type === 'week'"></app-weekly-calendar>
+    <app-monthly-calendar [indexDate$]="this.indexDate$" *ngIf="this.type === 'month'"></app-monthly-calendar>
+    <app-weekly-calendar [indexDate$]="this.indexDate$" *ngIf="this.type === 'week'"></app-weekly-calendar>
 </section>

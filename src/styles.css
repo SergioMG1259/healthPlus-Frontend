@@ -193,6 +193,9 @@ tr.mat-row:last-child .mat-cell:last-child {
 .mat-form-field-wrapper {
   padding-bottom: 0px;
 }
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0px !important;
+}
 
 /*DROPDOWN*/
 .mat-select-panel {
@@ -215,7 +218,7 @@ tr.mat-row:last-child .mat-cell:last-child {
   top: -1em;
 }
 .small.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  transform: translateY(-1.08em) scale(.75) !important;
+  transform: translateY(-1.18em) scale(.75) !important;
   width: 133.33333%;
 }
 .mat-form-field-appearance-outline .mat-form-field-label {
@@ -358,6 +361,12 @@ textarea {
 }
 .mat-button-toggle-checked .mat-button-toggle-button {
   color: var(--tertiary-text) !important;
+}
+
+/*MAT DIALOG*/
+.mat-dialog-container {
+  border-radius: 5px !important;
+  padding: 0px !important;
 }
 
 @media screen and (max-width : 412px) {

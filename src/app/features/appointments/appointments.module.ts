@@ -10,6 +10,7 @@ import { WeeklyCalendarComponent } from './components/weekly-calendar/weekly-cal
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AppointmentOverlayCalendarService } from './services/appointment-overlay-calendar.service';
 import { A11yModule } from '@angular/cdk/a11y';
+import { AddAppointmentDialogComponent } from './components/add-appointment-dialog/add-appointment-dialog.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { A11yModule } from '@angular/cdk/a11y';
   declarations: [
     AppointmentsCalendarComponent,
     MonthlyCalendarComponent,
-    WeeklyCalendarComponent
+    WeeklyCalendarComponent,
+    AddAppointmentDialogComponent
   ],
   imports: [
     CommonModule,

@@ -38,6 +38,9 @@
 .current-month {
     color: var(--primary-text);
 }
+.today {
+    color: var(--primary-color);
+}
 /* Quitar bordes colisionantes */
 .cell:not(:nth-child(7n)) {
     border-right: none; /* Quita el borde derecho excepto la última celda de cada fila */
@@ -50,11 +53,3 @@
     text-align: end;
     width: 100%;
 }
-
-
-/* .resizable-div {
-    position: absolute;
-    background-color: rgba(0, 0, 255, 0.2);
-    pointer-events: none;
-    width: 100%;
-} */

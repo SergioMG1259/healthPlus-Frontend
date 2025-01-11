@@ -19,6 +19,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatListModule} from '@angular/material/list';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [],
@@ -47,7 +49,9 @@ import {MatListModule} from '@angular/material/list';
     MatRadioModule,
     MatTabsModule,
     MatButtonToggleModule,
-    MatListModule
+    MatListModule,
+    MatDialogModule,
+    MatAutocompleteModule
   ]
 })
 export class MaterialModule { }

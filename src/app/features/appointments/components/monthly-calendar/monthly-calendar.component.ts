@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-monthly-calendar',
@@ -7,15 +8,12 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 })
 export class MonthlyCalendarComponent implements OnInit {
 
-  @Input() indexDate: Date = new Date()
-  gridData:{ day: Date, isOtherMonth: boolean }[] = []
+  indexDate: Date = new Date()
+  @Input() indexDate$: Observable<Date> = new Observable<Date>()
 
-  // resizableDivs: { top: number; left: number; height: number; width: number }[] = []
-  // resizing = false
-  // startY = 0
-  // divHeight = 0
-  // startX = 0
-  // divIndex = -1
+  gridData:{ day: Date, isOtherMonth: boolean }[] = []
+  indexDateSub!: Subscription
+
 
   constructor() { }
 
@@ -45,37 +43,31 @@ export class MonthlyCalendarComponent implements OnInit {
     }
   }
 
-  // startResize(event: MouseEvent, index: number, cell: HTMLDivElement) {
-  //   let cellWidth = cell.getBoundingClientRect().width; // Obtener el ancho preciso del cell
-  //   cellWidth = parseFloat(cellWidth.toFixed(2)); // Redondear a dos decimales
+  areDatesEqual(date1: Date, date2: Date = new Date()): boolean {
+    return (
+      date1.getFullYear() == date2.getFullYear() &&
+      date1.getMonth() == date2.getMonth() &&
+      date1.getDate() == date2.getDate()
+    )
+  }
 
-  //   if (!this.gridData[index].occupied) {
-  //     this.resizing = true
-  //     const row = Math.floor(index / 7)
-  //     const col = index % 7
-  //     this.startY = row * 70 // 100px cell height + 10px gap
-  //     this.startX = col * (cellWidth) // 100px cell width + 10px gap
-  //     this.divHeight = 70 // Initial cell height
+  ngOnInit(): void {
+    // this.fillCalendar()
+    this.indexDateSub = this.indexDate$.subscribe(date => {
+      this.indexDate = date
+      this.fillCalendar()
+    })
+  }
 
-  //     this.resizableDivs.push({
-  //       top: this.startY,
-  //       left: this.startX,
-  //       height: 70,
-  //       width: cellWidth
-  //     })
-
-  //     this.divIndex = this.resizableDivs.length - 1
-  //     this.gridData[index].occupied = true
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['indexDate'] && !changes['indexDate'].firstChange) {
+  //     console.log("sss")
   //   }
   // }
 
-  ngOnInit(): void {
-    this.fillCalendar()
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['indexDate'] && !changes['indexDate'].firstChange) {
-      console.log("sss")
+  ngOnDestroy(): void {
+    if (this.indexDateSub) {
+      this.indexDateSub.unsubscribe()
     }
   }
 
