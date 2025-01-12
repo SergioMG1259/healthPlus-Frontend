@@ -73,8 +73,8 @@ export class AppointmentsCalendarComponent implements OnInit {
       backdropClass: 'dialog-bg',
       width: '400px'
     })
-    dialogRef.afterClosed().subscribe( () => {
-      console.log("close")
+    dialogRef.afterClosed().subscribe( (e) => {
+      console.log(e)
     })
   }
 

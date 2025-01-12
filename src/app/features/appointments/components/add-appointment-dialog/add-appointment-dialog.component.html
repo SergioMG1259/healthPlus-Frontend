@@ -2,42 +2,43 @@
     <button mat-icon-button aria-label="Close dialog" class="close-button" (click)="this.onCloseClick()">
         <mat-icon>close</mat-icon>
     </button>
-    <div class="flex fields-wrapper">
+    <form [formGroup]="form" class="flex fields-wrapper">
         <div class="search">
             <label for="search-patient">Search patient</label>
-            <input id="search-patient" class="search-bar" type="search" placeholder="Patient names" [matAutocomplete]="auto">
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                <mat-option *ngFor="let option of options" [value]="option">
-                  {{option}}
-                </mat-option>
-              </mat-autocomplete>
+            <input id="search-patient" class="search-bar" type="search" placeholder="Patient names" [matAutocomplete]="auto" 
+                [formControl]="patientControl">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="this.displayPatient" 
+                    (optionSelected)="selectPatient($event.option.value)">
+                    <mat-option *ngFor="let patient of filteredPatients$ | async" [value]="patient.id">
+                        {{patient.names + " " + patient.lastNames}}
+                    </mat-option>
+                </mat-autocomplete>
         </div>
 
         <div class="flex date">
             <mat-form-field appearance="outline" class="small">
                 <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="picker" required>
+                <input matInput [matDatepicker]="picker" formControlName="dateField" required>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <div class="flex hours">
                 <mat-form-field appearance="outline" class="small">
                     <mat-label>Start hour</mat-label>
-                    <mat-select disableOptionCentering placeholder="Start hour" required>
-                      <mat-option value="CLINIC_CONSULTING">Clinic consulting</mat-option>
-                      <mat-option value="FOLLOW_UP">Follow up</mat-option>
-                      <mat-option value="LAB_TEST">Lab test</mat-option>
-                      <mat-option value="EMERGENCY_CARE">Emergency care</mat-option>
+                    <mat-select disableOptionCentering placeholder="Start" formControlName="startField" required>
+                        <mat-option *ngFor="let item of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]; index as i" [value]="i + 6">
+                           {{i + 6 + ':00'}}
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
     
-                <mat-form-field appearance="outline" class="small">
+                <mat-form-field appearance="outline" class="small" [class.mat-form-field-invalid]="form.hasError('invalidTimeRange')">
                     <mat-label>End hour</mat-label>
-                    <mat-select disableOptionCentering placeholder="End hour" required>
-                      <mat-option value="CLINIC_CONSULTING">Clinic consulting</mat-option>
-                      <mat-option value="FOLLOW_UP">Follow up</mat-option>
-                      <mat-option value="LAB_TEST">Lab test</mat-option>
-                      <mat-option value="EMERGENCY_CARE">Emergency care</mat-option>
+                    <mat-select disableOptionCentering placeholder="End" formControlName="endField" required>
+                        <mat-option *ngFor="let item of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]; index as i" [value]="i + 7" 
+                            [disabled]=" i + 7 <= form.get('startField')?.value">
+                            {{i + 7 + ':00'}}
+                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -45,7 +46,7 @@
 
         <mat-form-field appearance="outline" class="small">
             <mat-label>Issue</mat-label>
-            <mat-select disableOptionCentering placeholder="Issue" required>
+            <mat-select disableOptionCentering placeholder="Issue" formControlName="issueField" required>
               <mat-option value="CLINIC_CONSULTING">Clinic consulting</mat-option>
               <mat-option value="FOLLOW_UP">Follow up</mat-option>
               <mat-option value="LAB_TEST">Lab test</mat-option>
@@ -55,12 +56,16 @@
 
         <mat-form-field appearance="outline" class="small">
             <mat-label>Price (S/)</mat-label>
-            <input matInput placeholder="Price" type="number" required>
+            <input matInput placeholder="Price" type="number" formControlName="priceField" required>
         </mat-form-field>
+
+        <div *ngIf="form.errors?.['invalidTimeRange']">
+            <p class="error">The start hour must be less than the end hour.</p>
+        </div>
 
         <footer class="flex footer">
             <button mat-button color="primary" (click)="this.onCloseClick()">Cancel</button>
-            <button mat-flat-button color="primary">Add</button>
+            <button mat-flat-button color="primary" [disabled]="!form.valid">Add</button>
         </footer>
-    </div>
+    </form>
 </div>
