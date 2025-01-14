@@ -2,7 +2,9 @@
     <button mat-icon-button aria-label="Close dialog" class="close-button" (click)="this.onCloseClick()">
         <mat-icon>close</mat-icon>
     </button>
+    
     <form [formGroup]="form" class="flex fields-wrapper">
+
         <div class="search">
             <label for="search-patient">Search patient</label>
             <input id="search-patient" class="search-bar" type="search" placeholder="Patient names" [matAutocomplete]="auto" 
@@ -60,13 +62,9 @@
             <input matInput placeholder="Price" type="number" formControlName="priceField" required>
         </mat-form-field>
 
-        <div *ngIf="form.errors?.['invalidTimeRange']">
-            <p class="error">The start hour must be less than the end hour.</p>
-        </div>
-
         <footer class="flex footer">
-            <button mat-button color="primary" (click)="this.onCloseClick()">Cancel</button>
-            <button mat-flat-button color="primary" [disabled]="!form.valid">Add</button>
+            <button mat-button color="warn" (click)="this.onCloseClick()">Delete</button>
+            <button mat-flat-button color="primary" [disabled]="!form.valid">Edit</button>
         </footer>
     </form>
 </div>

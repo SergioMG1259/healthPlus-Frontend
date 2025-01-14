@@ -1,14 +1,55 @@
 .header {
     border: solid 1px rebeccapurple;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+.right{
+    border: solid 1px brown;
+    gap: 5px;
+    justify-content: space-between;
+    flex: 1 1;
+}
+.icon-button {
+    display: none;
+}
+.icon-button mat-icon {
+    font-size: 21px;
 }
 .date-range {
     align-items: center;
-    border: solid 1px red;
     color: var(--primary-text);
     column-gap: 5px;
+}
+.date-range span {
+    white-space: nowrap;
 }
 .calendar {
     font-size: 0.9rem;
     overflow-x: auto;
     width: 100%;
+}
+@media screen and (max-width : 768px) {
+    /* .toggle-buttons {
+        display: none;
+    } */
+}
+@media screen and (max-width : 412px) {
+    .date-range {
+        width: 100%;
+    }
+    .date-range span{
+        text-align: center;
+        width: 100%;
+    }
+
+    /* .aux {
+        flex-wrap: wrap;
+    } */
+    /* .date-range span {
+        border: solid 1px rebeccapurple;
+        flex: 1 1;
+    } */
+    /* .add-button {
+        width: 100%;
+    } */
 }

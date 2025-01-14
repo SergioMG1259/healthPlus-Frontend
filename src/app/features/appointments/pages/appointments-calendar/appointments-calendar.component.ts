@@ -18,10 +18,11 @@ export class AppointmentsCalendarComponent implements OnInit {
 
   get dateRange(): string {
 
-    if (this.type == 'day') {
-      return this.indexDate.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' })
+    // if (this.type == 'day') {
+    //   return this.indexDate.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' })
 
-    } else if (this.type === 'week') {
+    // } 
+    if (this.type === 'week') {
       
       const startOfWeek = new Date(this.indexDate)
       startOfWeek.setDate(this.indexDate.getDate() - this.indexDate.getDay())

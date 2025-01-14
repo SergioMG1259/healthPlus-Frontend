@@ -1,0 +1,48 @@
+.wrapper {
+    background-color: var(--background-components);
+    padding: 20px;
+    position: relative;
+    width: 100%
+}
+.close-button {
+    color: var(--primary-text);
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+.fields-wrapper {
+    flex-direction: column;
+    gap: 15px;
+}
+.search-bar {
+    background-color: var(--background-components);
+    border: solid 1px var(--secondary-text);
+    border-radius: 5px;
+    height: 38px;
+    padding: 0px 8px;
+    width: 100%;
+}
+mat-form-field {
+    width: 100%;
+}
+.search label {
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+}
+.date {
+    flex-direction: column;
+    row-gap: 16px;
+}
+.hours {
+    column-gap: 10px;
+}
+.hours mat-form-field  {
+    width: 50%;
+}
+.hours mat-form-field:last-child {
+    width: calc(50% - 10px);
+}
+.footer {
+    justify-content: space-between;
+    width: 100%;
+}

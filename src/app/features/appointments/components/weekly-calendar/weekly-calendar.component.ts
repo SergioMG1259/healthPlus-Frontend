@@ -4,6 +4,8 @@ import { PatientShortDTO } from 'src/app/features/patients/models/PatientShortDT
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppointmentResponseDTO } from '../../models/appointmentResponseDTO';
 import { Observable, Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { EditAppointemntDialogComponent } from '../edit-appointemnt-dialog/edit-appointemnt-dialog.component';
 
 @Component({
   selector: 'app-weekly-calendar',
@@ -48,7 +50,7 @@ export class WeeklyCalendarComponent implements OnInit {
       price: 10, startDate: new Date(2025, 0, 10, 9), endDate: new Date(2025, 0, 10, 12), issue: 'FOLLOW_UP', patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
     },
     {
-      price: 10, startDate: new Date(2025, 0, 11, 9), endDate: new Date(2025, 0, 11, 12), issue: 'FOLLOW_UP', patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
+      price: 10, startDate: new Date(2025, 0, 14, 9), endDate: new Date(2025, 0, 14, 12), issue: 'FOLLOW_UP', patient: {id: 2, names: "hola", lastNames: "dddddddddddd"}
     }
   ]
 
@@ -56,7 +58,7 @@ export class WeeklyCalendarComponent implements OnInit {
   endDateOverlay: Date | null = null
 
   constructor(private _renderer: Renderer2, private _viewContainerRef: ViewContainerRef, 
-    private _appointmentOverlayService: AppointmentOverlayCalendarService, private _fb: FormBuilder) { }
+    private _appointmentOverlayService: AppointmentOverlayCalendarService, private _fb: FormBuilder, private _dialog: MatDialog) { }
 
   private fillWeek(): void {
     const startOfWeek = new Date(this.indexDate)
@@ -91,6 +93,11 @@ export class WeeklyCalendarComponent implements OnInit {
       date1.getMonth() == date2.getMonth() &&
       date1.getDate() == date2.getDate()
     )
+  }
+
+  isPastTime(date: Date) {
+    const current = new Date()
+    return date < current
   }
 
   onMouseDown(event: MouseEvent, startDate: Date): void {
@@ -244,6 +251,20 @@ export class WeeklyCalendarComponent implements OnInit {
     return appointment || null
   }
 
+  onClickOpenDetailsDialog(appointment: AppointmentResponseDTO):void {
+
+    const isPastTime = this.isPastTime(appointment.startDate)
+
+    const dialogRef = this._dialog.open(EditAppointemntDialogComponent, {
+      backdropClass: 'dialog-bg',
+      width: '400px',
+      data: {appointment: appointment, isPastTime: isPastTime}
+    })
+
+    dialogRef.afterClosed().subscribe( (e) => {
+      console.log(e)
+    })
+  }
 
 
   onSearchInput(event: Event): void {

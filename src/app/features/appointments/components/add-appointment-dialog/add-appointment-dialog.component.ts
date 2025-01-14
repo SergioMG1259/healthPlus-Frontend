@@ -33,15 +33,16 @@ export class AddAppointmentDialogComponent implements OnInit {
   filteredPatients$: Observable<PatientShortDTO[]> = new Observable<PatientShortDTO[]>()
   
   hoursSub!: Subscription
+  today:Date = new Date()
+
   constructor(public dialogRef: MatDialogRef<AddAppointmentDialogComponent>, private _fb: FormBuilder) { }
 
   onCloseClick(): void {
     this.dialogRef.close({value: true})
   }
 
-  selectPatient(patient:number):void {
+  selectPatient(patient:number): void {
     this.form.controls['patientField'].setValue(patient)
-    console.log(this.form.value)
   }
 
   displayPatient = (patientId: number): string => {
@@ -57,6 +58,17 @@ export class AddAppointmentDialogComponent implements OnInit {
     const filterValue = value.toLowerCase()
     return this.patients.filter(patient =>
       (`${patient.names} ${patient.lastNames}`).toLowerCase().includes(filterValue)
+    )
+  }
+
+  areDatesEqual(date1: Date, date2: Date = new Date()): boolean {
+    if (date1 == null)
+      return false
+    
+    return (
+      date1.getFullYear() == date2.getFullYear() &&
+      date1.getMonth() == date2.getMonth() &&
+      date1.getDate() == date2.getDate()
     )
   }
 

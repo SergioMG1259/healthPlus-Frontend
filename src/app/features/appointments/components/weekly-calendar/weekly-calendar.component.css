@@ -78,10 +78,29 @@
     margin-left: -2px;
     width: calc(100% + 4px);
 }
+.past {
+    background-color: rgb(62, 199, 16) !important;
+}
 .appointment .range-hour {
     color: var(--secondary-text);
     font-size: 0.75rem;
+    justify-content: space-between;
     margin-top: 2px;
+}
+.range-hour button {
+    align-items: center;
+    display: flex;
+    height: 21px;
+    justify-content: center;
+    width: 21px;
+}
+.range-hour button mat-icon {
+    align-items: center;
+    display: flex;
+    font-size: 18px;
+    height: 18px;
+    justify-content: center;
+    width: 18px;
 }
 .patient-name {
     color: var(--primary-text);

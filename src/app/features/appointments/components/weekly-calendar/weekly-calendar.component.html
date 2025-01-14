@@ -16,12 +16,17 @@
             <div class="cell" *ngFor="let cell of gridData" (mousedown)="onMouseDown($event, cell)">
                 <div *ngIf="this.compareDatesInAppointments(cell) as appointment" class="appointment-wrapper" 
                     [ngStyle]="{ height: (appointment.endDate.getHours() - appointment.startDate.getHours())*60 + 'px' }" (mousedown)="$event.stopPropagation()">
+                    
                     <div  class="appointment shadow"
                     [ngStyle]="{ height: (appointment.endDate.getHours() - appointment.startDate.getHours())*60 - 3 + 'px' }">
-                        <div class="bar"></div>
-                        <p class="range-hour">
-                            {{appointment.startDate.getHours() + ":00 - " + appointment.endDate.getHours() + ":00"}}
-                        </p>
+                        <div class="bar" [ngClass]="{'past': this.isPastTime(appointment.startDate)}"></div>
+                        <div class="flex range-hour">
+                            <p>{{appointment.startDate.getHours() + ":00 - " + appointment.endDate.getHours() + ":00"}}</p>
+                            <button mat-icon-button aria-label="open dialog appointment details"
+                                (click)="this.onClickOpenDetailsDialog(appointment)">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </div>
                         <p class="patient-name">
                             {{appointment.patient.names + " " + appointment.patient.lastNames}}
                         </p>

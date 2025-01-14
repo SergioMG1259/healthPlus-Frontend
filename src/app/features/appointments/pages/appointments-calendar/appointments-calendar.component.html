@@ -8,14 +8,22 @@
             <mat-icon>chevron_right</mat-icon>
         </button>
     </div>
-    <mat-button-toggle-group name="calendarTypes" aria-label="Calendar types" [(ngModel)]="this.type">
-        <mat-button-toggle value="month">Month</mat-button-toggle>
-        <mat-button-toggle value="week">Weekly</mat-button-toggle>
-        <mat-button-toggle value="day">Day</mat-button-toggle>
-    </mat-button-toggle-group>
-    <button mat-flat-button color="primary" (click)="this.onClickOpenDialog()">
-        add appointment
-    </button>
+
+    <div class="flex right">
+        <mat-button-toggle-group name="calendarTypes" aria-label="Calendar types" [(ngModel)]="this.type" 
+            class="toggle-buttons">
+            <mat-button-toggle value="month">Month</mat-button-toggle>
+            <mat-button-toggle value="week">Weekly</mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <!-- <button mat-icon-button color="primary" class="icon-button">
+            <mat-icon>calendar_month</mat-icon>
+        </button> -->
+    
+        <button mat-flat-button color="primary" (click)="this.onClickOpenDialog()" class="add-button">
+            Add new
+        </button>
+    </div>
 </section>
 
 <section class="calendar">
