@@ -7,8 +7,7 @@ import { PatientShortDTO } from 'src/app/features/patients/models/PatientShortDT
 import { debounceTime, map, Observable, startWith } from 'rxjs';
 
 interface AppointemntDetails {
-  appointment: AppointmentResponseDTO,
-  isPastTime: boolean
+  appointment: AppointmentResponseDTO
 }
 
 @Component({

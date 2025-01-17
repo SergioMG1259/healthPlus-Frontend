@@ -1,0 +1,38 @@
+<div class="wrapper">
+    <button mat-icon-button aria-label="Close dialog" class="close-button" (click)="this.onCloseClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+
+    <div class="flex fields-wrapper">
+        <div>
+            <label for="search-patient" class="label">Patient</label>
+            <p id="search-patient" class="field">{{data.appointment.patient.names + " " + data.appointment.patient.lastNames}}</p>
+        </div>
+
+        <div class="flex day">
+            <mat-icon class="icon">calendar_month</mat-icon>
+            <p>{{data.appointment.endDate| date:'MM/dd/yyyy'}}</p>
+        </div>
+
+        <div class="start-end-hours">
+            <div class="flex row">
+                <label class="label" for="start-hour">Start:</label>
+                <p id="start-hour">{{data.appointment.startDate.getHours() + ":00"}}</p>
+            </div>
+            <div class="flex row">
+                <label class="label" for="end-hour">End:</label>
+                <p id="end-hour">{{data.appointment.endDate.getHours() + ":00"}}</p>
+            </div>
+        </div>
+
+        <div>
+            <label for="issue" class="label">Issue</label>
+            <p id="issue" class="field">{{data.appointment.issue | issueFormat}}</p>
+        </div>
+
+        <div>
+            <label for="price" class="label">Price</label>
+            <p id="price" class="field">S/ {{data.appointment.price}}</p>
+        </div>
+    </div>
+</div>

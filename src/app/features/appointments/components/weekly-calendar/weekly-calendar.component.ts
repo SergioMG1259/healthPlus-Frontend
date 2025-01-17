@@ -6,6 +6,7 @@ import { AppointmentResponseDTO } from '../../models/appointmentResponseDTO';
 import { Observable, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditAppointemntDialogComponent } from '../edit-appointemnt-dialog/edit-appointemnt-dialog.component';
+import { DetailsAppointmentDialogComponent } from '../details-appointment-dialog/details-appointment-dialog.component';
 
 @Component({
   selector: 'app-weekly-calendar',
@@ -50,7 +51,7 @@ export class WeeklyCalendarComponent implements OnInit {
       price: 10, startDate: new Date(2025, 0, 10, 9), endDate: new Date(2025, 0, 10, 12), issue: 'FOLLOW_UP', patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
     },
     {
-      price: 10, startDate: new Date(2025, 0, 14, 9), endDate: new Date(2025, 0, 14, 12), issue: 'FOLLOW_UP', patient: {id: 2, names: "hola", lastNames: "dddddddddddd"}
+      price: 10, startDate: new Date(2025, 0, 17, 9), endDate: new Date(2025, 0, 17, 12), issue: 'FOLLOW_UP', patient: {id: 2, names: "hola", lastNames: "dddddddddddd"}
     }
   ]
 
@@ -251,17 +252,27 @@ export class WeeklyCalendarComponent implements OnInit {
     return appointment || null
   }
 
-  onClickOpenDetailsDialog(appointment: AppointmentResponseDTO):void {
+  onClickOpenAppointmentActionDialog(appointment: AppointmentResponseDTO):void {
 
     const isPastTime = this.isPastTime(appointment.startDate)
 
-    const dialogRef = this._dialog.open(EditAppointemntDialogComponent, {
-      backdropClass: 'dialog-bg',
-      width: '400px',
-      data: {appointment: appointment, isPastTime: isPastTime}
-    })
+    let dialogRef = null
 
-    dialogRef.afterClosed().subscribe( (e) => {
+    if (!isPastTime) {
+      dialogRef = this._dialog.open(EditAppointemntDialogComponent, {
+        backdropClass: 'dialog-bg',
+        width: '400px',
+        data: {appointment: appointment}
+      })
+    } else {
+      dialogRef = this._dialog.open(DetailsAppointmentDialogComponent, {
+        backdropClass: 'dialog-bg',
+        width: '400px',
+        data: {appointment: appointment}
+      })
+    }
+
+    dialogRef!.afterClosed().subscribe( (e) => {
       console.log(e)
     })
   }

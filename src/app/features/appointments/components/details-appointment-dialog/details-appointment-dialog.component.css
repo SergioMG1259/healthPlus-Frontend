@@ -1,0 +1,44 @@
+.wrapper {
+    background-color: var(--background-components);
+    padding: 20px;
+    position: relative;
+    width: 100%
+}
+.close-button {
+    color: var(--primary-text);
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+.fields-wrapper {
+    flex-direction: column;
+    gap: 15px;
+}
+.label {
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+}
+.field {
+    color: var(--primary-text);
+    font-size: 1rem;
+}
+.day {
+    color: var(--primary-text);
+    column-gap: 5px;
+    font-size: 0.9rem;
+    width: 100%;
+}
+.day mat-icon {
+    color: var(--primary-color);
+    font-size: 21px;
+    height: 21px;
+}
+.start-end-hours {
+    font-size: 0.9rem;
+}
+.start-end-hours .row {
+    column-gap: 5px;
+}
+.start-end-hours .row:nth-child(2) {
+    margin-top: 15px;
+}

@@ -12,6 +12,8 @@ import { AppointmentOverlayCalendarService } from './services/appointment-overla
 import { A11yModule } from '@angular/cdk/a11y';
 import { AddAppointmentDialogComponent } from './components/add-appointment-dialog/add-appointment-dialog.component';
 import { EditAppointemntDialogComponent } from './components/edit-appointemnt-dialog/edit-appointemnt-dialog.component';
+import { DetailsAppointmentDialogComponent } from './components/details-appointment-dialog/details-appointment-dialog.component';
+import { IssueFormatPipe } from './pipes/issue-format.pipe';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { EditAppointemntDialogComponent } from './components/edit-appointemnt-di
     MonthlyCalendarComponent,
     WeeklyCalendarComponent,
     AddAppointmentDialogComponent,
-    EditAppointemntDialogComponent
+    EditAppointemntDialogComponent,
+    DetailsAppointmentDialogComponent,
+    IssueFormatPipe
   ],
   imports: [
     CommonModule,
