@@ -1,12 +1,13 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { AppointmentOverlayCalendarService } from '../../services/appointment-overlay-calendar.service';
-import { PatientShortDTO } from 'src/app/features/patients/models/PatientShortDTO';
+import { PatientShortResponseDTO } from 'src/app/features/patients/models/PatientShortResponseDTO';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppointmentResponseDTO } from '../../models/appointmentResponseDTO';
 import { Observable, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditAppointemntDialogComponent } from '../edit-appointemnt-dialog/edit-appointemnt-dialog.component';
 import { DetailsAppointmentDialogComponent } from '../details-appointment-dialog/details-appointment-dialog.component';
+import { MedicalIssue } from '../../models/MedicalIssue';
 
 @Component({
   selector: 'app-weekly-calendar',
@@ -29,13 +30,13 @@ export class WeeklyCalendarComponent implements OnInit {
 
   /* Para el input search */
   isOpenInputSearch: boolean = false
-  patientList:PatientShortDTO[] = [
+  patientList:PatientShortResponseDTO[] = [
     {id: 1, names: "asd1", lastNames: "ddd"},
     {id: 2, names: "asd2", lastNames: "ddd2"},
     {id: 3, names: "nbn3", lastNames: "mmm3"},
     {id: 4, names: "peo4", lastNames: "gnq"}
   ]
-  selectedPatient: PatientShortDTO | null = null
+  selectedPatient: PatientShortResponseDTO | null = null
 
   form: FormGroup = this._fb.group({
     issueField: ['', Validators.required],
@@ -45,13 +46,13 @@ export class WeeklyCalendarComponent implements OnInit {
 
   appointments: AppointmentResponseDTO[] = [
     {
-      price: 10, startDate: new Date(2025, 0, 10, 8), endDate: new Date(2025, 0, 10, 9), issue: 'FOLLOW_UP', patient: {id: 1, names: "hola", lastNames: "ddddddddd"}
+      id: 1, price: 10, startDate: new Date(2025, 0, 10, 8), endDate: new Date(2025, 0, 10, 9), issue: MedicalIssue.FOLLOW_UP, patient: {id: 1, names: "hola", lastNames: "ddddddddd"}
     },
     {
-      price: 10, startDate: new Date(2025, 0, 10, 9), endDate: new Date(2025, 0, 10, 12), issue: 'FOLLOW_UP', patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
+      id: 1, price: 10, startDate: new Date(2025, 0, 10, 9), endDate: new Date(2025, 0, 10, 12), issue: MedicalIssue.FOLLOW_UP, patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
     },
     {
-      price: 10, startDate: new Date(2025, 0, 17, 9), endDate: new Date(2025, 0, 17, 12), issue: 'FOLLOW_UP', patient: {id: 2, names: "hola", lastNames: "dddddddddddd"}
+      id: 1, price: 10, startDate: new Date(2025, 0, 18, 9), endDate: new Date(2025, 0, 18, 12), issue: MedicalIssue.FOLLOW_UP, patient: {id: 2, names: "hola", lastNames: "dddddddddddd"}
     }
   ]
 
@@ -227,6 +228,7 @@ export class WeeklyCalendarComponent implements OnInit {
 
   saveAppointment(): void {
     this.appointments.push({
+      id: 1,
       price: this.form.controls['priceField'].value,
       startDate: this.startDateOverlay!,
       endDate: this.endDateOverlay!,
@@ -282,7 +284,7 @@ export class WeeklyCalendarComponent implements OnInit {
     this.openSearchPatient()
   }
 
-  onPatientSelect(patient: PatientShortDTO) {
+  onPatientSelect(patient: PatientShortResponseDTO) {
     this.form.controls['patientField'].setValue(patient)
     this.selectedPatient = patient
     this.closeSearchPatient()

@@ -30,31 +30,51 @@
     margin-top: 10px;
     padding-top: 15px;
     row-gap: 10px;
+    max-height: 179.2px;
 }
 .patient-appointment {
     justify-content: space-between;
     width: 100%;
 }
-.patient-image {
+/* .patient-image {
     border: solid 2px var(--secondary-light);
     border-radius: 50%;
     height: 40px;
     margin-right: 8px;
     width: 40px;
-}
+} */
 .patient-name {
     color: var(--primary-text-light);
     font-size: 1rem;
 }
+.patient-name.loading {
+    height: 24px;
+    width: 85px;
+}
 .patient-issue {
     color: var(--secondary-text-light);
-    font-size: 14px;
+    font-size: 0.9rem;
     margin-top: 3px;
+}
+.loading {
+    border-radius: 5px;
+}
+.patient-issue.loading {
+    height: 20.8px;
+    width: 135px;
 }
 .hour {
     color: var(--secondary-text-light);
     font-size: 14px;
     line-height: 2;
+}
+.hour.loading {
+    width: 28.38px;
+    height: 20.8px;
+}
+.no-appointments {
+    font-size: 1rem;
+    text-align: center;
 }
 
 @media screen and (max-width : 360px){

@@ -1,9 +1,11 @@
-import { PatientShortDTO } from "../../patients/models/PatientShortDTO";
+import { PatientShortResponseDTO } from "../../patients/models/PatientShortResponseDTO";
+import { MedicalIssue } from "./MedicalIssue";
 
 export interface AppointmentResponseDTO {
+    id: number,
     price: number,
     startDate: Date,
     endDate: Date,
-    issue: string,
-    patient: PatientShortDTO
+    issue: MedicalIssue,
+    patient: PatientShortResponseDTO
 }

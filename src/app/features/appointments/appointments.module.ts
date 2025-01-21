@@ -13,7 +13,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { AddAppointmentDialogComponent } from './components/add-appointment-dialog/add-appointment-dialog.component';
 import { EditAppointemntDialogComponent } from './components/edit-appointemnt-dialog/edit-appointemnt-dialog.component';
 import { DetailsAppointmentDialogComponent } from './components/details-appointment-dialog/details-appointment-dialog.component';
-import { IssueFormatPipe } from './pipes/issue-format.pipe';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -25,7 +25,6 @@ import { IssueFormatPipe } from './pipes/issue-format.pipe';
     AddAppointmentDialogComponent,
     EditAppointemntDialogComponent,
     DetailsAppointmentDialogComponent,
-    IssueFormatPipe
   ],
   imports: [
     CommonModule,
@@ -34,7 +33,8 @@ import { IssueFormatPipe } from './pipes/issue-format.pipe';
     FormsModule,
     ReactiveFormsModule,
     OverlayModule,
-    A11yModule
+    A11yModule,
+    SharedModule
   ]
 })
 export class AppointmentsModule { }

@@ -1,5 +1,6 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { AppointmentResponseDTO } from 'src/app/features/appointments/models/appointmentResponseDTO';
 
 @Component({
   selector: 'app-todays-appointments',
@@ -7,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./todays-appointments.component.css']
 })
 export class TodaysAppointmentsComponent implements OnInit {
+
+  @Input() isLoading:boolean = true
+  @Input() appointments: AppointmentResponseDTO[] = []
 
   today = formatDate(new Date(),'dd', 'en-US')
   weekDays: { letter: string; date: string }[] = []

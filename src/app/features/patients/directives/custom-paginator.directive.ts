@@ -61,7 +61,7 @@ export class CustomPaginatorDirective {
     );
 
     // si solo hay una página, no se debe mostrar los botones
-    if (neededButtons === 1) {
+    if (neededButtons == 1) {
       this.ren.setStyle(this.elementRef.nativeElement, 'display', 'none');
       return;
     }

@@ -46,6 +46,15 @@
 .mat-card-content {
     overflow-x: auto;
 }
+.loading {
+    border-radius: 5px;
+    height: 30px;
+    width: 100%;
+}
+.no-patients {
+    font-size: 1rem;
+    text-align: center;
+}
 
 @media screen and (max-width : 768px) {
     .graphics {

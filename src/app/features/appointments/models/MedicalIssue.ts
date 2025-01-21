@@ -1,0 +1,6 @@
+export enum MedicalIssue {
+    CLINIC_CONSULTING = 'CLINIC_CONSULTING',
+    FOLLOW_UP = 'FOLLOW_UP',
+    LAB_TEST = 'LAB_TEST',
+    EMERGENCY_CARE = 'EMERGENCY_CARE'
+}

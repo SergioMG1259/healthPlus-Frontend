@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'issueFormat'
+  name: 'textFormat'
 })
-export class IssueFormatPipe implements PipeTransform {
+export class TextFormatPipe implements PipeTransform {
 
   transform(value: string): string {
     if (!value) return value

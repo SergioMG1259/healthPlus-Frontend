@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppointmentResponseDTO } from '../../models/appointmentResponseDTO';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { timeRangeValidator } from '../../functions/timeRangeValidator';
-import { PatientShortDTO } from 'src/app/features/patients/models/PatientShortDTO';
+import { PatientShortResponseDTO } from 'src/app/features/patients/models/PatientShortResponseDTO';
 import { debounceTime, map, Observable, startWith } from 'rxjs';
 
 interface AppointemntDetails {
@@ -17,7 +17,7 @@ interface AppointemntDetails {
 })
 export class EditAppointemntDialogComponent implements OnInit {
 
-  patients: PatientShortDTO[] = [
+  patients: PatientShortResponseDTO[] = [
     {id: 1, names: 'Sergio Martin', lastNames: 'Guanilo Gonzales'},
     {id: 2, names: 'Luis Martin', lastNames: 'Gonzales Gonzales'},
     {id: 3, names: 'Martin Diego', lastNames: 'Sanchez'},
@@ -25,7 +25,7 @@ export class EditAppointemntDialogComponent implements OnInit {
   ]
   form!: FormGroup
   patientControl = new FormControl()
-  filteredPatients$: Observable<PatientShortDTO[]> = new Observable<PatientShortDTO[]>()
+  filteredPatients$: Observable<PatientShortResponseDTO[]> = new Observable<PatientShortResponseDTO[]>()
   today:Date = new Date()
 
   constructor(public dialogRef: MatDialogRef<EditAppointemntDialogComponent>, 
@@ -67,7 +67,7 @@ export class EditAppointemntDialogComponent implements OnInit {
     )
   }
 
-  private filterPatients(value: string): PatientShortDTO[] {
+  private filterPatients(value: string): PatientShortResponseDTO[] {
     if (typeof value != 'string') {
       return this.patients  // Si no es una cadena, devolver todos los pacientes
     }

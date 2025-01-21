@@ -1,11 +1,12 @@
 <div class="card" [ngClass]="metric.category">
-    <div class="trending">
+    <!-- <div class="trending">
         <span>Vs last week</span>
-    </div>
+    </div> -->
     <div class="flex icon-container">
         <!-- <i class='bx' [ngClass]="iconsDictionary[metric.category]"></i> -->
         <mat-icon>{{iconsDictionary[metric.category]}}</mat-icon>
     </div>
     <h2 class="category">Total {{metric.category}}</h2>
-    <p class="amount"> {{metric.category == 'earning'? 'S/' : ''}} {{metric.amount}}</p>
+    <p *ngIf="metric.amount" class="amount"> {{metric.category == 'earning'? 'S/' : ''}} {{metric.amount}}</p>
+    <div *ngIf="!metric.amount" class="loading-shimmer shimmer"></div>
 </div>

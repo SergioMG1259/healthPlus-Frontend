@@ -1,6 +1,6 @@
 .card {
     border-radius: 5px;
-    height: 150px;
+    /* height: 150px; */
     padding: 20px;
     position: relative;
 }
@@ -84,4 +84,12 @@
     box-shadow: 5px 5px 0px 0px #f1965f;
     -webkit-box-shadow: 5px 5px 0px 0px #f1965f;
     -moz-box-shadow: 5px 5px 0px 0px #f1965f;
+}
+
+
+.loading-shimmer {
+    border-radius: 5px;
+    height: 24px;
+    margin: 8px 0px 0px 5px;
+    width: calc(100% - 8px);
 }

@@ -8,14 +8,14 @@ import { CardMetric } from '../../models/cardMatric';
 })
 export class CardMetricComponent implements OnInit {
 
+  @Input() metric!:CardMetric
+  
   iconsDictionary: Record<string, string> = {
     appointments: "calendar_month",
     patients: "accessible",
     predicts: "show_chart",
     earning: "attach_money"
-  };
-
-  @Input() metric!:CardMetric
+  }
 
   constructor() { }
 

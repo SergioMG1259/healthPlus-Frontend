@@ -6,6 +6,7 @@ import { OverviewComponent } from './pages/overview/overview.component';
 import { CardMetricComponent } from './components/card-metric/card-metric.component';
 import { MaterialModule } from 'src/app/core/material/material.module';
 import { TodaysAppointmentsComponent } from './components/todays-appointments/todays-appointments.component';
+import { SharedModule } from "../../shared/shared.module";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { TodaysAppointmentsComponent } from './components/todays-appointments/to
   imports: [
     CommonModule,
     OverviewRoutingModule,
-    MaterialModule
-  ]
+    MaterialModule,
+    SharedModule
+]
 })
 export class OverviewModule { }

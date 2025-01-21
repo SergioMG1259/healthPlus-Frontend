@@ -3,7 +3,7 @@
 
 <section class="metrics">
     <ng-container *ngFor="let metric of cardMetrics">
-        <app-card-metric [metric]="metric" ></app-card-metric>
+        <app-card-metric [metric]="metric"></app-card-metric>
     </ng-container>
 </section>
 
@@ -26,7 +26,7 @@
     <mat-card class="card-appointment">
         <mat-card-title>Today's appointments</mat-card-title>
         <mat-card-content>
-            <app-todays-appointments></app-todays-appointments>
+            <app-todays-appointments [isLoading]="this.isLoading" [appointments]="this.appointmentsToday"></app-todays-appointments>
         </mat-card-content>
     </mat-card>
 
@@ -40,35 +40,52 @@
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 table">
               
                 <ng-container matColumnDef="patientName">
-                  <th mat-header-cell *matHeaderCellDef> Patient name </th>
-                  <td mat-cell *matCellDef="let element"> {{element.patientName}} </td>
+                    <th mat-header-cell *matHeaderCellDef> Patient name </th>
+                    <td mat-cell *matCellDef="let element">
+                        <p *ngIf="!isLoading">{{element.names + " " + element.lastNames}}</p>
+                        <div *ngIf="isLoading" class="loading shimmer"></div>
+                    </td>
                 </ng-container>
               
                 <ng-container matColumnDef="gender">
-                  <th mat-header-cell *matHeaderCellDef> Gender </th>
-                  <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+                    <th mat-header-cell *matHeaderCellDef> Gender </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        <p *ngIf="!isLoading">{{element.gender | textFormat}}</p>
+                        <div *ngIf="isLoading" class="loading shimmer"></div>
+                    </td>
                 </ng-container>
               
                 <ng-container matColumnDef="age">
-                  <th mat-header-cell *matHeaderCellDef> Age </th>
-                  <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+                    <th mat-header-cell *matHeaderCellDef> Age </th>
+                    <td mat-cell *matCellDef="let element">
+                        <p *ngIf="!isLoading">{{calculateAge(element.birthDate)}}</p>
+                        <div *ngIf="isLoading" class="loading shimmer"></div>
+                    </td>
                 </ng-container>
               
                 <ng-container matColumnDef="phone">
-                  <th mat-header-cell *matHeaderCellDef> Phone </th>
-                  <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                    <th mat-header-cell *matHeaderCellDef> Phone </th>
+                    <td mat-cell *matCellDef="let element">
+                        <p *ngIf="!isLoading">{{element.phoneNumber}}</p>
+                        <div *ngIf="isLoading" class="loading shimmer"></div>
+                    </td>
                 </ng-container>
 
                 <ng-container matColumnDef="createdAt">
                     <th mat-header-cell *matHeaderCellDef> Created at </th>
-                    <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
+                    <td mat-cell *matCellDef="let element">
+                        <p *ngIf="!isLoading">{{element.createdAt | date:'MM/dd/yyyy'}}</p>
+                        <div *ngIf="isLoading" class="loading shimmer"></div>
+                    </td>
                 </ng-container>
               
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
-
         </mat-card-content>
+        <p *ngIf="this.dataSource.length == 0" class="no-patients">
+            There are no patients yet
+        </p>
     </mat-card>
 
 </section>
