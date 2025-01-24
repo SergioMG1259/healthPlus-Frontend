@@ -1,6 +1,6 @@
-import { Directive, ElementRef, Host, Input, Optional, Renderer2, Self } from '@angular/core';
+import { Directive, ElementRef, Host, Input, Optional, Renderer2, Self, SimpleChanges } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { map, startWith } from 'rxjs';
+import { map, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 
 @Directive({
   selector: '[appCustomPaginator]'
@@ -11,7 +11,9 @@ export class CustomPaginatorDirective {
   buttonsRef: HTMLElement[] = []
   dotsStartRef!: HTMLElement
   dotsEndRef!: HTMLElement
-  @Input() appCustomLength: number = 0;
+  @Input() appCustomLength: number = 0
+  @Input() isLoadingChange!: Observable<boolean>
+  private _loadingSubscription!: Subscription
 
   constructor(@Host() @Self() @Optional() private matPaginator:MatPaginator, 
   private elementRef: ElementRef, private ren:Renderer2) { }
@@ -56,33 +58,35 @@ export class CustomPaginatorDirective {
   }
 
   private buildButtons(): void {
+
     const neededButtons = Math.ceil(
       this.appCustomLength / this.matPaginator.pageSize
     );
 
     // si solo hay una página, no se debe mostrar los botones
     if (neededButtons == 1) {
-      this.ren.setStyle(this.elementRef.nativeElement, 'display', 'none');
-      return;
+      this.buttonsRef = [this.createButton(0)]
+      this.ren.setStyle(this.buttonsRef[0], 'display', 'inline-block')
+      this.ren.addClass(this.buttonsRef[0], 'page-active')
+      return
     }
 
     // crear el primer botón
-    this.buttonsRef = [this.createButton(0)];
+    this.buttonsRef = [this.createButton(0)]
 
     // agregar los dots
-    this.dotsStartRef = this.createDotsButton();
+    this.dotsStartRef = this.createDotsButton()
 
     // crear todos los botones, excepto el primero y el último
     for (let index = 1; index < neededButtons - 1; index++) {
-      this.buttonsRef = [...this.buttonsRef, this.createButton(index)];
+      this.buttonsRef = [...this.buttonsRef, this.createButton(index)]
     }
 
     // agregar los dots
-    this.dotsEndRef = this.createDotsButton();
+    this.dotsEndRef = this.createDotsButton()
 
     // crear el último botón después de los puntos (....)
-    this.buttonsRef = [...this.buttonsRef, this.createButton(neededButtons - 1),
-    ];
+    this.buttonsRef = [...this.buttonsRef, this.createButton(neededButtons - 1)]
 
   }
 
@@ -98,7 +102,7 @@ export class CustomPaginatorDirective {
     // evento click
     this.ren.listen(pageButton, 'click', () => {
       this.switchPage(i)
-    });
+    })
 
     // renderizar el boton
     this.ren.appendChild(this.pagesContainerRef, pageButton)
@@ -106,7 +110,7 @@ export class CustomPaginatorDirective {
     // por defecto, el botón está oculto
     this.ren.setStyle(pageButton, 'display', 'none')
 
-    return pageButton;
+    return pageButton
   }
 
   private createDotsButton(): HTMLElement {
@@ -134,6 +138,9 @@ export class CustomPaginatorDirective {
   }
 
   private changeActiveButtonStyles(previousIndex: number, newIndex: number): void {
+
+    if(this.buttonsRef.length == 1) return
+
     const previouslyActive = this.buttonsRef[previousIndex]
     const currentActive = this.buttonsRef[newIndex]
 
@@ -174,15 +181,65 @@ export class CustomPaginatorDirective {
     }
   }
 
-  ngAfterViewInit(): void {
-    this.styleDefaultPagination()
-    this.createPagesDivRef()
-    this.buildButtons()
-    this.matPaginator.page.pipe(
-      map((e) => [e.previousPageIndex?? 0, e.pageIndex]),
-      startWith([this.matPaginator.pageIndex, this.matPaginator.pageIndex])
-    )
-    .subscribe(([prev,current]) => {this.changeActiveButtonStyles(prev,current)})
+  private resetPagination(): void {
+    // Vaciar los botones y el contenedor de páginas
+    this.buttonsRef.forEach((button) => {
+      this.ren.removeChild(this.pagesContainerRef, button)
+    })
+    this.buttonsRef = []  // Limpiar el arreglo
+
+    // Eliminar los dots si existen
+    if (this.dotsStartRef) {
+      this.ren.removeChild(this.pagesContainerRef, this.dotsStartRef)
+      this.dotsStartRef = null!
+    }
+    if (this.dotsEndRef) {
+      this.ren.removeChild(this.pagesContainerRef, this.dotsEndRef)
+      this.dotsEndRef = null!
+    }
   }
+
+  ngAfterViewInit(): void {
+    
+    this._loadingSubscription = this.isLoadingChange.pipe(
+      switchMap((isLoading) => {
+        if(isLoading) {
+          this.ren.setStyle(this.elementRef.nativeElement, 'display', 'none')
+          return []
+        }
+        else {
+          this.resetPagination()
+          this.ren.setStyle(this.elementRef.nativeElement, 'display', 'block')
+          this.styleDefaultPagination()
+          this.createPagesDivRef()
+          this.buildButtons()
+          return this.matPaginator.page.pipe(
+            map((e) => [e.previousPageIndex?? 0, e.pageIndex]),
+            startWith([this.matPaginator.pageIndex, this.matPaginator.pageIndex])
+          )
+        }
+      })
+    ).subscribe(([prev,current]) => {this.changeActiveButtonStyles(prev,current)})
+  }
+
+  ngOnDestroy(): void {
+    if(this._loadingSubscription)
+      this._loadingSubscription.unsubscribe()
+  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['isLoading'] && !changes['isLoading'].firstChange) {
+  //     console.log("sssss")
+  //     this.ren.setStyle(this.elementRef.nativeElement, 'display', 'block')
+  //     this.styleDefaultPagination()
+  //     this.createPagesDivRef()
+  //     this.buildButtons()
+  //     this.matPaginator.page.pipe(
+  //       map((e) => [e.previousPageIndex?? 0, e.pageIndex]),
+  //       startWith([this.matPaginator.pageIndex, this.matPaginator.pageIndex])
+  //     )
+  //     .subscribe(([prev,current]) => {this.changeActiveButtonStyles(prev,current)})
+  //   }
+    
+  // }
 
 }

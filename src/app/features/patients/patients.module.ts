@@ -12,6 +12,7 @@ import { FilterPatientService } from './services/filter-patient.service';
 import { A11yModule } from '@angular/cdk/a11y';
 import { AddPatientComponent } from './pages/add-patient/add-patient.component';
 import { PatientDetailsComponent } from './pages/patient-details/patient-details.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   providers:[FilterPatientService],
@@ -29,7 +30,8 @@ import { PatientDetailsComponent } from './pages/patient-details/patient-details
     FormsModule,
     ReactiveFormsModule,
     A11yModule,
-    OverlayModule
+    OverlayModule,
+    SharedModule
   ]
 })
 export class PatientsModule { }

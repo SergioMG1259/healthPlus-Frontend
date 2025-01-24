@@ -24,8 +24,6 @@ export class FilterPatientComponent implements OnInit {
   constructor(private _filterService:FilterPatientService, private _formBuilder:FormBuilder, 
     private _router:Router, private _route:ActivatedRoute) { }
 
-
-
   applyFilters(): void {
     // Obtener los valores de los checkboxes desde el FormGroup
     const female = this.gender.get('female')!.value

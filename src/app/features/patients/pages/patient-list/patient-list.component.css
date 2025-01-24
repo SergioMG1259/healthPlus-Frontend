@@ -35,7 +35,11 @@ mat-icon {
     width: 140px;
 }
 
-
+.loading {
+    border-radius: 5px;
+    height: 30px;
+    width: 100%;
+}
 .section-table {
     margin-top: 20px;
 }
