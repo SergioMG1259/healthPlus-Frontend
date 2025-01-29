@@ -66,8 +66,8 @@ export class FilterPatientComponent implements OnInit {
 
       // Inicializar los checkboxes con los valores de los parámetros
       this.gender.patchValue({
-        female: params['female'] === 'true', // Convertir el string a booleano
-        male: params['male'] === 'true'
+        female: params['female'] == 'true', // Convertir el string a booleano
+        male: params['male'] == 'true'
       })
 
       this.minAge = params['minAge'] ? +params['minAge'] : null

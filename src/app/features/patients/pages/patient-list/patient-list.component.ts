@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, delay, distinctUntilChanged, filter, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, delay, distinctUntilChanged, filter, Observable, Subscription, switchMap } from 'rxjs';
 import { FilterPatientService } from '../../services/filter-patient.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { PatientResponseDTO } from '../../models/PatientResponseDTO';
@@ -22,9 +22,14 @@ export class PatientListComponent implements OnInit {
   dataSource = new MatTableDataSource<PatientResponseDTO>(Array.from({ length: 10 }, () => ({} as PatientResponseDTO)))
   pageIndex: number = 0
 
-  inputSearch:string|null = null
+  inputSearch: string|null = null
+  inputSearchAux: string|null = null // Para identificar que hubo un cambio en el input search
   orderBy: string = 'default'
+  orderbyAux: string | null = null // Para identificar que hubo un cambio en el order by
   minAge: number | null = null
+  maxAge: number | null = null
+  female: boolean = false
+  male: boolean = false
 
   private flag:boolean = false
   private _queryParamsSubscription!: Subscription
@@ -34,7 +39,7 @@ export class PatientListComponent implements OnInit {
   @ViewChild('filterButton', {read: ElementRef}) private _filterButton!: ElementRef
 
   constructor(private _router:Router,private _route:ActivatedRoute, private _filterService:FilterPatientService, 
-    private _cdr: ChangeDetectorRef, private _breakpointObserver: BreakpointObserver, private patientService: PatientService) { }
+    private _cdr: ChangeDetectorRef, private _breakpointObserver: BreakpointObserver, private _patientService: PatientService) { }
 
   calculateAge(date: Date): number {
     const birthDate = new Date(date)
@@ -103,20 +108,15 @@ export class PatientListComponent implements OnInit {
     })
   }
 
-  onClickGoToAddPatient() {
+  onClickGoToAddPatient(): void {
     this._router.navigate(['/patients/add'])
   }
 
-  onClickGoToPatientDetails() {
-    this._router.navigate(['/patients/details']);
+  onClickGoToPatientDetails(id: number): void {
+    this._router.navigate(['/patients/details',id])
   }
 
   ngOnInit(): void {
-    this.dataSource.data = ELEMENT_DATA
-    this.patientService.getPatients(2).pipe(delay(2000)).subscribe(e => {
-      this.dataSource.data = e
-      this.isLoading = false
-    })
   }
 
   ngAfterViewInit():void {
@@ -124,63 +124,69 @@ export class PatientListComponent implements OnInit {
     let firstLoading = true
     this.dataSource.paginator = this.paginator
     // this.dataSource.data = ELEMENT_DATA
-    this.isLoading = false
     
     this._queryParamsSubscription = this._route.queryParams.pipe(
-      // filter(() => !this.flag),// Si el cambio de página viene de los botones, se ignora para evitar un nueva emisión del pageEvent
-      // distinctUntilChanged((prev, curr) => {
-      //   // Compara los parámetros relevantes (excluyendo 'page')
-      //   return (
-      //     prev['female'] === curr['female'] &&
-      //     prev['male'] === curr['male'] &&
-      //     prev['minAge'] === curr['minAge'] &&
-      //     prev['maxAge'] === curr['maxAge']
-      //     // prev['page'] === curr['page']
-      //   )
-      // })
-    ).subscribe(params => {
+      switchMap((params) => {
+        const inputSearch = params['search']? params['search'] : null
+        const orderBy = params['orderby']? params['orderby'] : 'default'
+        const minAge = params['minAge'] ? +params['minAge'] : null
+        const maxAge = params['maxAge'] ? +params['maxAge'] : null
+        const female = params['female'] == 'true'
+        const male = params['male'] == 'true'
+  
+        const hasFilterChanged =
+          this.inputSearchAux != inputSearch ||
+          this.orderbyAux != orderBy ||
+          this.minAge != minAge ||
+          this.maxAge != maxAge ||
+          this.female != female ||
+          this.male != male
+  
+        const pageFromUrl = params['page'] ? +params['page'] - 1 : 0
+        setTimeout( ()=> {
+          if (this.paginator.pageIndex != pageFromUrl) {
+            // Se guarda el valor de la página actual antes de cambiarlo
+            const previousPageIndex = this.paginator.pageIndex
+            // this.pageIndex = pageFromUrl
+            this.paginator.pageIndex = pageFromUrl
+            this.paginator['_emitPageEvent'](previousPageIndex) // Emite eventPage
+          }
+        },0) 
 
-      this.inputSearch = params['search']? params['search'] : null
-      this.orderBy = params['orderby']? params['orderby'] : 'default'
-      const minAge = params['minAge'] ? +params['minAge'] : null
-
-      if(minAge != this.minAge || firstLoading) {
-        this.isLoading = true
-        console.log("consulta a la api")
-        this.isLoadingChange.next(true)
-        this.minAge = minAge
-        if( minAge!=null ) {
-          this.dataSource.data = ELEMENT_DATA2
-        } else {
-          this.dataSource.data = ELEMENT_DATA
+        if(hasFilterChanged || firstLoading) {
+          this.isLoading = true
+          console.log("consulta a la api")
+          this.isLoadingChange.next(true)
+  
+          this.inputSearch = params['search']? params['search'] : null
+          this.inputSearchAux = this.inputSearch
+          this.orderBy = params['orderby']? params['orderby'] : 'default'
+          this.orderbyAux = this.orderBy
+          this.minAge = minAge
+          this.maxAge = maxAge
+          this.female = female
+          this.male = male
+          
+          return this._patientService.getPatientsWithFilters(1,{searchByNameAndLastName: this.inputSearch, female: this.female,
+            male: this.male, minAge: this.minAge, maxAge: this.maxAge, sortBy: this.orderBy})
+          // this._cdr.detectChanges()
+          // setTimeout(() => {
+          //   this.isLoading = false
+          //   this.isLoadingChange.next(false)
+          // }, 1000)
         }
-        // this._cdr.detectChanges()
+        return []
+      })
+    ).pipe(delay(1000)).subscribe(e => {
+
+      if (e) {
+        this.dataSource.data = e
         setTimeout(() => {
           this.isLoading = false
           this.isLoadingChange.next(false)
-        }, 1000)
+        }, 0)
       }
-
-      setTimeout(() => {  
-        const pageFromUrl = params['page'] ? +params['page'] - 1 : 0
-        if (this.paginator.pageIndex != pageFromUrl) {
-          const previousPageIndex = this.paginator.pageIndex
-          // this.pageIndex = pageFromUrl
-          this.paginator.pageIndex = pageFromUrl
-          this.paginator['_emitPageEvent'](previousPageIndex) // Emite eventPage
-        }
-      }, 0)
-
       firstLoading = false
-
-
-      // Se guarda el valor de la página actual antes de cambiarlo
-      // const previousPageIndex = this.paginator.pageIndex
-      // this.pageIndex = params['page']? +params['page'] - 1 : 0
-      // this.paginator.pageIndex = this.pageIndex
-      // // Emite eventPage
-      // this.paginator['_emitPageEvent'](previousPageIndex)
-
     })
 
     this._cdr.detectChanges()
@@ -202,56 +208,6 @@ export class PatientListComponent implements OnInit {
 }
 
 const ELEMENT_DATA: any[] = [
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'}
-]
-
-const ELEMENT_DATA2: any[] = [
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
   {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
   {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
   {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},

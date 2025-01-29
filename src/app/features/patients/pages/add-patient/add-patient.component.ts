@@ -25,7 +25,7 @@ export class AddPatientComponent implements OnInit {
   secondStep = this._formBuilder.group({
     phone: ['', [Validators.required, Validators.min(100000000), Validators.max(999999999)]],
     email: ['', [Validators.required, Validators.email]],
-    adress: ['', Validators.required]
+    address: ['', Validators.required]
   })
 
   allergiesForm = this._formBuilder.group({

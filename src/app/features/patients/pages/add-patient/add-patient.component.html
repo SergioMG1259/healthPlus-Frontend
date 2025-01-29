@@ -47,7 +47,7 @@
               </mat-form-field>
     
               <div class="footer">
-                <button mat-flat-button matStepperNext color="primary" [disabled]="!this.firstStep.valid">Next</button>
+                <button mat-flat-button matStepperNext color="primary" [disabled]="this.firstStep.invalid">Next</button>
               </div>
             </div>
           </mat-card-content>
@@ -72,14 +72,14 @@
               </mat-form-field>
       
               <mat-form-field appearance="outline" class="input">
-                <mat-label>Adress</mat-label>
-                <input matInput placeholder="Adress" formControlName="adress" required>
+                <mat-label>Address</mat-label>
+                <input matInput placeholder="Address" formControlName="address" required>
               </mat-form-field>
       
               <div class="footer">
                 <button mat-flat-button matStepperPrevious color="primary">Back</button>
                 <button mat-flat-button matStepperNext color="primary" 
-                  class="button-margin-left" [disabled]="!this.secondStep.valid">
+                  class="button-margin-left" [disabled]="this.secondStep.invalid">
                   Next
                 </button>
               </div>
@@ -160,7 +160,7 @@
               </div>
               <div class="footer">
                   <button mat-flat-button matStepperPrevious color="primary">Back</button>
-                  <button mat-flat-button color="primary" class="button-margin-left" [disabled]="!this.allergiesForm.valid">Create</button>
+                  <button mat-flat-button color="primary" class="button-margin-left" [disabled]="this.allergiesForm.invalid">Create</button>
               </div> 
             </div>
         </mat-card-content>

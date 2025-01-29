@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { AppointmentResponseDTO } from 'src/app/features/appointments/models/appointmentResponseDTO';
+import { AppointmentResponseDTO } from 'src/app/features/appointments/models/AppointmentResponseDTO';
 
 @Component({
   selector: 'app-todays-appointments',

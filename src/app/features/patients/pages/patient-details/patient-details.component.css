@@ -46,6 +46,11 @@
     border: solid 1px #ececec;
     width: 100%;
 }
+.loading-basic-info {
+    border-radius: 5px;
+    height: 20.8px;
+    width: 100%;
+}
 /*MEDICAL INFORMATION*/
 .items {
     display: flex;
@@ -56,7 +61,23 @@
     display: flex;
     justify-content: space-between;
 }
+.loading-medical-info {
+    border-radius: 5px;
+    height: 20.8px;
+    width: 40px;
+}
 /*APPOINTMENTS LIST*/
+.tab-header {
+    border-radius: 5px;
+    height: 38px;
+    width: 320px;
+}
+.tab {
+    border-radius: 5px;
+    height: 310px;
+    margin-top: 10px;
+    width: 100%;
+}
 .appointments-wrapper {
     background-color: var(--background);
     border-radius: 5px;
@@ -71,7 +92,8 @@
     background-color: var(--background-components);
     border-radius: 5px;
     column-gap: 28px;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     padding: 18px 32px;
     width: fit-content;
 }
@@ -120,4 +142,9 @@ textarea {
 .button-wrapper {
     margin-top: 10px;
     text-align: end;
+}
+.loading-notes {
+    border-radius: 5px;
+    height: 275px;
+    width: 100%;
 }

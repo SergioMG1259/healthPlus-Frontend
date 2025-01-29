@@ -274,7 +274,7 @@ tr.mat-row:last-child .mat-cell:last-child {
   line-height: 1.23;
 }
 .small.mat-form-field {
-  line-height: 1.1 !important;
+  /* line-height: 1.1 !important; */
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {

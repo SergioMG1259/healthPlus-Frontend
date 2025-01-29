@@ -1,0 +1,63 @@
+<div class="wrapper">
+    <button mat-icon-button aria-label="Close dialog" class="close-button" (click)="this.onCloseClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+
+    <form [formGroup]="this.basicInformation" class="flex fields-wrapper">
+        <div class="flex row">
+            <mat-form-field appearance="outline" class="small input">
+                <mat-label>Names</mat-label>
+                <input matInput placeholder="First names" formControlName="names" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="small input">
+                <mat-label>Last names</mat-label>
+                <input matInput placeholder="Last names" formControlName="lastNames" required>
+            </mat-form-field>
+        </div>
+
+        <div class="flex row">
+            <mat-form-field appearance="outline" class="small input">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="small input">
+                <mat-label>DNI</mat-label>
+                <input matInput placeholder="DNI" type="text" formControlName="dni" maxlength="8" required>
+            </mat-form-field>
+        </div>
+
+        <label id="radio-group-label">Pick a gender</label>
+        <mat-radio-group formControlName="gender"
+        aria-labelledby="radio-group-label"
+        class="flex radio-group">
+                <mat-radio-button value="FEMALE" color="primary">Female</mat-radio-button>
+                <mat-radio-button value="MALE" color="primary">Male</mat-radio-button>
+        </mat-radio-group>
+
+        <div class="flex row">
+              <mat-form-field appearance="outline" class="small input">
+                <mat-label>Phone</mat-label>
+                <input matInput placeholder="Phone" type="text" formControlName="phone" maxlength="9" required>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" class="small input">
+                <mat-label>Address</mat-label>
+                <input matInput placeholder="Address" formControlName="address" required>
+              </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="small input">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" type="email" formControlName="email" required>
+          </mat-form-field>
+    </form>
+
+    <footer>
+        <button mat-flat-button color="primary" (click)="this.onCloseClickEdit()" 
+        [disabled]="this.isSaveDisabled()">Save</button>
+    </footer>
+</div>

@@ -1,0 +1,38 @@
+.wrapper {
+    background-color: var(--background-components);
+    padding: 20px;
+    position: relative;
+    width: 100%
+}
+.close-button {
+    color: var(--primary-text);
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+.fields-wrapper {
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+.row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.input {
+    flex: 1 1 calc(50% - 7.5px);
+    min-width: 170px;
+}
+.radio-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+label {
+    font-size: 0.9rem;
+}
+footer {
+    margin-top: 15px;
+    text-align: end;
+}

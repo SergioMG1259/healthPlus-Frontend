@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild
 import { AppointmentOverlayCalendarService } from '../../services/appointment-overlay-calendar.service';
 import { PatientShortResponseDTO } from 'src/app/features/patients/models/PatientShortResponseDTO';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AppointmentResponseDTO } from '../../models/appointmentResponseDTO';
+import { AppointmentResponseDTO } from '../../models/AppointmentResponseDTO';
 import { Observable, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditAppointemntDialogComponent } from '../edit-appointemnt-dialog/edit-appointemnt-dialog.component';
@@ -52,7 +52,7 @@ export class WeeklyCalendarComponent implements OnInit {
       id: 1, price: 10, startDate: new Date(2025, 0, 10, 9), endDate: new Date(2025, 0, 10, 12), issue: MedicalIssue.FOLLOW_UP, patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
     },
     {
-      id: 1, price: 10, startDate: new Date(2025, 0, 18, 9), endDate: new Date(2025, 0, 18, 12), issue: MedicalIssue.FOLLOW_UP, patient: {id: 2, names: "hola", lastNames: "dddddddddddd"}
+      id: 1, price: 10, startDate: new Date(2025, 0, 30, 9), endDate: new Date(2025, 0, 30, 12), issue: MedicalIssue.FOLLOW_UP, patient: {id: 2, names: "hola", lastNames: "dddddddddddd"}
     }
   ]
 

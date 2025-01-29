@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AppointmentResponseDTO } from '../../models/appointmentResponseDTO';
+import { AppointmentResponseDTO } from '../../models/AppointmentResponseDTO';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { timeRangeValidator } from '../../functions/timeRangeValidator';
 import { PatientShortResponseDTO } from 'src/app/features/patients/models/PatientShortResponseDTO';

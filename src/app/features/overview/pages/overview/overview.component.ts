@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CardMetric } from '../../models/cardMatric';
 import { SpecialistService } from 'src/app/services/specialist.service';
 import { delay } from 'rxjs';
-import { AppointmentResponseDTO } from 'src/app/features/appointments/models/appointmentResponseDTO';
+import { AppointmentResponseDTO } from 'src/app/features/appointments/models/AppointmentResponseDTO';
 import { PatientResponseDTO } from 'src/app/features/patients/models/PatientResponseDTO';
 
 @Component({

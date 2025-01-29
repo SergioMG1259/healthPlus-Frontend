@@ -1,4 +1,4 @@
-import { AppointmentResponseDTO } from "../../appointments/models/appointmentResponseDTO";
+import { AppointmentResponseDTO } from "../../appointments/models/AppointmentResponseDTO";
 import { PatientResponseDTO } from "../../patients/models/PatientResponseDTO";
 
 export interface Overview {

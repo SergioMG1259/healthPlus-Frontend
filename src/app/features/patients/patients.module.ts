@@ -13,6 +13,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { AddPatientComponent } from './pages/add-patient/add-patient.component';
 import { PatientDetailsComponent } from './pages/patient-details/patient-details.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { EditBasicInformationDialogComponent } from './components/edit-basic-information-dialog/edit-basic-information-dialog.component';
 
 @NgModule({
   providers:[FilterPatientService],
@@ -21,7 +22,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CustomPaginatorDirective,
     FilterPatientComponent,
     AddPatientComponent,
-    PatientDetailsComponent
+    PatientDetailsComponent,
+    EditBasicInformationDialogComponent
   ],
   imports: [
     CommonModule,
