@@ -4,6 +4,9 @@ import { catchError, retry, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PatientResponseDTO } from '../features/patients/models/PatientResponseDTO';
 import { PatientDetailsDTO } from '../features/patients/models/PatientDetailsDTO';
+import { MedicalInformationUpdateDTO } from '../features/patients/models/MedicalInformationUpdateDTO';
+import { MedicalInformationResponseDTO } from '../features/patients/models/MedicalInformationResponseDTO ';
+import { PatientUpdateDTO } from '../features/patients/models/PatientUpdateDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,7 @@ export class PatientService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODE0NzYyNn0.IwkjmqaO1d7ssBCWb69H0n4ZnNAlpU7v8nXCsgQWcHU9d_HhZFEBeQrZc421P_vfwK-mkGDRAPwP0TPOC9Zj-A'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODMxNzIyNH0.AjHW9RN_Dl2EeGohaZfy7zRKgHXXazTClzFeUrbGte-47GAe8xRgXy3F3jfuiWKxTqAvtMmyPM7sf_uXZRX0Ig'
     })
   }
 
@@ -93,6 +96,22 @@ export class PatientService {
 
   getPatientDetails(patientId:number) {
     return this.http.get<PatientDetailsDTO>(`${this.apiUrl}/patients/${patientId}`, this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError))
+  }
+
+  updateMedicalInformation(patientId:number, medicalInformation:MedicalInformationUpdateDTO) {
+    return this.http.put<MedicalInformationResponseDTO>(`${this.apiUrl}/patients/${patientId}/updateMedicalInfo`, 
+      medicalInformation, this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError))
+  }
+
+  updatePatientById(patientId:number, patientUpdateDTO: PatientUpdateDTO) {
+    return this.http.put<PatientResponseDTO>(`${this.apiUrl}/patients/${patientId}`, 
+      patientUpdateDTO, this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError))

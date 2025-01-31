@@ -1,0 +1,24 @@
+.wrapper {
+    background-color: var(--background-components);
+    padding: 20px;
+    position: relative;
+    width: 100%
+}
+.close-button {
+    color: var(--primary-text);
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+.fields-wrapper {
+    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    margin-top: 15px;
+}
+.input {
+    width: 100%; /* Para asegurarse de que los inputs ocupen el espacio asignado */
+}
+footer {
+    margin-top: 15px;
+    text-align: end;
+}

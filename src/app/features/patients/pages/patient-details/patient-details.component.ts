@@ -6,6 +6,7 @@ import { PatientDetailsDTO } from '../../models/PatientDetailsDTO';
 import { AppointmentForPatientDTO } from 'src/app/features/appointments/models/AppointmentForPatientDTO';
 import { MatDialog } from '@angular/material/dialog';
 import { EditBasicInformationDialogComponent } from '../../components/edit-basic-information-dialog/edit-basic-information-dialog.component';
+import { EditMedicalInformationDialogComponent } from '../../components/edit-medical-information-dialog/edit-medical-information-dialog.component';
 
 @Component({
   selector: 'app-patient-details',
@@ -44,6 +45,7 @@ export class PatientDetailsComponent implements OnInit {
   })
   appointments:AppointmentForPatientDTO[] = []
   notes:string | null = null
+  originalValueNotes: string | null = this.notes
 
   constructor(private _formBuilder: FormBuilder, private _patientService: PatientService, private route: ActivatedRoute, 
     private _dialogService: MatDialog
@@ -77,7 +79,7 @@ export class PatientDetailsComponent implements OnInit {
     this.additionalAllergies.removeAt(index)
   }
 
-  onClickOpenEditBasicInformationDialog() {
+  onClickOpenEditBasicInformationDialog(): void {
     const dialogRef = this._dialogService.open(EditBasicInformationDialogComponent, {
       backdropClass: 'dialog-bg',
       width: '400px',
@@ -88,12 +90,31 @@ export class PatientDetailsComponent implements OnInit {
     })
   }
 
+  onClickOpenEditMedicalInformationDialog(): void {
+    const dialogRef = this._dialogService.open(EditMedicalInformationDialogComponent, {
+      backdropClass: 'dialog-bg',
+      width: '400px',
+      data: {basicInformation: this.patient}
+    })
+    dialogRef.afterClosed().subscribe( (e) => {
+      console.log(e)
+    })
+  }
+
+  isNotesUnchanged():boolean {
+    const normalizedNotes = this.notes?.trim() || null
+    const normalizedOriginalNotes = this.originalValueNotes?.trim() || null
+    
+    return normalizedNotes == normalizedOriginalNotes
+  }
+
   ngOnInit(): void {
     this.patientId = Number(this.route.snapshot.paramMap.get('id'))
     this._patientService.getPatientDetails(this.patientId).subscribe(e => {
       this.patient = e
       this.appointments = e.appointments
       this.notes = e.notes
+      this.originalValueNotes = this.notes
 
       const allergies = e.allergies
       allergies.forEach(element => {

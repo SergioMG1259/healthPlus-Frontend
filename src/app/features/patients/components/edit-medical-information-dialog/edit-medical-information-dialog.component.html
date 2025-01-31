@@ -1,0 +1,47 @@
+<div class="wrapper">
+    <button mat-icon-button aria-label="Close dialog" class="close-button" (click)="this.onCloseClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+
+    <form [formGroup]="this.medicalInformation" class="grid fields-wrapper">
+
+        <mat-form-field appearance="outline" class="small input">
+            <mat-label>Height (m)</mat-label>
+            <input matInput placeholder="E.g. 1.70" type="number" formControlName="height" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="small input">
+            <mat-label>Weight (kg)</mat-label>
+            <input matInput placeholder="E.g. 72.5" type="number" formControlName="weight" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="small input">
+            <mat-label>Cholesterol (mg/dL)</mat-label>
+            <input matInput placeholder="E.g. 130" type="number" formControlName="cholesterol" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="small input">
+            <mat-label>Blood sugar (mg/dL)</mat-label>
+            <input matInput placeholder="E.g. 95" type="number" formControlName="bloodSugar" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="small input">
+            <mat-label>Systolic pressure (mmHg)</mat-label>
+            <input matInput placeholder="E.g. 120" type="number" formControlName="systolicPressure" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="small input">
+            <mat-label>Diastolic pressure (mmHg)</mat-label>
+            <input matInput placeholder="E.g. 80" type="number" formControlName="diastolicPressure" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="small input">
+            <mat-label>Heart rate (bpm )</mat-label>
+            <input matInput placeholder="E.g. 75" type="number" formControlName="heartRate" required>
+        </mat-form-field>
+    </form>
+    <footer>
+        <button mat-flat-button color="primary" (click)="this.updateMedicalInformation()"
+        [disabled]="this.isSaveDisabled()">Save</button>
+    </footer>
+</div>

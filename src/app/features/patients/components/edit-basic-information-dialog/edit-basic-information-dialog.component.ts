@@ -3,6 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PatientDetailsDTO } from '../../models/PatientDetailsDTO';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { onlyNumbersValidator } from '../../functions/onlyNumberValidator';
+import { PatientService } from 'src/app/services/patient.service';
+import { PatientUpdateDTO } from '../../models/PatientUpdateDTO';
 
 interface BasicInformation {
   basicInformation: PatientDetailsDTO
@@ -19,16 +21,17 @@ export class EditBasicInformationDialogComponent implements OnInit {
   originalValues: any
 
   constructor(public dialogRef: MatDialogRef<EditBasicInformationDialogComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data:BasicInformation, private _formBuilder: FormBuilder) { 
+    @Inject(MAT_DIALOG_DATA) public data:BasicInformation, private _formBuilder: FormBuilder,
+    private _patientService: PatientService) { 
 
     this.basicInformation = this._formBuilder.group({
       names: [data.basicInformation.names, Validators.required],
       lastNames: [data.basicInformation.lastNames, Validators.required],
-      dateOfBirth: [data.basicInformation.birthDate, Validators.required],
+      birthDate: [data.basicInformation.birthDate, Validators.required],
       gender: [data.basicInformation.gender, Validators.required],
       dni: [data.basicInformation.dni, [Validators.required,  Validators.maxLength(8), 
             Validators.minLength(8) ,onlyNumbersValidator()]],
-      phone: [data.basicInformation.phoneNumber, [Validators.required, Validators.maxLength(9), 
+      phoneNumber: [data.basicInformation.phoneNumber, [Validators.required, Validators.maxLength(9), 
             Validators.minLength(9), onlyNumbersValidator()]],
       email: [data.basicInformation.email, [Validators.required, Validators.email]],
       address: [data.basicInformation.address, Validators.required]
@@ -50,7 +53,26 @@ export class EditBasicInformationDialogComponent implements OnInit {
 
   // Verificar si el formulario sigue igual que al inicio
   isUnchanged(): boolean {
-    return JSON.stringify(this.basicInformation.getRawValue()) === JSON.stringify(this.originalValues)
+    const normalizeDate = (date: any) => {
+      const d = new Date(date)
+      return d.toISOString().split('T')[0] // Solo la parte YYYY-MM-DD
+    }
+
+    return JSON.stringify({
+      ...this.originalValues,
+      birthDate: normalizeDate(this.originalValues.birthDate)
+    }) === JSON.stringify({
+      ...this.basicInformation.getRawValue(),
+      birthDate: normalizeDate(this.basicInformation.getRawValue().birthDate)
+    })
+  }
+
+  updatePatient():void {
+    const patientUpdateDTO: PatientUpdateDTO = this.basicInformation.getRawValue() as PatientUpdateDTO
+    console.log(patientUpdateDTO)
+    this._patientService.updatePatientById(1, patientUpdateDTO).subscribe(e=> {
+      this.onCloseClickEdit()
+    })
   }
 
   ngOnInit(): void {

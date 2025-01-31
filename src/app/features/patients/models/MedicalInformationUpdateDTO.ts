@@ -1,7 +1,6 @@
-export interface MedicalInformationResponseDTO {
+export interface MedicalInformationUpdateDTO {
     height: number,
     weight: number,
-    bmi: number,
     cholesterol: number,
     bloodSugar: number,
     systolicPressure: number,

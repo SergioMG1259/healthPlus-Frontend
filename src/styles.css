@@ -224,7 +224,7 @@ tr.mat-row:last-child .mat-cell:last-child {
 /* label.ng-star-inserted { transform: translateY(-0.59375em) scale(.75) !important; } */
 
 .small .mat-form-field-flex > .mat-form-field-infix { padding: 0.32em 0px !important;}
-.small .mat-form-field-label-wrapper { font-size: 0.9rem; top: -1.35em; }
+.small .mat-form-field-label-wrapper { font-size: 0.9rem; top: -1.25em; }
 
 .small .mat-form-field-should-float .mat-form-field-label-wrapper {
   top: -1em;
@@ -247,14 +247,17 @@ tr.mat-row:last-child .mat-cell:last-child {
   font-size: 0.9rem;
   height: 110%;
   position: absolute;
-  top: -5px;
+  top: -6px;
   width: 88%;
 }
 .mat-form-field-appearance-outline .mat-select-arrow-wrapper {
-  transform: translateY(-30%) !important;
+  transform: translateY(-32%) !important;
 }
 .small .mat-form-field-flex {
   height: 42px;
+}
+.small.mat-form-field-appearance-outline .mat-form-field-label {
+  margin-top: -0.42em !important;
 }
 
 /*INPUT*/

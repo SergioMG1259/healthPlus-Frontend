@@ -56,7 +56,7 @@
     <mat-card class="medical-information-wrapper">
         <mat-card-title-group class="group-title">
             <mat-card-title class="title-no-margin">Medical info</mat-card-title>
-            <button mat-icon-button aria-label="open edit medical information" class="edit-button">
+            <button mat-icon-button aria-label="open edit medical information" class="edit-button" (click)="this.onClickOpenEditMedicalInformationDialog()">
                 <mat-icon class="setting-icon">settings</mat-icon>
             </button>
         </mat-card-title-group>
@@ -64,39 +64,40 @@
             <div class="items">
                 <div class="medical-info-item">
                     <p class="category-info">Weight (kg)</p>
-                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.weight}}</p>
+                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.weight |  number:'0.2-2'}}</p>
                     <div *ngIf="isLoading" class="shimmer loading-medical-info"></div>
                 </div>
                 <div class="medical-info-item">
                     <p class="category-info">Height (cm)</p>
-                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.height}}</p>
+                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.height | number:'1.2-2'}}</p>
                     <div *ngIf="isLoading" class="shimmer loading-medical-info"></div>
                 </div>
                 <div class="medical-info-item">
                     <p class="category-info">BMI</p>
-                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.bmi}}</p>
+                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.bmi | number:'0.2-2'}}</p>
                     <div *ngIf="isLoading" class="shimmer loading-medical-info"></div>
                 </div>
                 <div class="medical-info-item">
                     <p class="category-info">Cholesterol</p>
-                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.cholesterol}}</p>
+                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.cholesterol | number:'0.2-2'}}</p>
                     <div *ngIf="isLoading" class="shimmer loading-medical-info"></div>
                 </div>
                 <div class="medical-info-item">
                     <p class="category-info">Blood sugar</p>
-                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.bloodSugar}}</p>
+                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.bloodSugar | number:'0.2-2'}}</p>
                     <div *ngIf="isLoading" class="shimmer loading-medical-info"></div>
                 </div>
                 <div class="medical-info-item">
                     <p class="category-info">Blood pressure</p>
                     <p *ngIf="!isLoading">
-                        {{this.patient.medicalInformation.systolicPressure +" / "+this.patient.medicalInformation.diastolicPressure}}
+                        {{this.patient.medicalInformation.systolicPressure | number:'0.0-0'}} 
+                        /{{this.patient.medicalInformation.diastolicPressure | number:'0.0-0'}}
                     </p>
                     <div *ngIf="isLoading" class="shimmer loading-medical-info"></div>
                 </div>
                 <div class="medical-info-item">
                     <p class="category-info">Heart rate</p>
-                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.heartRate}}</p>
+                    <p *ngIf="!isLoading">{{this.patient.medicalInformation.heartRate | number:'0.0-0'}}</p>
                     <div *ngIf="isLoading" class="shimmer loading-medical-info"></div>
                 </div>
             </div>
@@ -217,11 +218,11 @@
         <mat-card-title>Notes</mat-card-title>
         <mat-form-field  *ngIf="!isLoading" appearance="outline" class="textarea">
             <mat-label>Notes</mat-label>
-            <textarea matInput placeholder="Notes" [(ngModel)]="this.notes"></textarea>
+            <textarea matInput placeholder="Notes" [(ngModel)]="this.notes" maxlength="250"></textarea>
         </mat-form-field>
         <div *ngIf="isLoading" class="shimmer loading-notes"></div>
         <div *ngIf="!isLoading" class="button-wrapper">
-            <button mat-flat-button color="primary">Save</button>
+            <button mat-flat-button color="primary" [disabled]="this.isNotesUnchanged()" >Save</button>
         </div>
     </mat-card>
 </section>
