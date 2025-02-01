@@ -4,6 +4,7 @@ import { PatientDetailsDTO } from '../../models/PatientDetailsDTO';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientService } from 'src/app/services/patient.service';
 import { MedicalInformationUpdateDTO } from '../../models/MedicalInformationUpdateDTO';
+import { MedicalInformationResponseDTO } from '../../models/MedicalInformationResponseDTO ';
 
 interface BasicInformation {
   basicInformation: PatientDetailsDTO
@@ -37,10 +38,10 @@ export class EditMedicalInformationDialogComponent implements OnInit {
   }
 
   onCloseClick(): void {
-    this.dialogRef.close({value: true})
+    this.dialogRef.close()
   }
-  onCloseClickEdit(): void {
-    this.dialogRef.close({value: false})
+  onCloseClickEdit(medicalInformation: MedicalInformationResponseDTO): void {
+    this.dialogRef.close({medicalInformation: medicalInformation})
   }
 
   isSaveDisabled(): boolean {
@@ -55,7 +56,7 @@ export class EditMedicalInformationDialogComponent implements OnInit {
   updateMedicalInformation():void {
     const medicalInfo: MedicalInformationUpdateDTO = this.medicalInformation.getRawValue() as MedicalInformationUpdateDTO
     this._patientService.updateMedicalInformation(this.data.basicInformation.id, medicalInfo).subscribe(e => {
-      this.onCloseClickEdit()
+      this.onCloseClickEdit(e)
     })
     // console.log(medicalInfo)
   }

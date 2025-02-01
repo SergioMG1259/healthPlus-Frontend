@@ -7,6 +7,7 @@ import { PatientDetailsDTO } from '../features/patients/models/PatientDetailsDTO
 import { MedicalInformationUpdateDTO } from '../features/patients/models/MedicalInformationUpdateDTO';
 import { MedicalInformationResponseDTO } from '../features/patients/models/MedicalInformationResponseDTO ';
 import { PatientUpdateDTO } from '../features/patients/models/PatientUpdateDTO';
+import { NotesUpdateDTO } from '../features/patients/models/NotesUpdateDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class PatientService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODMxNzIyNH0.AjHW9RN_Dl2EeGohaZfy7zRKgHXXazTClzFeUrbGte-47GAe8xRgXy3F3jfuiWKxTqAvtMmyPM7sf_uXZRX0Ig'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODM5OTQ3Mn0.sjR2HDTKX6TJaWj8XNR3c8UxDM7KxuxLZhN-jUJkVBS6W8VB9cqdkRQ65MFsJAgbtB24MbzHlMaM5woaZZjgbw'
     })
   }
 
@@ -112,6 +113,14 @@ export class PatientService {
   updatePatientById(patientId:number, patientUpdateDTO: PatientUpdateDTO) {
     return this.http.put<PatientResponseDTO>(`${this.apiUrl}/patients/${patientId}`, 
       patientUpdateDTO, this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError))
+  }
+
+  updateNotes(patientId:number, notesUpdateDTO: NotesUpdateDTO) {
+    return this.http.put<PatientResponseDTO>(`${this.apiUrl}/patients/${patientId}/updateNotes`, 
+      notesUpdateDTO, this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError))

@@ -7,6 +7,10 @@ import { AppointmentForPatientDTO } from 'src/app/features/appointments/models/A
 import { MatDialog } from '@angular/material/dialog';
 import { EditBasicInformationDialogComponent } from '../../components/edit-basic-information-dialog/edit-basic-information-dialog.component';
 import { EditMedicalInformationDialogComponent } from '../../components/edit-medical-information-dialog/edit-medical-information-dialog.component';
+import { NotesUpdateDTO } from '../../models/NotesUpdateDTO';
+import { AllergyService } from 'src/app/services/allergy.service';
+import { AllergyGroupCreateDTO } from '../../models/AllergyGroupCreateDTO';
+import { AllergyRequestDTO } from '../../models/AllergyRequestDTO';
 
 @Component({
   selector: 'app-patient-details',
@@ -45,11 +49,11 @@ export class PatientDetailsComponent implements OnInit {
   })
   appointments:AppointmentForPatientDTO[] = []
   notes:string | null = null
+  originalFormValue: any
   originalValueNotes: string | null = this.notes
 
   constructor(private _formBuilder: FormBuilder, private _patientService: PatientService, private route: ActivatedRoute, 
-    private _dialogService: MatDialog
-  ) { }
+    private _dialogService: MatDialog, private _allergyService: AllergyService) { }
 
   // Getter para el FormArray
   get additionalAllergies(): FormArray {
@@ -85,8 +89,17 @@ export class PatientDetailsComponent implements OnInit {
       width: '400px',
       data: {basicInformation: this.patient}
     })
-    dialogRef.afterClosed().subscribe( (e) => {
-      console.log(e)
+    dialogRef.afterClosed().subscribe((e) => {
+      if(e) {
+        this.patient.names = e.patient.names
+        this.patient.lastNames = e.patient.lastNames
+        this.patient.birthDate = e.patient.birthDate
+        this.patient.gender = e.patient.gender
+        this.patient.dni = e.patient.dni
+        this.patient.phoneNumber = e.patient.phoneNumber
+        this.patient.email = e.patient.email
+        this.patient.address = e.patient.address
+      }
     })
   }
 
@@ -96,8 +109,17 @@ export class PatientDetailsComponent implements OnInit {
       width: '400px',
       data: {basicInformation: this.patient}
     })
-    dialogRef.afterClosed().subscribe( (e) => {
-      console.log(e)
+    dialogRef.afterClosed().subscribe((e) => {
+      if(e) {
+        this.patient.medicalInformation.weight = e.medicalInformation.weight
+        this.patient.medicalInformation.height = e.medicalInformation.height
+        this.patient.medicalInformation.bmi = e.medicalInformation.bmi
+        this.patient.medicalInformation.cholesterol = e.medicalInformation.cholesterol
+        this.patient.medicalInformation.bloodSugar = e.medicalInformation.bloodSugar
+        this.patient.medicalInformation.systolicPressure = e.medicalInformation.systolicPressure
+        this.patient.medicalInformation.diastolicPressure = e.medicalInformation.diastolicPressure
+        this.patient.medicalInformation.heartRate = e.medicalInformation.heartRate
+      }
     })
   }
 
@@ -106,6 +128,40 @@ export class PatientDetailsComponent implements OnInit {
     const normalizedOriginalNotes = this.originalValueNotes?.trim() || null
     
     return normalizedNotes == normalizedOriginalNotes
+  }
+
+  updateNotes(): void {
+    const notesUpdateDTO:NotesUpdateDTO = {notes: this.notes}
+    this._patientService.updateNotes(this.patientId, notesUpdateDTO).subscribe(e => {
+      this.originalValueNotes = e.notes
+    })
+  }
+
+  isSaveDisabled(): boolean {
+    return this.allergiesForm.invalid || this.isUnchanged()
+  }
+
+  // Verificar si el formulario sigue igual que al inicio
+  isUnchanged(): boolean {
+    return JSON.stringify(this.allergiesForm.getRawValue()) === JSON.stringify(this.originalFormValue)
+  }
+
+  updateAllergies() {
+    const allergiesMapToId = Array.from(this.allergyMap.entries())
+    .filter(([id, name]) => this.allergiesForm.get('allergies')?.get(name)?.value)
+    .map(([id]) => id)
+
+    const customAllergiesMap: AllergyRequestDTO[] = (this.allergiesForm.getRawValue().additionalAllergies as string[])
+    .map((name) => ({ name }))
+    
+    const allergyGroupCreateDTO: AllergyGroupCreateDTO = {
+      allergiesId: allergiesMapToId,
+      customAllergiesNames: customAllergiesMap
+    }
+
+    this._allergyService.updateAllergiesInPatient(this.patientId, allergyGroupCreateDTO).subscribe(e => {
+      this.originalFormValue = this.allergiesForm.getRawValue()
+    })
   }
 
   ngOnInit(): void {
@@ -131,6 +187,7 @@ export class PatientDetailsComponent implements OnInit {
         this.additionalAllergies.push(this._formBuilder.control(element.name, Validators.required) )
       })
 
+      this.originalFormValue = this.allergiesForm.getRawValue()
       this.isLoading = false
     })
   }

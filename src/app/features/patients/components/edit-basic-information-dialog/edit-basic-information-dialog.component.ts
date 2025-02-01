@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { onlyNumbersValidator } from '../../functions/onlyNumberValidator';
 import { PatientService } from 'src/app/services/patient.service';
 import { PatientUpdateDTO } from '../../models/PatientUpdateDTO';
+import { PatientResponseDTO } from '../../models/PatientResponseDTO';
 
 interface BasicInformation {
   basicInformation: PatientDetailsDTO
@@ -41,10 +42,10 @@ export class EditBasicInformationDialogComponent implements OnInit {
   }
 
   onCloseClick(): void {
-    this.dialogRef.close({value: true})
+    this.dialogRef.close()
   }
-  onCloseClickEdit(): void {
-    this.dialogRef.close({value: false})
+  onCloseClickEdit(patientResponseDTO: PatientResponseDTO): void {
+    this.dialogRef.close({patient: patientResponseDTO})
   }
 
   isSaveDisabled(): boolean {
@@ -69,9 +70,8 @@ export class EditBasicInformationDialogComponent implements OnInit {
 
   updatePatient():void {
     const patientUpdateDTO: PatientUpdateDTO = this.basicInformation.getRawValue() as PatientUpdateDTO
-    console.log(patientUpdateDTO)
     this._patientService.updatePatientById(1, patientUpdateDTO).subscribe(e=> {
-      this.onCloseClickEdit()
+      this.onCloseClickEdit(e)
     })
   }
 

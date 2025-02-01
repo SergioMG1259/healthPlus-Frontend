@@ -132,6 +132,9 @@
 .text-wrapper {
     white-space: normal;
 }
+footer {
+    text-align: end;
+}
 /*NOTES*/
 .textarea {
     width: 100%;

@@ -210,6 +210,10 @@
                             </button>
                         </div>
                     </form>
+                    <footer>
+                        <button mat-flat-button color="primary" [disabled]="this.isSaveDisabled()" 
+                        (click)="this.updateAllergies()">Save</button>
+                    </footer>
                 </div>
             </mat-tab>
           </mat-tab-group>
@@ -222,7 +226,8 @@
         </mat-form-field>
         <div *ngIf="isLoading" class="shimmer loading-notes"></div>
         <div *ngIf="!isLoading" class="button-wrapper">
-            <button mat-flat-button color="primary" [disabled]="this.isNotesUnchanged()" >Save</button>
+            <button mat-flat-button color="primary" [disabled]="this.isNotesUnchanged()"
+            (click)="this.updateNotes()">Save</button>
         </div>
     </mat-card>
 </section>

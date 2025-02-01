@@ -1,3 +1,3 @@
 export interface NotesUpdateDTO {
-    notes: string
+    notes: string | null
 }
