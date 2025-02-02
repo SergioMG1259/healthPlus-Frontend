@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AddAppointmentDialogComponent } from '../../components/add-appointment-dialog/add-appointment-dialog.component';
+import { AppointmentResponseDTO } from '../../models/AppointmentResponseDTO';
 
 @Component({
   selector: 'app-appointments-calendar',
@@ -13,6 +14,7 @@ export class AppointmentsCalendarComponent implements OnInit {
   type: 'month'|'week'|'day' = 'week' 
   indexDate: Date = new Date()
   indexDateSubject: BehaviorSubject<Date> = new BehaviorSubject<Date>(this.indexDate)
+  appointmentAddSubject:Subject<AppointmentResponseDTO> = new Subject<AppointmentResponseDTO>()
 
   constructor(private _dialog: MatDialog) { }
 
@@ -22,7 +24,7 @@ export class AppointmentsCalendarComponent implements OnInit {
     //   return this.indexDate.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' })
 
     // } 
-    if (this.type === 'week') {
+    if (this.type == 'week') {
       
       const startOfWeek = new Date(this.indexDate)
       startOfWeek.setDate(this.indexDate.getDate() - this.indexDate.getDay())
@@ -50,6 +52,10 @@ export class AppointmentsCalendarComponent implements OnInit {
     return this.indexDateSubject as Observable<Date>
   }
 
+  get appointmentAdd$(): Observable<AppointmentResponseDTO> {
+    return this.appointmentAddSubject as Observable<AppointmentResponseDTO>
+  }
+
   next(): void {
     if (this.type == 'week') {
       this.indexDate.setDate(this.indexDate.getDate() + 7)
@@ -74,8 +80,11 @@ export class AppointmentsCalendarComponent implements OnInit {
       backdropClass: 'dialog-bg',
       width: '400px'
     })
-    dialogRef.afterClosed().subscribe( (e) => {
-      console.log(e)
+
+    dialogRef.afterClosed().subscribe((appointmentResponse) => {
+      if (appointmentResponse) {
+        this.appointmentAddSubject.next(appointmentResponse.appointment)
+      }
     })
   }
 

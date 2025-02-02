@@ -19,7 +19,7 @@ export class PatientService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODM5OTQ3Mn0.sjR2HDTKX6TJaWj8XNR3c8UxDM7KxuxLZhN-jUJkVBS6W8VB9cqdkRQ65MFsJAgbtB24MbzHlMaM5woaZZjgbw'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODQ4ODAwMH0.uWqXSzKmGQGW9mcKH_R-kD4i_eEtVXw7Ddfx7ZPAZEm4uwTOsI3E7m5YxnVoW73vNTmemv3dur3OvECKAVAbUQ'
     })
   }
 

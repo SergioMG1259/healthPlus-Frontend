@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditAppointemntDialogComponent } from '../edit-appointemnt-dialog/edit-appointemnt-dialog.component';
 import { DetailsAppointmentDialogComponent } from '../details-appointment-dialog/details-appointment-dialog.component';
 import { MedicalIssue } from '../../models/MedicalIssue';
+import { AppointmentService } from 'src/app/services/appointment.service';
+import { AppointmentDateRequestDTO } from '../../models/AppointmentDateRequestDTO';
 
 @Component({
   selector: 'app-weekly-calendar',
@@ -18,7 +20,9 @@ export class WeeklyCalendarComponent implements OnInit {
 
   indexDate: Date = new Date()
   @Input() indexDate$: Observable<Date> = new Observable<Date>()
+  @Input() appointmentAdd$: Observable<AppointmentResponseDTO> = new Observable<AppointmentResponseDTO>()
   indexDateSub!: Subscription
+  appointmentAddSub!: Subscription
   daysName: string[] = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
   daysWeek: Date [] = []
   gridData: Date[] = []
@@ -44,23 +48,14 @@ export class WeeklyCalendarComponent implements OnInit {
     patientField: [null, Validators.required]
   })
 
-  appointments: AppointmentResponseDTO[] = [
-    {
-      id: 1, price: 10, startDate: new Date(2025, 0, 10, 8), endDate: new Date(2025, 0, 10, 9), issue: MedicalIssue.FOLLOW_UP, patient: {id: 1, names: "hola", lastNames: "ddddddddd"}
-    },
-    {
-      id: 1, price: 10, startDate: new Date(2025, 0, 10, 9), endDate: new Date(2025, 0, 10, 12), issue: MedicalIssue.FOLLOW_UP, patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
-    },
-    {
-      id: 1, price: 10, startDate: new Date(2025, 0, 30, 9), endDate: new Date(2025, 0, 30, 12), issue: MedicalIssue.FOLLOW_UP, patient: {id: 2, names: "hola", lastNames: "dddddddddddd"}
-    }
-  ]
+  appointments: AppointmentResponseDTO[] = []
 
   startDateOverlay: Date | null = null
   endDateOverlay: Date | null = null
 
   constructor(private _renderer: Renderer2, private _viewContainerRef: ViewContainerRef, 
-    private _appointmentOverlayService: AppointmentOverlayCalendarService, private _fb: FormBuilder, private _dialog: MatDialog) { }
+    private _appointmentOverlayService: AppointmentOverlayCalendarService, private _fb: FormBuilder, private _dialog: MatDialog,
+    private _appointmentService: AppointmentService) { }
 
   private fillWeek(): void {
     const startOfWeek = new Date(this.indexDate)
@@ -147,7 +142,7 @@ export class WeeklyCalendarComponent implements OnInit {
   }
 
   private filterAppointmentsInit(startDate: Date): AppointmentResponseDTO[] {
-  
+    // Filtrar la lista de appointments a un día
     const endOfDay = new Date(startDate)
     endOfDay.setHours(23, 59, 59, 999)
 
@@ -245,7 +240,7 @@ export class WeeklyCalendarComponent implements OnInit {
 
   compareDatesInAppointments(date: Date): AppointmentResponseDTO | null {
     const appointment = this.appointments.find(
-      (f) =>
+      (f) => 
         f.startDate.getFullYear() === date.getFullYear() &&
         f.startDate.getMonth() === date.getMonth() &&
         f.startDate.getDate() === date.getDate() &&
@@ -306,11 +301,30 @@ export class WeeklyCalendarComponent implements OnInit {
       this.indexDate = date
       this.fillWeek()
     })
+
+    this.appointmentAddSub = this.appointmentAdd$.subscribe(appointment => {
+      this.appointments.push(appointment)
+    })
+
+    const date: AppointmentDateRequestDTO = {
+      date: new Date()
+    }
+
+    this._appointmentService.findAppointmentsWeeklyBySpecialistId(1, date).subscribe(e => {
+
+      this.appointments = e.map(appointment => ({
+        ...appointment,
+        startDate: new Date(appointment.startDate),
+        endDate: new Date(appointment.endDate),
+      }))
+    })
   }
 
   ngOnDestroy(): void {
-    if (this.indexDateSub) {
+    if (this.indexDateSub)
       this.indexDateSub.unsubscribe()
-    }
+
+    if (this.appointmentAddSub)
+      this.appointmentAddSub.unsubscribe()
   }
 }

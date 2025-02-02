@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { debounceTime, map, Observable, startWith, Subscription } from 'rxjs';
+import { debounceTime, map, Observable, startWith, Subscription, switchMap } from 'rxjs';
 import { PatientShortResponseDTO } from 'src/app/features/patients/models/PatientShortResponseDTO';
 import { timeRangeValidator } from '../../functions/timeRangeValidator';
+import { AppointmentCreateDTO } from '../../models/AppointmentCreateDTO';
+import { PatientService } from 'src/app/services/patient.service';
+import { PatientResponseDTO } from 'src/app/features/patients/models/PatientResponseDTO';
+import { AppointmentResponseDTO } from '../../models/AppointmentResponseDTO';
+import { AppointmentService } from 'src/app/services/appointment.service';
 
 @Component({
   selector: 'app-add-appointment-dialog',
@@ -12,12 +17,7 @@ import { timeRangeValidator } from '../../functions/timeRangeValidator';
 })
 export class AddAppointmentDialogComponent implements OnInit {
 
-  patients: PatientShortResponseDTO[] = [
-    {id: 1, names: 'Sergio Martin', lastNames: 'Guanilo Gonzales'},
-    {id: 2, names: 'Luis Martin', lastNames: 'Gonzales Gonzales'},
-    {id: 3, names: 'Martin Diego', lastNames: 'Sanchez'},
-    {id: 4, names: 'Daniela', lastNames: 'Flores Gutierrez'}
-  ]
+  patients: PatientResponseDTO[] =[]
 
   form: FormGroup = this._fb.group({
     issueField: ['', Validators.required],
@@ -30,35 +30,46 @@ export class AddAppointmentDialogComponent implements OnInit {
   )
 
   patientControl = new FormControl()
-  filteredPatients$: Observable<PatientShortResponseDTO[]> = new Observable<PatientShortResponseDTO[]>()
+  filteredPatients$: Observable<PatientResponseDTO[]> = new Observable<PatientResponseDTO[]>()
   
   hoursSub!: Subscription
   today:Date = new Date()
 
-  constructor(public dialogRef: MatDialogRef<AddAppointmentDialogComponent>, private _fb: FormBuilder) { }
+  constructor(public dialogRef: MatDialogRef<AddAppointmentDialogComponent>, private _fb: FormBuilder,
+    private _patientService: PatientService, private _appointmentService: AppointmentService) { }
 
   onCloseClick(): void {
-    this.dialogRef.close({value: true})
+    this.dialogRef.close()
   }
 
-  selectPatient(patient:number): void {
-    this.form.controls['patientField'].setValue(patient)
+  onCloseClickAdd(appointment: AppointmentResponseDTO): void {
+    this.dialogRef.close({appointment: appointment})
   }
 
-  displayPatient = (patientId: number): string => {
-    const patient = this.patients.find(patient => patient.id == patientId)
+  selectPatient(patient: PatientResponseDTO): void {
+    // this.form.controls['patientField'].setValue(patient.id)
+    this.form.get('patientField')?.setValue(patient.id)
+  }
+
+  displayPatient = (patient: PatientResponseDTO): string => {
     return patient ? `${patient.names} ${patient.lastNames}` : ''
   }
 
-  private filterPatients(value: string): PatientShortResponseDTO[] {
-    if (!value || typeof value != 'string') {
-      return this.patients  // Si no es una cadena, devolver todos los pacientes
-    }
+  // private filterPatients(value: string): PatientShortResponseDTO[] {
+  //   if (!value || typeof value != 'string') {
+  //     return this.patients  // Si no es una cadena, devolver todos los pacientes
+  //   }
 
-    const filterValue = value.toLowerCase()
-    return this.patients.filter(patient =>
-      (`${patient.names} ${patient.lastNames}`).toLowerCase().includes(filterValue)
-    )
+  //   const filterValue = value.toLowerCase()
+  //   return this.patients.filter(patient =>
+  //     (`${patient.names} ${patient.lastNames}`).toLowerCase().includes(filterValue)
+  //   )
+  // }
+  private filterPatients(value: string|null): Observable<PatientResponseDTO[]> {
+    if (value == '')
+      value = null
+    return this._patientService.getPatientsWithFilters(1, {searchByNameAndLastName: value, female: true,
+      male: true, minAge: null, maxAge: null, sortBy: null})
   }
 
   areDatesEqual(date1: Date, date2: Date = new Date()): boolean {
@@ -72,11 +83,52 @@ export class AddAppointmentDialogComponent implements OnInit {
     )
   }
 
+  createAppointment() {
+
+    const date = this.form.get('dateField')?.value
+    const startHour = this.form.get('startField')?.value
+    const endHour = this.form.get('endField')?.value
+    
+    // Crear startDate en UTC sin zona horaria local
+    const startDate = new Date(Date.UTC(
+      new Date(date).getUTCFullYear(), 
+      new Date(date).getUTCMonth(), 
+      new Date(date).getUTCDate(),
+      startHour, 0, 0, 0  // Establece la hora en UTC (hora de inicio)
+    ))
+
+    // Crear endDate en UTC sin zona horaria local
+    const endDate = new Date(Date.UTC(
+      new Date(date).getUTCFullYear(),
+      new Date(date).getUTCMonth(),
+      new Date(date).getUTCDate(),
+      endHour, 0, 0, 0  // Establece la hora en UTC (hora de fin)
+    ))
+
+    const appointment: AppointmentCreateDTO = {
+      price: this.form.get('priceField')?.value,
+      startDate: startDate,
+      endDate: endDate,
+      issue: this.form.get('issueField')?.value
+    }
+    const patientId:number = this.form.get('patientField')?.value
+
+    this._appointmentService.createAppointment(1, patientId, appointment).subscribe(e => {
+      this.onCloseClickAdd(e)
+    })
+  }
+
   ngOnInit(): void {
+    
+    // this._patientService.getPatientsWithFilters(1,{searchByNameAndLastName: null, female: true,
+    //   male: true, minAge: null, maxAge: null, sortBy: null}).subscribe(e=> {
+    //     this.patients = e
+    // })
+    
     this.filteredPatients$ = this.patientControl.valueChanges.pipe(
       startWith(''),
       debounceTime(1000), // Espera 1 segundo
-      map(value => this.filterPatients(value))
+      switchMap(value => this.filterPatients(value))
     )
 
     this.hoursSub = this.form.get('startField')!.valueChanges.subscribe((value:number) => {
@@ -92,5 +144,4 @@ export class AddAppointmentDialogComponent implements OnInit {
       this.hoursSub.unsubscribe()
     }
   }
-
 }
