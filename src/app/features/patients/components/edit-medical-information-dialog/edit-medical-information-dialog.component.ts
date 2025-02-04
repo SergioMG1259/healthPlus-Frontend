@@ -50,7 +50,7 @@ export class EditMedicalInformationDialogComponent implements OnInit {
 
   // Verificar si el formulario sigue igual que al inicio
   isUnchanged(): boolean {
-    return JSON.stringify(this.medicalInformation.getRawValue()) === JSON.stringify(this.originalValues)
+    return JSON.stringify(this.medicalInformation.getRawValue()) == JSON.stringify(this.originalValues)
   }
 
   updateMedicalInformation():void {

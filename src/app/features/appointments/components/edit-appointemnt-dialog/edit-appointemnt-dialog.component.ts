@@ -1,10 +1,14 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppointmentResponseDTO } from '../../models/AppointmentResponseDTO';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { timeRangeValidator } from '../../functions/timeRangeValidator';
 import { PatientShortResponseDTO } from 'src/app/features/patients/models/PatientShortResponseDTO';
-import { debounceTime, map, Observable, startWith } from 'rxjs';
+import { debounceTime, map, Observable, startWith, switchMap } from 'rxjs';
+import { PatientService } from 'src/app/services/patient.service';
+import { AppointmentService } from 'src/app/services/appointment.service';
+import { PatientResponseDTO } from 'src/app/features/patients/models/PatientResponseDTO';
+import { AppointmentUpdateDTO } from '../../models/AppointmentUpdateDTO';
 
 interface AppointemntDetails {
   appointment: AppointmentResponseDTO
@@ -16,20 +20,17 @@ interface AppointemntDetails {
   styleUrls: ['./edit-appointemnt-dialog.component.css']
 })
 export class EditAppointemntDialogComponent implements OnInit {
-
-  patients: PatientShortResponseDTO[] = [
-    {id: 1, names: 'Sergio Martin', lastNames: 'Guanilo Gonzales'},
-    {id: 2, names: 'Luis Martin', lastNames: 'Gonzales Gonzales'},
-    {id: 3, names: 'Martin Diego', lastNames: 'Sanchez'},
-    {id: 4, names: 'Daniela', lastNames: 'Flores Gutierrez'}
-  ]
+  
+  patients: PatientShortResponseDTO[] = []
   form!: FormGroup
   patientControl = new FormControl()
   filteredPatients$: Observable<PatientShortResponseDTO[]> = new Observable<PatientShortResponseDTO[]>()
   today:Date = new Date()
+  originalValues: any
 
   constructor(public dialogRef: MatDialogRef<EditAppointemntDialogComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: AppointemntDetails, private _fb: FormBuilder) {
+    @Inject(MAT_DIALOG_DATA) public data: AppointemntDetails, private _fb: FormBuilder,
+    private _patientService: PatientService, private _appointmentService: AppointmentService) {
     
     this.form = this._fb.group({
         issueField: [data.appointment.issue, Validators.required],
@@ -40,19 +41,77 @@ export class EditAppointemntDialogComponent implements OnInit {
         patientField: [data.appointment.patient.id, Validators.required]
       }, { validators: timeRangeValidator() }
     )
-    this.patientControl.setValue(data.appointment.patient.id)
+    this.patientControl.setValue(data.appointment.patient)
+    this.originalValues = this.form.getRawValue()
   }
 
   onCloseClick(): void {
-    this.dialogRef.close({value: true})
+    this.dialogRef.close()
   }
 
-  selectPatient(patient:number): void {
-    this.form.controls['patientField'].setValue(patient)
+  onCloseClickUpdate(appointment: AppointmentResponseDTO): void {
+    this.dialogRef.close({appointment: appointment})
   }
 
-  displayPatient = (patientId: number): string => {
-    const patient = this.patients.find(patient => patient.id == patientId)
+  updateAppointment(): void {
+    console.log(this.originalValues)
+    const date = this.form.get('dateField')?.value
+    const startHour = this.form.get('startField')?.value
+    const endHour = this.form.get('endField')?.value
+    
+    // Crear startDate en UTC sin zona horaria local
+    const startDate = new Date(Date.UTC(
+      new Date(date).getUTCFullYear(), 
+      new Date(date).getUTCMonth(), 
+      new Date(date).getUTCDate(),
+      startHour, 0, 0, 0  // Establece la hora en UTC (hora de inicio)
+    ))
+
+    // Crear endDate en UTC sin zona horaria local
+    const endDate = new Date(Date.UTC(
+      new Date(date).getUTCFullYear(),
+      new Date(date).getUTCMonth(),
+      new Date(date).getUTCDate(),
+      endHour, 0, 0, 0  // Establece la hora en UTC (hora de fin)
+    ))
+
+    const appointment: AppointmentUpdateDTO = {
+      price: this.form.get('priceField')?.value,
+      startDate: startDate,
+      endDate: endDate,
+      issue: this.form.get('issueField')?.value
+    }
+    const patientId:number = this.form.get('patientField')?.value
+
+    console.log(appointment)
+    console.log(patientId)
+  }
+
+  isSaveDisabled(): boolean {
+    return this.form.invalid || this.isUnchanged()
+  }
+
+  // Verificar si el formulario sigue igual que al inicio
+  isUnchanged(): boolean {
+    const normalizeDate = (date: any) => {
+      const d = new Date(date)
+      return d.toISOString().split('T')[0] // Solo la parte YYYY-MM-DD
+    }
+
+    return JSON.stringify({
+      ...this.originalValues,
+      dateField: normalizeDate(this.originalValues.dateField)
+    }) == JSON.stringify({
+      ...this.form.getRawValue(),
+      dateField: normalizeDate(this.form.getRawValue().dateField)
+    })
+  }
+
+  selectPatient(patient: PatientResponseDTO): void {
+    this.form.get('patientField')?.setValue(patient.id)
+  }
+
+  displayPatient = (patient: PatientShortResponseDTO): string => {
     return patient ? `${patient.names} ${patient.lastNames}` : ''
   }
 
@@ -67,22 +126,18 @@ export class EditAppointemntDialogComponent implements OnInit {
     )
   }
 
-  private filterPatients(value: string): PatientShortResponseDTO[] {
-    if (typeof value != 'string') {
-      return this.patients  // Si no es una cadena, devolver todos los pacientes
-    }
-
-    const filterValue = value.toLowerCase()
-    return this.patients.filter(patient =>
-      (`${patient.names} ${patient.lastNames}`).toLowerCase().includes(filterValue)
-    )
+  private filterPatients(value: string|null): Observable<PatientResponseDTO[]> {
+    if (value == '')
+      value = null
+    return this._patientService.getPatientsWithFilters(1, {searchByNameAndLastName: value, female: true,
+      male: true, minAge: null, maxAge: null, sortBy: null})
   }
 
   ngOnInit(): void {
     this.filteredPatients$ = this.patientControl.valueChanges.pipe(
-      startWith(''),
+      startWith(this.data.appointment.patient.names + ' ' + this.data.appointment.patient.lastNames),
       debounceTime(1000), // Espera 1 segundo
-      map(value => this.filterPatients(value))
+      switchMap(value => this.filterPatients(value))
     )
   }
 

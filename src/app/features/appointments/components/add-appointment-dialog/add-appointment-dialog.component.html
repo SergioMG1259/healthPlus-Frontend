@@ -66,7 +66,7 @@
 
         <footer class="flex footer">
             <button mat-button color="primary" (click)="this.onCloseClick()">Cancel</button>
-            <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="this.createAppointment()">Add</button>
+            <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="this.createAppointment()">Add</button>
         </footer>
     </form>
 </div>

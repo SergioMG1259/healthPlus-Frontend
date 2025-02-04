@@ -28,7 +28,6 @@ export class AddAppointmentDialogComponent implements OnInit {
     patientField: [null, Validators.required]
   }, { validators: timeRangeValidator() }
   )
-
   patientControl = new FormControl()
   filteredPatients$: Observable<PatientResponseDTO[]> = new Observable<PatientResponseDTO[]>()
   
@@ -51,7 +50,7 @@ export class AddAppointmentDialogComponent implements OnInit {
     this.form.get('patientField')?.setValue(patient.id)
   }
 
-  displayPatient = (patient: PatientResponseDTO): string => {
+  displayPatient = (patient: PatientShortResponseDTO): string => {
     return patient ? `${patient.names} ${patient.lastNames}` : ''
   }
 

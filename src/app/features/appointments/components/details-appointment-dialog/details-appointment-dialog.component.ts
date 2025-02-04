@@ -17,7 +17,7 @@ export class DetailsAppointmentDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: AppointemntDetails) { }
 
   onCloseClick(): void {
-    this.dialogRef.close({value: true})
+    this.dialogRef.close()
   }
 
   ngOnInit(): void {

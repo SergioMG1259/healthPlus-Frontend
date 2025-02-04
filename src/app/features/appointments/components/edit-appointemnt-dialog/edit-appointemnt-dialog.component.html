@@ -11,7 +11,7 @@
                 [formControl]="patientControl">
                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="this.displayPatient" 
                     (optionSelected)="selectPatient($event.option.value)">
-                    <mat-option *ngFor="let patient of filteredPatients$ | async" [value]="patient.id">
+                    <mat-option *ngFor="let patient of filteredPatients$ | async" [value]="patient">
                         {{patient.names + " " + patient.lastNames}}
                     </mat-option>
                 </mat-autocomplete>
@@ -64,7 +64,8 @@
 
         <footer class="flex footer">
             <button mat-button color="warn" (click)="this.onCloseClick()">Delete</button>
-            <button mat-flat-button color="primary" [disabled]="!form.valid">Edit</button>
+            <button mat-flat-button color="primary" [disabled]="this.isSaveDisabled()"
+            (click)="this.updateAppointment()">Edit</button>
         </footer>
     </form>
 </div>

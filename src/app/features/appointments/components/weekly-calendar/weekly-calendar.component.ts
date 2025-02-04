@@ -269,9 +269,11 @@ export class WeeklyCalendarComponent implements OnInit {
       })
     }
 
-    dialogRef!.afterClosed().subscribe( (e) => {
-      console.log(e)
-    })
+    if (!isPastTime) {
+      dialogRef!.afterClosed().subscribe((e) => {
+        console.log(e)
+      })
+    }
   }
 
 
@@ -303,7 +305,10 @@ export class WeeklyCalendarComponent implements OnInit {
     })
 
     this.appointmentAddSub = this.appointmentAdd$.subscribe(appointment => {
-      this.appointments.push(appointment)
+      const newAppointment = {...appointment,
+        startDate: new Date(appointment.startDate), endDate: new Date(appointment.endDate)}
+        
+      this.appointments.push(newAppointment)
     })
 
     const date: AppointmentDateRequestDTO = {
@@ -315,7 +320,7 @@ export class WeeklyCalendarComponent implements OnInit {
       this.appointments = e.map(appointment => ({
         ...appointment,
         startDate: new Date(appointment.startDate),
-        endDate: new Date(appointment.endDate),
+        endDate: new Date(appointment.endDate)
       }))
     })
   }

@@ -16,7 +16,7 @@ export class AppointmentService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODQ4ODAwMH0.uWqXSzKmGQGW9mcKH_R-kD4i_eEtVXw7Ddfx7ZPAZEm4uwTOsI3E7m5YxnVoW73vNTmemv3dur3OvECKAVAbUQ'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODY2MDgzMH0.dsC1zQyTAYtp0nIZkHe_IePi4JIWzrmIDpLXJounSf5j2VZj8viDxPqfDLPQlNbZ51Z0VdwKTCTQHrBj8g5FJA'
     })
   }
 

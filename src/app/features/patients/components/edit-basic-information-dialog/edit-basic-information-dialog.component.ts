@@ -62,7 +62,7 @@ export class EditBasicInformationDialogComponent implements OnInit {
     return JSON.stringify({
       ...this.originalValues,
       birthDate: normalizeDate(this.originalValues.birthDate)
-    }) === JSON.stringify({
+    }) == JSON.stringify({
       ...this.basicInformation.getRawValue(),
       birthDate: normalizeDate(this.basicInformation.getRawValue().birthDate)
     })
