@@ -50,11 +50,14 @@ export class EditAppointemntDialogComponent implements OnInit {
   }
 
   onCloseClickUpdate(appointment: AppointmentResponseDTO): void {
-    this.dialogRef.close({appointment: appointment})
+    this.dialogRef.close({appointmentResponse: appointment, delete: false})
+  }
+
+  onCloseClickDelete() {
+    this.dialogRef.close({appointmentResponse: this.data.appointment, delete: true})
   }
 
   updateAppointment(): void {
-    console.log(this.originalValues)
     const date = this.form.get('dateField')?.value
     const startHour = this.form.get('startField')?.value
     const endHour = this.form.get('endField')?.value
@@ -83,8 +86,15 @@ export class EditAppointemntDialogComponent implements OnInit {
     }
     const patientId:number = this.form.get('patientField')?.value
 
-    console.log(appointment)
-    console.log(patientId)
+    this._appointmentService.updateAppointment(this.data.appointment.id, appointment).subscribe(e => {
+      this.onCloseClickUpdate(e)
+    })
+  }
+
+  deleteAppointmet() {
+    this._appointmentService.deleteAppointment(this.data.appointment.id).subscribe(e => {
+      this.onCloseClickDelete()
+    })
   }
 
   isSaveDisabled(): boolean {

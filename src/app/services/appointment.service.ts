@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { AppointmentResponseDTO } from '../features/appointments/models/AppointmentResponseDTO';
 import { AppointmentCreateDTO } from '../features/appointments/models/AppointmentCreateDTO';
 import { AppointmentDateRequestDTO } from '../features/appointments/models/AppointmentDateRequestDTO';
+import { AppointmentUpdateDTO } from '../features/appointments/models/AppointmentUpdateDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AppointmentService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODY2MDgzMH0.dsC1zQyTAYtp0nIZkHe_IePi4JIWzrmIDpLXJounSf5j2VZj8viDxPqfDLPQlNbZ51Z0VdwKTCTQHrBj8g5FJA'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODgzNzg2Mn0.OHnKrUOlx7K7AAcu5haCfRWpuDdKdnfu37ZymUAYUYXkQW-dYlNXf7BLF8jNK9ZYDO5rAp3cg8iCmjn_z6Qq8w'
     })
   }
 
@@ -45,6 +46,14 @@ export class AppointmentService {
     return throwError(errorMessage)
   }
 
+  findAppointmentsWeeklyBySpecialistId(specialistId: number, appointmentDateRequestDTO: AppointmentDateRequestDTO) {
+    return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${specialistId}/weekly`, 
+      appointmentDateRequestDTO, this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError))
+  }
+
   createAppointment(specialistId: number, patientId: number, appointmentCreateDTO: AppointmentCreateDTO) {
     return this.http.post<AppointmentResponseDTO>(`${this.apiUrl}/appointments/specialist/${specialistId}/patient/${patientId}`, 
       appointmentCreateDTO, this.httpOptions)
@@ -53,9 +62,16 @@ export class AppointmentService {
         catchError(this.handleError))
   }
 
-  findAppointmentsWeeklyBySpecialistId(specialistId: number, appointmentDateRequestDTO: AppointmentDateRequestDTO) {
-    return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${specialistId}/weekly`, 
-      appointmentDateRequestDTO, this.httpOptions)
+  updateAppointment(appointmentId: number, appointmentUpdateDTO: AppointmentUpdateDTO) {
+    return this.http.put<AppointmentResponseDTO>(`${this.apiUrl}/appointments/${appointmentId}`, 
+      appointmentUpdateDTO, this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError))
+  }
+
+  deleteAppointment(appointmentId: number) {
+    return this.http.delete<void>(`${this.apiUrl}/appointments/${appointmentId}`, this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError))

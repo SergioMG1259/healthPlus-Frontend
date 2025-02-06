@@ -252,7 +252,6 @@ export class WeeklyCalendarComponent implements OnInit {
   onClickOpenAppointmentActionDialog(appointment: AppointmentResponseDTO):void {
 
     const isPastTime = this.isPastTime(appointment.startDate)
-
     let dialogRef = null
 
     if (!isPastTime) {
@@ -271,11 +270,18 @@ export class WeeklyCalendarComponent implements OnInit {
 
     if (!isPastTime) {
       dialogRef!.afterClosed().subscribe((e) => {
-        console.log(e)
+        if( e && e.delete) {
+          this.appointments = this.appointments.filter((a) => e.appointmentResponse.id != a.id)
+        } else if (e && !e.delete){
+          appointment.startDate = new Date(e.appointmentResponse.startDate)
+          appointment.endDate = new Date(e.appointmentResponse.endDate)
+          appointment.patient = e.appointmentResponse.patient
+          appointment.issue = e.appointmentResponse.issue
+          appointment.price = e.appointmentResponse.price
+        }
       })
     }
   }
-
 
   onSearchInput(event: Event): void {
     this.openSearchPatient()
