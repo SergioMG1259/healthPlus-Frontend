@@ -64,6 +64,10 @@
             <p class="error">The start hour must be less than the end hour.</p>
         </div>
 
+        <div *ngIf="this.errorMessage">
+            <p class="error">{{this.errorMessage}}</p>
+        </div>
+
         <footer class="flex footer">
             <button mat-button color="primary" (click)="this.onCloseClick()">Cancel</button>
             <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="this.createAppointment()">Add</button>

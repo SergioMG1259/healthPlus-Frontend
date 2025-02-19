@@ -114,7 +114,7 @@
                 <ul class="flex appointments-wrapper" aria-label="list of appointments">
                     <li class="flex appointment-card" *ngFor="let appointment of this.appointments">
                         <div class="flex appointment-column">
-                            <div class="flex group">
+                            <div class="flex group start-date">
                                 <p class="title">{{appointment.startDate | date:'MM/dd/yyyy'}}</p>
                                 <p class="sub-title">
                                     {{appointment.startDate| date: 'HH:mm'}} - {{appointment.endDate| date: 'HH:mm'}}
@@ -122,19 +122,19 @@
                             </div>
                         </div>
                         <div class="flex appointment-column">
-                            <div class="flex group">
+                            <div class="flex group issue">
                                 <p class="sub-title">Issue</p>
                                 <p class="text">{{appointment.issue | textFormat}}</p>
                             </div>
                         </div>
                         <div class="flex appointment-column">
-                            <div class="flex group">
+                            <div class="flex group price">
                                 <p class="sub-title">Price</p>
                                 <p class="text">S/ {{appointment.price | number:'0.2-2'}}</p>
                             </div>
                         </div>
                         <div class="flex appointment-column">
-                            <div class="flex group">
+                            <div class="flex group created">
                                 <p class="sub-title">Created at</p>
                                 <p>{{appointment.createdDate | date:'MM/dd/yyyy'}}</p>
                             </div>

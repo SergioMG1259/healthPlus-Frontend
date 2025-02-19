@@ -42,11 +42,15 @@
     <form [formGroup]="form" class="flex appointment-overlay-add shadow" cdkTrapFocus cdkTrapFocusAutoCapture>
 
         <div class="search">
-            <span tabindex="-6" cdkFocusInitial></span>
             <label for="search-patient">Search patient</label>
-            <input id="search-patient" class="search-bar" type="search" placeholder="Patient names" 
-                cdkOverlayOrigin #trigger="cdkOverlayOrigin" (input)="this.onSearchInput($event)" 
-                [value]="selectedPatient ? (selectedPatient.names + ' ' + selectedPatient.lastNames) : ''">
+            <input id="search-patient" class="search-bar" type="search" placeholder="Patient names" [matAutocomplete]="auto" 
+                [formControl]="patientControl">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="this.displayPatient" 
+                    (optionSelected)="selectPatient($event.option.value)">
+                    <mat-option *ngFor="let patient of filteredPatients$ | async" [value]="patient">
+                        {{patient.names + " " + patient.lastNames}}
+                    </mat-option>
+                </mat-autocomplete>
         </div>
 
         <div class="flex day">
@@ -86,22 +90,5 @@
         </footer>
 
     </form>
-
-    <ng-template
-    cdkConnectedOverlay
-    cdkConnectedOverlayHasBackdrop
-    [cdkConnectedOverlayOrigin]="trigger"
-    [cdkConnectedOverlayOpen]="isOpenInputSearch"
-    cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
-    (backdropClick)="closeSearchPatient()"
-    (detach)="closeSearchPatient()"
-    >
-
-        <mat-selection-list class="patient-list" [multiple]="false" (selectionChange)="onPatientSelect($event.options[0].value)">
-            <mat-list-option *ngFor="let patient of patientList" [value]="patient">
-                {{patient.names + " " + patient.lastNames}}
-            </mat-list-option>
-        </mat-selection-list>
-    </ng-template>
     
 </ng-template>

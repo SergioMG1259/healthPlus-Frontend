@@ -7,6 +7,8 @@ import { FilterPatientService } from '../../services/filter-patient.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { PatientResponseDTO } from '../../models/PatientResponseDTO';
 import { PatientService } from 'src/app/services/patient.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DeletePatientDialogComponent } from '../../components/delete-patient-dialog/delete-patient-dialog.component';
 
 @Component({
   selector: 'app-patient-list',
@@ -20,6 +22,7 @@ export class PatientListComponent implements OnInit {
 
   displayedColumns: string[] = ['patientName', 'gender', 'age', 'phone', 'createdAt', 'actions']
   dataSource = new MatTableDataSource<PatientResponseDTO>(Array.from({ length: 10 }, () => ({} as PatientResponseDTO)))
+  dataSourceLoading = new MatTableDataSource<PatientResponseDTO>(Array.from({ length: 10 }, () => ({} as PatientResponseDTO)))
   pageIndex: number = 0
 
   inputSearch: string|null = null
@@ -31,7 +34,6 @@ export class PatientListComponent implements OnInit {
   female: boolean = false
   male: boolean = false
 
-  private flag:boolean = false
   private _queryParamsSubscription!: Subscription
   private _filterResizeSub!: Subscription
 
@@ -39,7 +41,12 @@ export class PatientListComponent implements OnInit {
   @ViewChild('filterButton', {read: ElementRef}) private _filterButton!: ElementRef
 
   constructor(private _router:Router,private _route:ActivatedRoute, private _filterService:FilterPatientService, 
-    private _cdr: ChangeDetectorRef, private _breakpointObserver: BreakpointObserver, private _patientService: PatientService) { }
+    private _cdr: ChangeDetectorRef, private _breakpointObserver: BreakpointObserver, private _patientService: PatientService,
+    private _dialogService: MatDialog) { }
+
+  get isLoadingChange$(): Observable<boolean> {
+    return this.isLoadingChange as Observable<boolean>
+  }
 
   calculateAge(date: Date): number {
     const birthDate = new Date(date)
@@ -76,19 +83,15 @@ export class PatientListComponent implements OnInit {
 
   changePage(currentPage:PageEvent): void {
 
-    this.flag = true
     const queryParams: any = {}
 
     if (currentPage.pageIndex == 0)
       queryParams['page'] = null
     else
       queryParams['page'] = currentPage.pageIndex + 1
-
     this._router.navigate([], {
       queryParams: queryParams,
       queryParamsHandling: 'merge'
-    }).finally(() => {
-      setTimeout(() => this.flag = false, 0) // Resetea el flag después de actualizar la ruta
     })
   } 
 
@@ -116,6 +119,29 @@ export class PatientListComponent implements OnInit {
     this._router.navigate(['/patients/details',id])
   }
 
+  onClickOpenDeletePatientDialog(patientId: number): void {
+
+    const dialogRef = this._dialogService.open(DeletePatientDialogComponent, {
+      backdropClass: 'dialog-bg',
+      width: '400px',
+      data: patientId
+    })
+
+    dialogRef.afterClosed().subscribe(e => {
+      if(e) {
+        this.dataSource.data = this.dataSource.data.filter((patientResponseDTO) => patientResponseDTO.id != patientId)
+        this.isLoadingChange.next(true)
+        setTimeout(() => {
+          this.isLoadingChange.next(false)
+          this._router.navigate([], {
+            queryParams: {page : this.paginator.pageIndex == 0? null : this.paginator.pageIndex + 1},
+            queryParamsHandling: 'merge'
+          })
+        }, 0)
+      }
+    })
+  }
+
   ngOnInit(): void {
   }
 
@@ -126,6 +152,7 @@ export class PatientListComponent implements OnInit {
     // this.dataSource.data = ELEMENT_DATA
     
     this._queryParamsSubscription = this._route.queryParams.pipe(
+      
       switchMap((params) => {
         const inputSearch = params['search']? params['search'] : null
         const orderBy = params['orderby']? params['orderby'] : 'default'
@@ -155,7 +182,6 @@ export class PatientListComponent implements OnInit {
 
         if(hasFilterChanged || firstLoading) {
           this.isLoading = true
-          console.log("consulta a la api")
           this.isLoadingChange.next(true)
   
           this.inputSearch = params['search']? params['search'] : null
@@ -201,35 +227,4 @@ export class PatientListComponent implements OnInit {
     if(this._filterResizeSub)
       this._filterResizeSub.unsubscribe()
   }
-
-  get isLoadingChange$(): Observable<boolean> {
-    return this.isLoadingChange as Observable<boolean>
-  }
 }
-
-const ELEMENT_DATA: any[] = [
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'},
-  {patientName: 'Alfreds Futterkiste', gender: 'Male', age: 18, phone: 939192382, createdAt: '10/31/2024'}
-]

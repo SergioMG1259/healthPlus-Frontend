@@ -1,0 +1,20 @@
+.wrapper {
+    background-color: var(--background-components);
+    color: var(--primary-text);
+    padding: 30px 20px;
+    position: relative;
+    width: 100%
+}
+.highlight {
+    font-weight: 500;
+}
+.close-button {
+    color: var(--primary-text);
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+footer {
+    margin-top: 10px;
+    justify-content: space-between;
+}

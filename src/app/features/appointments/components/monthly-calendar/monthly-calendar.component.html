@@ -10,12 +10,17 @@
 <div class="wrapper">
     <div class="grid container-cells">
         <!-- <div class="cell" *ngFor="let item of this.gridData; let i = index" #cellRef (mousedown)="startResize($event, i, cellRef)"> -->
-        <div class="cell" *ngFor="let cell of this.gridData; let i = index" [ngClass]="cell.isOtherMonth? 'other-month':'current-month'">
+        <div class="flex cell" *ngFor="let cell of this.gridData; let i = index" [ngClass]="cell.isOtherMonth? 'other-month':'current-month'">
             <div class="day-number" [ngClass]="{'today': areDatesEqual(cell.day) && !cell.isOtherMonth}">
                 {{cell.day.getDate()}}
             </div>
-            <div class="cell-footer">
-
+            <div class="flex cell-footer">
+                <ng-container *ngFor="let event of getAppointmentsForDay(cell.day).appointments">
+                    <div class="appointment"></div>
+                </ng-container>
+                <p *ngIf="getAppointmentsForDay(cell.day).remaining > 0" class="events-remainings">
+                    + {{ getAppointmentsForDay(cell.day).remaining }}
+                </p>
             </div>
         </div>
     </div>

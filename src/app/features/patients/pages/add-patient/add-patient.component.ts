@@ -3,6 +3,11 @@ import { StepperOrientation } from '@angular/cdk/stepper';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { PatientCreateDTO } from '../../models/PatientCreateDTO';
+import { AllergyRequestDTO } from '../../models/AllergyRequestDTO';
+import { AllergyGroupCreateDTO } from '../../models/AllergyGroupCreateDTO';
+import { PatientService } from 'src/app/services/patient.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-patient',
@@ -16,10 +21,10 @@ export class AddPatientComponent implements OnInit {
  firstStep = this._formBuilder.group({
     names: ['', Validators.required],
     lastNames: ['', Validators.required],
-    dateOfBirth: [null, Validators.required],
-    gender: ['', Validators.required],
+    birthDate: [null, Validators.required],
+    gender: [null, Validators.required],
     dni: ['', [Validators.required,  Validators.min(10000000), Validators.max(99999999)]],
-    notes: ['']
+    notes: [null]
   })
 
   secondStep = this._formBuilder.group({
@@ -28,6 +33,16 @@ export class AddPatientComponent implements OnInit {
     address: ['', Validators.required]
   })
 
+  readonly allergyMap = new Map<number, string>([
+    [1, 'penicillin'],
+    [2, 'aspirin'],
+    [3, 'sulfonamides'],
+    [4, 'nsaids'],
+    [5, 'opioids'],
+    [6, 'cephalosporins'],
+    [7, 'tetracyclines']
+  ])
+  
   allergiesForm = this._formBuilder.group({
     allergies: this._formBuilder.group({
       penicillin: false,
@@ -44,8 +59,10 @@ export class AddPatientComponent implements OnInit {
 
   private _resizeSub!:Subscription
   orientation:StepperOrientation ="horizontal"
+  errorMessage:string|null = null
 
-  constructor(private _formBuilder: FormBuilder, private _breakpointObserver: BreakpointObserver) { }
+  constructor(private _formBuilder: FormBuilder, private _breakpointObserver: BreakpointObserver,
+    private _patientService: PatientService, private _router:Router) { }
 
   // Getter para el FormArray
   get additionalAllergies(): FormArray {
@@ -73,6 +90,38 @@ export class AddPatientComponent implements OnInit {
   // Método para eliminar un control de alergia adicional por índice
   removeAdditionalAllergy(index: number): void {
     this.additionalAllergies.removeAt(index)
+  }
+
+  onClickAddPatient() {
+
+    const allergiesMapToId = Array.from(this.allergyMap.entries())
+    .filter(([id, name]) => this.allergiesForm.get('allergies')?.get(name)?.value)
+    .map(([id]) => id)
+
+    const customAllergiesMap: AllergyRequestDTO[] = (this.allergiesForm.getRawValue().additionalAllergies as string[])
+    .map((name) => ({ name }))
+    
+    const allergyGroupCreateDTO: AllergyGroupCreateDTO = {
+      allergiesId: allergiesMapToId,
+      customAllergiesNames: customAllergiesMap
+    }
+
+    const patientCreateDTO: PatientCreateDTO = {
+      names: this.firstStep.get('names')!.value!,
+      lastNames: this.firstStep.get('lastNames')!.value!,
+      gender: this.firstStep.get('gender')!.value!,
+      birthDate: this.firstStep.get('birthDate')!.value!,
+      dni: this.firstStep.get('dni')!.value!,
+      notes: this.firstStep.get('notes')!.value!,
+      email: this.secondStep.get('email')!.value!,
+      phoneNumber: this.secondStep.get('phone')!.value!,
+      address: this.secondStep.get('address')!.value!,
+      allergiesGroup: allergyGroupCreateDTO
+    }
+    this._patientService.addPatient(1, patientCreateDTO).subscribe(e => {
+      this.errorMessage = null
+      this._router.navigate(['/patients'])
+    }, error => {this.errorMessage = error})
   }
 
   ngOnInit(): void {

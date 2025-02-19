@@ -8,6 +8,7 @@ import { MedicalInformationUpdateDTO } from '../features/patients/models/Medical
 import { MedicalInformationResponseDTO } from '../features/patients/models/MedicalInformationResponseDTO ';
 import { PatientUpdateDTO } from '../features/patients/models/PatientUpdateDTO';
 import { NotesUpdateDTO } from '../features/patients/models/NotesUpdateDTO';
+import { PatientCreateDTO } from '../features/patients/models/PatientCreateDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class PatientService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODgzNzg2Mn0.OHnKrUOlx7K7AAcu5haCfRWpuDdKdnfu37ZymUAYUYXkQW-dYlNXf7BLF8jNK9ZYDO5rAp3cg8iCmjn_z6Qq8w'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczOTk2MjM1M30.bOBiS3sBwYptB0WFKkqFPJaaY34P9yJD6sYex8oL1TJvMI0bKPULEplNZMbAFZoRrm4wCTAde01rmhWwbyG4YQ'
     })
   }
 
@@ -95,6 +96,14 @@ export class PatientService {
         .pipe(retry(2), catchError(this.handleError))
   }
 
+  addPatient(specialistId: number, patientCreateDTO: PatientCreateDTO) {
+    return this.http.post<PatientResponseDTO>(`${this.apiUrl}/patients/specialist/${specialistId}`, patientCreateDTO,
+      this.httpOptions)
+    .pipe(
+      retry(2),
+      catchError(this.handleError))
+  }
+
   getPatientDetails(patientId:number) {
     return this.http.get<PatientDetailsDTO>(`${this.apiUrl}/patients/${patientId}`, this.httpOptions)
       .pipe(
@@ -121,6 +130,13 @@ export class PatientService {
   updateNotes(patientId:number, notesUpdateDTO: NotesUpdateDTO) {
     return this.http.put<PatientResponseDTO>(`${this.apiUrl}/patients/${patientId}/updateNotes`, 
       notesUpdateDTO, this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError))
+  }
+
+  deletePatient(patientId: number) {
+    return this.http.delete<void>(`${this.apiUrl}/patients/${patientId}`, this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError))

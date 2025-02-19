@@ -1,10 +1,8 @@
 .header {
-    border: solid 1px rebeccapurple;
     flex-wrap: wrap;
     margin-bottom: 10px;
 }
 .right{
-    border: solid 1px brown;
     gap: 5px;
     justify-content: space-between;
     flex: 1 1;

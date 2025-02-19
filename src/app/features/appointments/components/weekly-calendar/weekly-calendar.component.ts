@@ -1,15 +1,16 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { AppointmentOverlayCalendarService } from '../../services/appointment-overlay-calendar.service';
 import { PatientShortResponseDTO } from 'src/app/features/patients/models/PatientShortResponseDTO';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppointmentResponseDTO } from '../../models/AppointmentResponseDTO';
-import { Observable, Subscription } from 'rxjs';
+import { debounceTime, Observable, startWith, Subscription, switchMap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditAppointemntDialogComponent } from '../edit-appointemnt-dialog/edit-appointemnt-dialog.component';
 import { DetailsAppointmentDialogComponent } from '../details-appointment-dialog/details-appointment-dialog.component';
-import { MedicalIssue } from '../../models/MedicalIssue';
 import { AppointmentService } from 'src/app/services/appointment.service';
-import { AppointmentDateRequestDTO } from '../../models/AppointmentDateRequestDTO';
+import { PatientResponseDTO } from 'src/app/features/patients/models/PatientResponseDTO';
+import { PatientService } from 'src/app/services/patient.service';
+import { AppointmentCreateDTO } from '../../models/AppointmentCreateDTO';
 
 @Component({
   selector: 'app-weekly-calendar',
@@ -34,12 +35,7 @@ export class WeeklyCalendarComponent implements OnInit {
 
   /* Para el input search */
   isOpenInputSearch: boolean = false
-  patientList:PatientShortResponseDTO[] = [
-    {id: 1, names: "asd1", lastNames: "ddd"},
-    {id: 2, names: "asd2", lastNames: "ddd2"},
-    {id: 3, names: "nbn3", lastNames: "mmm3"},
-    {id: 4, names: "peo4", lastNames: "gnq"}
-  ]
+  patientList:PatientShortResponseDTO[] = []
   selectedPatient: PatientShortResponseDTO | null = null
 
   form: FormGroup = this._fb.group({
@@ -47,6 +43,8 @@ export class WeeklyCalendarComponent implements OnInit {
     priceField: [null, [Validators.required, Validators.min(1)]],
     patientField: [null, Validators.required]
   })
+  patientControl = new FormControl()
+  filteredPatients$: Observable<PatientResponseDTO[]> = new Observable<PatientResponseDTO[]>()
 
   appointments: AppointmentResponseDTO[] = []
 
@@ -55,7 +53,7 @@ export class WeeklyCalendarComponent implements OnInit {
 
   constructor(private _renderer: Renderer2, private _viewContainerRef: ViewContainerRef, 
     private _appointmentOverlayService: AppointmentOverlayCalendarService, private _fb: FormBuilder, private _dialog: MatDialog,
-    private _appointmentService: AppointmentService) { }
+    private _appointmentService: AppointmentService, private _patientService: PatientService) { }
 
   private fillWeek(): void {
     const startOfWeek = new Date(this.indexDate)
@@ -67,6 +65,7 @@ export class WeeklyCalendarComponent implements OnInit {
     let current = new Date(startOfWeek)
     this.daysWeek = []
     this.gridData = []
+
     while (current <= endOfWeek) {
       let newDay = new Date(current)
       this.daysWeek.push(newDay)
@@ -98,6 +97,9 @@ export class WeeklyCalendarComponent implements OnInit {
   }
 
   onMouseDown(event: MouseEvent, startDate: Date): void {
+    if(this.isPastTime(startDate))
+      return
+
     event.preventDefault()
     const cell = event.target as HTMLElement
     const appointmentOverlapping = this.createAppointmentOverlapping(cell)
@@ -219,18 +221,45 @@ export class WeeklyCalendarComponent implements OnInit {
     this.form.reset()
     this.startDateOverlay = null
     this.endDateOverlay = null
+    this.patientControl.reset()
   }
 
   saveAppointment(): void {
-    this.appointments.push({
-      id: 1,
-      price: this.form.controls['priceField'].value,
-      startDate: this.startDateOverlay!,
-      endDate: this.endDateOverlay!,
-      issue: this.form.controls['issueField'].value,
-      patient: {id: 1, names: "hola", lastNames: "dddddddddddd"}
+
+    const date = new Date(this.startDateOverlay!)
+    date.setHours(0)
+    date.setMinutes(0)
+    const startHour = this.startDateOverlay?.getHours()
+    const endHour = this.endDateOverlay?.getHours()
+
+    // Crear startDate en UTC sin zona horaria local
+    const startDate = new Date(Date.UTC(
+      new Date(date).getUTCFullYear(), 
+      new Date(date).getUTCMonth(), 
+      new Date(date).getUTCDate(),
+      startHour, 0, 0, 0  // Establece la hora en UTC (hora de inicio)
+    ))
+
+    // Crear endDate en UTC sin zona horaria local
+    const endDate = new Date(Date.UTC(
+      new Date(date).getUTCFullYear(),
+      new Date(date).getUTCMonth(),
+      new Date(date).getUTCDate(),
+      endHour, 0, 0, 0  // Establece la hora en UTC (hora de fin)
+    ))
+    const appointment: AppointmentCreateDTO = {
+      price: this.form.get('priceField')?.value,
+      startDate: startDate,
+      endDate: endDate,
+      issue: this.form.get('issueField')?.value
+    }
+    this._appointmentService.addAppointment(1, this.form.get('patientField')?.value, appointment).subscribe(e => {
+      const newAppointment = {...e,
+        startDate: new Date(e.startDate), endDate: new Date(e.endDate)}
+      this.appointments.push(newAppointment)
+      this.closeOverlay()
+      this.resetValues()
     })
-    this.closeOverlay()
   }
 
   removeAppointmentRange(): void {
@@ -249,7 +278,7 @@ export class WeeklyCalendarComponent implements OnInit {
     return appointment || null
   }
 
-  onClickOpenAppointmentActionDialog(appointment: AppointmentResponseDTO):void {
+  onClickOpenAppointmentActionDialog(appointment: AppointmentResponseDTO): void {
 
     const isPastTime = this.isPastTime(appointment.startDate)
     let dialogRef = null
@@ -271,7 +300,7 @@ export class WeeklyCalendarComponent implements OnInit {
     if (!isPastTime) {
       dialogRef!.afterClosed().subscribe((e) => {
         if( e && e.delete) {
-          this.appointments = this.appointments.filter((a) => e.appointmentResponse.id != a.id)
+          this.appointments = this.appointments.filter((appointmentDelete) => e.appointmentResponse.id != appointmentDelete.id)
         } else if (e && !e.delete){
           appointment.startDate = new Date(e.appointmentResponse.startDate)
           appointment.endDate = new Date(e.appointmentResponse.endDate)
@@ -283,31 +312,34 @@ export class WeeklyCalendarComponent implements OnInit {
     }
   }
 
-  onSearchInput(event: Event): void {
-    this.openSearchPatient()
+  selectPatient(patient: PatientResponseDTO): void {
+    this.form.get('patientField')?.setValue(patient.id)
   }
 
-  onPatientSelect(patient: PatientShortResponseDTO) {
-    this.form.controls['patientField'].setValue(patient)
-    this.selectedPatient = patient
-    this.closeSearchPatient()
+  displayPatient = (patient: PatientShortResponseDTO): string => {
+    return patient ? `${patient.names} ${patient.lastNames}` : ''
   }
 
-  openSearchPatient(): void {
-    if(this.isOpenInputSearch) return
-    this.isOpenInputSearch = true
-  }
-
-  closeSearchPatient(): void {
-    if(!this.isOpenInputSearch) return
-    this.isOpenInputSearch = false
+  private filterPatients(value: string|null): Observable<PatientResponseDTO[]> {
+    if (value == '')
+      value = null
+    return this._patientService.getPatientsWithFilters(1, {searchByNameAndLastName: value, female: true,
+      male: true, minAge: null, maxAge: null, sortBy: null})
   }
 
   ngOnInit(): void {
-    // this.fillWeek()
-    this.indexDateSub = this.indexDate$.subscribe(date => {
-      this.indexDate = date
-      this.fillWeek()
+    this.indexDateSub = this.indexDate$.pipe(
+      switchMap((date) => {
+        this.indexDate = date
+        this.fillWeek()
+        return this._appointmentService.findAppointmentsWeeklyBySpecialistId(1, {date: this.indexDate})
+      })
+    ).subscribe(e => {
+      this.appointments = e.map(appointment => ({
+        ...appointment,
+        startDate: new Date(appointment.startDate),
+        endDate: new Date(appointment.endDate)
+      }))
     })
 
     this.appointmentAddSub = this.appointmentAdd$.subscribe(appointment => {
@@ -317,18 +349,11 @@ export class WeeklyCalendarComponent implements OnInit {
       this.appointments.push(newAppointment)
     })
 
-    const date: AppointmentDateRequestDTO = {
-      date: new Date()
-    }
-
-    this._appointmentService.findAppointmentsWeeklyBySpecialistId(1, date).subscribe(e => {
-
-      this.appointments = e.map(appointment => ({
-        ...appointment,
-        startDate: new Date(appointment.startDate),
-        endDate: new Date(appointment.endDate)
-      }))
-    })
+    this.filteredPatients$ = this.patientControl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(1000), // Espera 1 segundo
+      switchMap(value => this.filterPatients(value))
+    )
   }
 
   ngOnDestroy(): void {

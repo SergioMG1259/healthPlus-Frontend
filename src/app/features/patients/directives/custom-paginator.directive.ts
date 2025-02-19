@@ -61,9 +61,14 @@ export class CustomPaginatorDirective {
 
     const neededButtons = Math.ceil(
       this.appCustomLength / this.matPaginator.pageSize
-    );
+    )
 
-    // si solo hay una página, no se debe mostrar los botones
+    //si no hay resultados, no se crean botones
+    if (neededButtons == 0) {
+      this.ren.setStyle(this.elementRef.nativeElement, 'display', 'none')
+      return
+    }
+    // si solo hay una página, solo hay un botón
     if (neededButtons == 1) {
       this.buttonsRef = [this.createButton(0)]
       this.ren.setStyle(this.buttonsRef[0], 'display', 'inline-block')
@@ -139,7 +144,7 @@ export class CustomPaginatorDirective {
 
   private changeActiveButtonStyles(previousIndex: number, newIndex: number): void {
 
-    if(this.buttonsRef.length == 1) return
+    if(this.buttonsRef.length <= 1) return
 
     const previouslyActive = this.buttonsRef[previousIndex]
     const currentActive = this.buttonsRef[newIndex]

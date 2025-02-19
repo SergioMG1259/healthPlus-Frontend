@@ -10,24 +10,20 @@
     right: 0px;
     top: 0px;
 }
+.label {
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+}
+.field {
+    color: var(--primary-text);
+    font-size: 1rem;
+}
 .fields-wrapper {
     flex-direction: column;
     gap: 15px;
 }
-.search-bar {
-    background-color: var(--background-components);
-    border: solid 1px var(--secondary-text);
-    border-radius: 5px;
-    height: 38px;
-    padding: 0px 8px;
-    width: 100%;
-}
 mat-form-field {
     width: 100%;
-}
-.search label {
-    color: var(--secondary-text);
-    font-size: 0.9rem;
 }
 .date {
     flex-direction: column;

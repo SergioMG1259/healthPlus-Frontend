@@ -68,7 +68,6 @@
     border-radius: 5px;
     padding: 0px 2px 2px 2px;
     width: 100%;
-    z-index: 2;
 }
 .appointment .bar {
     background-color: #377dc3d9;
@@ -131,7 +130,7 @@
 .appointment-overlay-add {
     background-color: #fdfdfd;
     border-radius: 5px;
-    row-gap: 8px;
+    row-gap: 10px;
     flex-direction: column;
     padding: 8px;
     width: 270px;
@@ -188,13 +187,11 @@ mat-form-field {
 }
 
 /*PATIENT LIST OVERLAY*/
-.patient-list {
+.search-bar {
     background-color: var(--background-components);
+    border: solid 1px var(--secondary-text);
     border-radius: 5px;
-    margin-top: 5px;
-    max-height: 145px;
-    overflow-y: auto;
-    min-width: 254px;
-    padding: 5px;
+    height: 38px;
+    padding: 0px 8px;
     width: 100%;
 }

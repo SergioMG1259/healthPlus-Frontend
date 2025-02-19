@@ -17,7 +17,9 @@
 .cell {
     background-color: var(--background-components);
     border: 1px solid var(--secondary-text);
+    flex-direction: column;
     height: 70px;
+    justify-content: space-between;
     padding: 10px;
 }
 .cell:first-child {
@@ -52,4 +54,19 @@
     font-size: 0.9rem;
     text-align: end;
     width: 100%;
+}
+.cell-footer {
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.appointment {
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+}
+.appointments-remainings {
+    color: var(--primary-text);
+    font-size: 0.9rem;
 }

@@ -15,7 +15,7 @@ export class AllergyService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODY2MDgzMH0.dsC1zQyTAYtp0nIZkHe_IePi4JIWzrmIDpLXJounSf5j2VZj8viDxPqfDLPQlNbZ51Z0VdwKTCTQHrBj8g5FJA'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczOTk2MjM1M30.bOBiS3sBwYptB0WFKkqFPJaaY34P9yJD6sYex8oL1TJvMI0bKPULEplNZMbAFZoRrm4wCTAde01rmhWwbyG4YQ'
     })
   }
 

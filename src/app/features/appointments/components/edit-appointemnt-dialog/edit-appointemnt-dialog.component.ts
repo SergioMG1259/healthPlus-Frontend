@@ -4,8 +4,6 @@ import { AppointmentResponseDTO } from '../../models/AppointmentResponseDTO';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { timeRangeValidator } from '../../functions/timeRangeValidator';
 import { PatientShortResponseDTO } from 'src/app/features/patients/models/PatientShortResponseDTO';
-import { debounceTime, map, Observable, startWith, switchMap } from 'rxjs';
-import { PatientService } from 'src/app/services/patient.service';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { PatientResponseDTO } from 'src/app/features/patients/models/PatientResponseDTO';
 import { AppointmentUpdateDTO } from '../../models/AppointmentUpdateDTO';
@@ -23,14 +21,13 @@ export class EditAppointemntDialogComponent implements OnInit {
   
   patients: PatientShortResponseDTO[] = []
   form!: FormGroup
-  patientControl = new FormControl()
-  filteredPatients$: Observable<PatientShortResponseDTO[]> = new Observable<PatientShortResponseDTO[]>()
   today:Date = new Date()
   originalValues: any
+  errorMessage:string|null = null
 
   constructor(public dialogRef: MatDialogRef<EditAppointemntDialogComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: AppointemntDetails, private _fb: FormBuilder,
-    private _patientService: PatientService, private _appointmentService: AppointmentService) {
+    private _appointmentService: AppointmentService) {
     
     this.form = this._fb.group({
         issueField: [data.appointment.issue, Validators.required],
@@ -41,7 +38,6 @@ export class EditAppointemntDialogComponent implements OnInit {
         patientField: [data.appointment.patient.id, Validators.required]
       }, { validators: timeRangeValidator() }
     )
-    this.patientControl.setValue(data.appointment.patient)
     this.originalValues = this.form.getRawValue()
   }
 
@@ -58,6 +54,7 @@ export class EditAppointemntDialogComponent implements OnInit {
   }
 
   updateAppointment(): void {
+    
     const date = this.form.get('dateField')?.value
     const startHour = this.form.get('startField')?.value
     const endHour = this.form.get('endField')?.value
@@ -84,17 +81,18 @@ export class EditAppointemntDialogComponent implements OnInit {
       endDate: endDate,
       issue: this.form.get('issueField')?.value
     }
-    const patientId:number = this.form.get('patientField')?.value
 
     this._appointmentService.updateAppointment(this.data.appointment.id, appointment).subscribe(e => {
+      this.errorMessage = null
       this.onCloseClickUpdate(e)
-    })
+    }, error => {this.errorMessage = error})
   }
 
   deleteAppointmet() {
     this._appointmentService.deleteAppointment(this.data.appointment.id).subscribe(e => {
+      this.errorMessage = null
       this.onCloseClickDelete()
-    })
+    }, error => {this.errorMessage = error})
   }
 
   isSaveDisabled(): boolean {
@@ -117,14 +115,6 @@ export class EditAppointemntDialogComponent implements OnInit {
     })
   }
 
-  selectPatient(patient: PatientResponseDTO): void {
-    this.form.get('patientField')?.setValue(patient.id)
-  }
-
-  displayPatient = (patient: PatientShortResponseDTO): string => {
-    return patient ? `${patient.names} ${patient.lastNames}` : ''
-  }
-
   areDatesEqual(date1: Date, date2: Date = new Date()): boolean {
     if (date1 == null)
       return false
@@ -136,19 +126,8 @@ export class EditAppointemntDialogComponent implements OnInit {
     )
   }
 
-  private filterPatients(value: string|null): Observable<PatientResponseDTO[]> {
-    if (value == '')
-      value = null
-    return this._patientService.getPatientsWithFilters(1, {searchByNameAndLastName: value, female: true,
-      male: true, minAge: null, maxAge: null, sortBy: null})
-  }
-
   ngOnInit(): void {
-    this.filteredPatients$ = this.patientControl.valueChanges.pipe(
-      startWith(this.data.appointment.patient.names + ' ' + this.data.appointment.patient.lastNames),
-      debounceTime(1000), // Espera 1 segundo
-      switchMap(value => this.filterPatients(value))
-    )
+    
   }
 
 }

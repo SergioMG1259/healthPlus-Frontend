@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, switchMap } from 'rxjs';
+import { AppointmentService } from 'src/app/services/appointment.service';
+import { AppointmentResponseDTO } from '../../models/AppointmentResponseDTO';
 
 @Component({
   selector: 'app-monthly-calendar',
@@ -8,14 +10,17 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class MonthlyCalendarComponent implements OnInit {
 
-  indexDate: Date = new Date()
   @Input() indexDate$: Observable<Date> = new Observable<Date>()
+  @Input() appointmentAdd$: Observable<AppointmentResponseDTO> = new Observable<AppointmentResponseDTO>()
+  indexDate: Date = new Date()
 
   gridData:{ day: Date, isOtherMonth: boolean }[] = []
   indexDateSub!: Subscription
+  appointmentAddSub!: Subscription
 
+  appointments: AppointmentResponseDTO[] = []
 
-  constructor() { }
+  constructor(private _appointmentService: AppointmentService) { }
 
   fillCalendar(): void {
     const year = this.indexDate.getFullYear()
@@ -51,11 +56,45 @@ export class MonthlyCalendarComponent implements OnInit {
     )
   }
 
+  hasAppointmentAt(day:Date, appointment: Date): boolean {
+    if(
+      day.getFullYear() == appointment.getFullYear() &&
+      day.getMonth() == appointment.getMonth() &&
+      day.getDate() == appointment.getDate()
+    )
+      return true
+    return false
+  }
+
+  getAppointmentsForDay(day: Date) {
+    const dayAppointments = this.appointments.filter(appointment => this.hasAppointmentAt(day, appointment.startDate))
+    return {
+      appointments: dayAppointments.slice(0, 3),
+      remaining: dayAppointments.length > 3 ? dayAppointments.length - 3 : 0
+    }
+  }
+
   ngOnInit(): void {
     // this.fillCalendar()
-    this.indexDateSub = this.indexDate$.subscribe(date => {
-      this.indexDate = date
-      this.fillCalendar()
+    this.indexDateSub = this.indexDate$.pipe(
+      switchMap((date)=> {
+        this.indexDate = date
+        this.fillCalendar()
+        return this._appointmentService.findAppointmentsMonthlyBySpecialistId(1,{date: this.indexDate})
+      })
+    ).subscribe(e => {
+      this.appointments = e.map(appointment => ({
+        ...appointment,
+        startDate: new Date(appointment.startDate),
+        endDate: new Date(appointment.endDate)
+      }))
+    })
+
+    this.appointmentAddSub = this.appointmentAdd$.subscribe(appointment => {
+      const newAppointment = {...appointment,
+        startDate: new Date(appointment.startDate), endDate: new Date(appointment.endDate)}
+        
+      this.appointments.push(newAppointment)
     })
   }
 
@@ -66,9 +105,11 @@ export class MonthlyCalendarComponent implements OnInit {
   // }
 
   ngOnDestroy(): void {
-    if (this.indexDateSub) {
+    if (this.indexDateSub)
       this.indexDateSub.unsubscribe()
-    }
+    
+    if (this.appointmentAddSub)
+      this.appointmentAddSub.unsubscribe()
   }
 
 }

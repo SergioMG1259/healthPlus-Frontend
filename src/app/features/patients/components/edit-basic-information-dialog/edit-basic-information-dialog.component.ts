@@ -44,7 +44,8 @@ export class EditBasicInformationDialogComponent implements OnInit {
   onCloseClick(): void {
     this.dialogRef.close()
   }
-  onCloseClickEdit(patientResponseDTO: PatientResponseDTO): void {
+
+  updatePatient(patientResponseDTO: PatientResponseDTO): void {
     this.dialogRef.close({patient: patientResponseDTO})
   }
 
@@ -68,10 +69,10 @@ export class EditBasicInformationDialogComponent implements OnInit {
     })
   }
 
-  updatePatient():void {
+  onCloseClickEdit():void {
     const patientUpdateDTO: PatientUpdateDTO = this.basicInformation.getRawValue() as PatientUpdateDTO
     this._patientService.updatePatientById(1, patientUpdateDTO).subscribe(e=> {
-      this.onCloseClickEdit(e)
+      this.updatePatient(e)
     })
   }
 

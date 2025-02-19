@@ -15,6 +15,7 @@ import { PatientDetailsComponent } from './pages/patient-details/patient-details
 import { SharedModule } from 'src/app/shared/shared.module';
 import { EditBasicInformationDialogComponent } from './components/edit-basic-information-dialog/edit-basic-information-dialog.component';
 import { EditMedicalInformationDialogComponent } from './components/edit-medical-information-dialog/edit-medical-information-dialog.component';
+import { DeletePatientDialogComponent } from './components/delete-patient-dialog/delete-patient-dialog.component';
 
 @NgModule({
   providers:[FilterPatientService],
@@ -25,7 +26,8 @@ import { EditMedicalInformationDialogComponent } from './components/edit-medical
     AddPatientComponent,
     PatientDetailsComponent,
     EditBasicInformationDialogComponent,
-    EditMedicalInformationDialogComponent
+    EditMedicalInformationDialogComponent,
+    DeletePatientDialogComponent
   ],
   imports: [
     CommonModule,

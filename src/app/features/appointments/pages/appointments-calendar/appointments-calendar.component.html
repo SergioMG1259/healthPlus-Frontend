@@ -27,7 +27,8 @@
 </section>
 
 <section class="calendar">
-    <app-monthly-calendar [indexDate$]="this.indexDate$" *ngIf="this.type === 'month'"></app-monthly-calendar>
+    <app-monthly-calendar [indexDate$]="this.indexDate$" [appointmentAdd$]="this.appointmentAdd$"
+    *ngIf="this.type == 'month'"></app-monthly-calendar>
     <app-weekly-calendar [indexDate$]="this.indexDate$" [appointmentAdd$]="this.appointmentAdd$"
-    *ngIf="this.type === 'week'"></app-weekly-calendar>
+    *ngIf="this.type == 'week'"></app-weekly-calendar>
 </section>

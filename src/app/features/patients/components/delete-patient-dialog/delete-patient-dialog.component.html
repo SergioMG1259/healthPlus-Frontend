@@ -1,0 +1,12 @@
+<div class="wrapper">
+    <button mat-icon-button aria-label="Close dialog" class="close-button" (click)="this.onCloseClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+    <p class="highlight">Are you sure you want to delete this patient?</p>
+    <p>Appointments and earnings associated with this patient are also deleted</p>
+    <footer class="flex">
+        <button mat-button color="primary" class="cancel" (click)="this.onCloseClick()">Cancel</button>
+        <button mat-flat-button color="warn" (click)="this.onClickDelete()">Delete</button>
+        <!-- mat-button -->
+    </footer>
+</div>

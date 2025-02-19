@@ -17,7 +17,7 @@ export class AppointmentService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczODgzNzg2Mn0.OHnKrUOlx7K7AAcu5haCfRWpuDdKdnfu37ZymUAYUYXkQW-dYlNXf7BLF8jNK9ZYDO5rAp3cg8iCmjn_z6Qq8w'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczOTk2MjM1M30.bOBiS3sBwYptB0WFKkqFPJaaY34P9yJD6sYex8oL1TJvMI0bKPULEplNZMbAFZoRrm4wCTAde01rmhWwbyG4YQ'
     })
   }
 
@@ -54,7 +54,15 @@ export class AppointmentService {
         catchError(this.handleError))
   }
 
-  createAppointment(specialistId: number, patientId: number, appointmentCreateDTO: AppointmentCreateDTO) {
+  findAppointmentsMonthlyBySpecialistId(specialistId: number, appointmentDateRequestDTO: AppointmentDateRequestDTO) {
+    return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${specialistId}/monthly`, 
+      appointmentDateRequestDTO, this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError))
+  }
+
+  addAppointment(specialistId: number, patientId: number, appointmentCreateDTO: AppointmentCreateDTO) {
     return this.http.post<AppointmentResponseDTO>(`${this.apiUrl}/appointments/specialist/${specialistId}/patient/${patientId}`, 
       appointmentCreateDTO, this.httpOptions)
       .pipe(

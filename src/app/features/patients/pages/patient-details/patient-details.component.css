@@ -91,7 +91,7 @@
 .appointment-card {
     background-color: var(--background-components);
     border-radius: 5px;
-    column-gap: 28px;
+    column-gap: 10px;
     margin-left: auto;
     margin-right: auto;
     padding: 18px 32px;
@@ -100,6 +100,18 @@
 .group {
     flex-direction: column;
     gap: 8px;
+}
+.start-date {
+    width: 110px;
+}
+.issue {
+    width: 120px;
+}
+.price {
+    width: 70px;
+}
+.created {
+    width: 95px;
 }
 .title {
     font-size: 1.1rem;
@@ -111,7 +123,7 @@
 .text {
     color: var(--primary-text);
     font-size: 0.9rem;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
 /*ALLERGIES*/
 .wrapper-allergies {
