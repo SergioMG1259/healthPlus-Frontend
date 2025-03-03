@@ -17,6 +17,10 @@ const routes: Routes = [
       {
         path: 'appointments',
         loadChildren: () => import('../appointments/appointments.module').then(m => m.AppointmentsModule)
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('../specialist/specialist.module').then(m => m.SpecialistModule)
       }
     ]
   }

@@ -31,7 +31,7 @@
                 <div class="flex">  
                     <div class="info">
                         <p class="patient-name">{{appointment.patient.names + " " + appointment.patient.lastNames}}</p>
-                        <p class="patient-issue">{{appointment.issue}}</p>
+                        <p class="patient-issue">{{appointment.issue | textFormat }}</p>
                     </div>
                 </div>
                 <span class="hour">

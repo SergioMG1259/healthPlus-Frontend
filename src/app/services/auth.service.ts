@@ -2,20 +2,19 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { catchError, retry, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AllergyGroupCreateDTO } from '../features/patients/models/AllergyGroupCreateDTO';
-import { AllergyGroupResponseDTO } from '../features/patients/models/AllergyGroupResponseDTO';
+import { ChangePasswordDTO } from '../features/specialist/models/ChangePasswordDTO';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AllergyService {
+export class AuthService {
 
   private apiUrl: string = environment.API_BASE_URL
 
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTc0MDE4Mjc1NH0.44uzCiG6d6QnG9eoUK5tX2_FGdC4BRiXwcEzXhcAfD3vpnxoUNvNiLLx4IBoehpngXb57RT56dQOP81S1wNM6g'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTc0MDk4NTQ5OX0.YJAOr8YVqyrJtc5wZFwU-4_sbMIt3VmPCOrh5kolBN8uvZr0OW5clqtzMk82Y__tpBXNEjeADzNqEGWYRCISAw'
     })
   }
 
@@ -44,9 +43,9 @@ export class AllergyService {
     return throwError(errorMessage)
   }
 
-  updateAllergiesInPatient(patientId:number, allergyGroupCreateDTO: AllergyGroupCreateDTO) {
-    return this.http.put<AllergyGroupResponseDTO>(`${this.apiUrl}/allergies/patient/${patientId}`, 
-      allergyGroupCreateDTO, this.httpOptions)
+  changePassword(specialistId: number, changePasswordDTO: ChangePasswordDTO) {
+    return this.http.post<boolean>(`${this.apiUrl}/auth/changePassword/specialist/${specialistId}`, changePasswordDTO, 
+      this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError))

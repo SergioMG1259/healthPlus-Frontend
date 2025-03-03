@@ -166,7 +166,7 @@ export class PatientDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.patientId = Number(this.route.snapshot.paramMap.get('id'))
-    this._patientService.getPatientDetails(this.patientId).subscribe(e => {
+    this._patientService.findPatientDetails(this.patientId).subscribe(e => {
       this.patient = e
       this.appointments = e.appointments
       this.notes = e.notes

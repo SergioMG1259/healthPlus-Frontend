@@ -1,0 +1,98 @@
+<form [formGroup]="this.specialistInformation" class="flex wrapper">
+    <div class="flex row">
+        <mat-form-field appearance="outline" class="input" *ngIf="!this.isLoading">
+            <mat-label>Names</mat-label>
+            <input matInput placeholder="First names" formControlName="names" required>
+        </mat-form-field>
+        <div *ngIf="this.isLoading" class="input shimmer"></div>
+        <div *ngIf="this.isLoading" class="input shimmer"></div>
+        <mat-form-field appearance="outline" class="input" *ngIf="!this.isLoading">
+            <mat-label>Last names</mat-label>
+            <input matInput placeholder="Last names" formControlName="lastNames" required>
+        </mat-form-field>
+    </div>
+    <div class="flex row">
+        <mat-form-field appearance="outline" class="input" *ngIf="!this.isLoading">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" type="email" formControlName="email" required>
+        </mat-form-field>
+
+        <div *ngIf="this.isLoading" class="input shimmer"></div>
+        <div *ngIf="this.isLoading" class="input shimmer"></div>
+
+        <mat-form-field appearance="outline" class="input" *ngIf="!this.isLoading">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="birthDate" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="flex row">
+        <mat-form-field appearance="outline" class="input" *ngIf="!this.isLoading">
+            <mat-label>Medical institution</mat-label>
+            <input matInput placeholder="Medical institution" formControlName="medicalInstitution" required>
+        </mat-form-field>
+    
+        <div *ngIf="this.isLoading" class="input shimmer"></div>
+        <div *ngIf="this.isLoading" class="input shimmer"></div>
+
+        <mat-form-field appearance="outline" class="input" *ngIf="!this.isLoading">
+            <mat-label>Years of experience</mat-label>
+            <input matInput placeholder="Years of experience" type="number" formControlName="yearsOfExperience" required>
+        </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline" class="input" *ngIf="!this.isLoading">
+        <mat-label>Specialty</mat-label>
+        <mat-select disableOptionCentering placeholder="Specialty" formControlName="specialty">
+          <mat-option value="CARDIOLOGIST">Cardiologist</mat-option>
+          <mat-option value="ELECTROPHYSIOLOGIST">Electrophysiologist</mat-option>
+          <mat-option value="SPORTS_CARDIOLOGIST">Sports cardiologist</mat-option>
+          <mat-option value="PEDIATRIC_CARDIOLOGIST">Pediatric cardiologist</mat-option>
+          <mat-option value="GERIATRIC_CARDIOLOGIST">Geriatric cardiologist</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div *ngIf="this.isLoading" class="input shimmer"></div>
+    <div class="buttons" *ngIf="!this.isLoading">
+        <button mat-button color="primary" (click)="this.onClickShowChangePassword()" 
+        *ngIf="!this.changingPassword">Change password</button>
+        <button mat-flat-button color="primary" [disabled]="this.isSaveDisabled()"
+        (click)="this.onClickUpdateSpecialist()">Save</button>
+    </div>
+    
+    <div *ngIf="this.errorMessage">
+        <p class="error">{{this.errorMessage}}</p>
+    </div>
+</form>
+
+<ng-container *ngIf="this.changingPassword">
+    <form [formGroup]="this.changePasswordForm" class="flex wrapper change-password">
+        <div>
+            <p class="title">Change password</p>
+            <p class="description">Enter your current password and then the new password</p>
+        </div>
+        <mat-form-field appearance="outline" class="input">
+            <mat-label>Current password</mat-label>
+            <input matInput [type]="hideCurrentPassword ? 'password' : 'text'" maxlength="30" formControlName="currentPassword"
+                required>
+            <button mat-icon-button matSuffix (click)="hideCurrentPassword = !hideCurrentPassword" [attr.aria-label]="'Hide current password'" [attr.aria-pressed]="hideCurrentPassword">
+              <mat-icon>{{hideCurrentPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="input">
+            <mat-label>New password</mat-label>
+            <input matInput [type]="hideNewPassword ? 'password' : 'text'" maxlength="30" formControlName="newPassword"
+                required>
+            <button mat-icon-button matSuffix (click)="hideNewPassword = !hideNewPassword" [attr.aria-label]="'Hide new password'" [attr.aria-pressed]="hideNewPassword">
+              <mat-icon>{{hideNewPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+        <div class="buttons">
+            <button mat-button color="primary" (click)="this.onClickShowChangePassword()">Cancel</button>
+            <button mat-flat-button color="primary" [disabled]="this.changePasswordForm.invalid"
+            (click)="this.onClickChangePassword()">Change</button>
+        </div>
+        <div *ngIf="this.errorMessagePassword">
+            <p class="error">{{this.errorMessagePassword}}</p>
+        </div>
+    </form>
+</ng-container>

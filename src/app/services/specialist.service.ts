@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { catchError, retry, throwError } from 'rxjs';
 import { Overview } from '../features/overview/models/overview';
 import { environment } from 'src/environments/environment';
+import { SpecialistResponseDTO } from '../features/specialist/models/SpecialistResponseDTO';
+import { SpecialistUpdateDTO } from '../features/specialist/models/SpecialistUpdateDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class SpecialistService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTczNzQ1MTM2NH0.-h7PKi0oWfyrbXlHxAq48iR3YyC3xOLmSSKCMDkwiwoCxBBI9QRhSL3nTDWa-EXxbf2Wavl_bN4YywR4of7RQA'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTc0MDk4NTQ5OX0.YJAOr8YVqyrJtc5wZFwU-4_sbMIt3VmPCOrh5kolBN8uvZr0OW5clqtzMk82Y__tpBXNEjeADzNqEGWYRCISAw'
     })
   }
 
@@ -43,10 +45,25 @@ export class SpecialistService {
     return throwError(errorMessage)
   }
 
-  getOverview(specialistId: number){
+  getOverview(specialistId: number) {
     return this.http.get<Overview>(`${this.apiUrl}/specialists/overview/${specialistId}`, this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError))
+  }
+
+  findSpecialistById(specialistId: number) {
+    return this.http.get<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${specialistId}`, this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.handleError))
+  }
+
+  updateSpecialist(specialistId: number, specialistUpdateDTO: SpecialistUpdateDTO) {
+    return this.http.put<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${specialistId}`,
+      specialistUpdateDTO, this.httpOptions)
+    .pipe(
+      retry(2),
+      catchError(this.handleError))
   }
 }
