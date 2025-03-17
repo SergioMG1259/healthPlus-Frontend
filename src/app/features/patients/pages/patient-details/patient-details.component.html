@@ -15,7 +15,7 @@
                     <span class="line"></span>
                 </div>
                 <div class="personal-info-item">
-                    <p class="category-info">Birthday</p>
+                    <p class="category-info">Birthdate</p>
                     <p *ngIf="!isLoading" class="personal-info">{{patient.birthDate | date:'MM/dd/yyyy'}}</p>
                     <div *ngIf="isLoading" class="shimmer loading-basic-info"></div>
                     <span class="line"></span>
@@ -187,6 +187,10 @@
                                       Other
                                     </div>
                                 </mat-checkbox>
+
+                                <div *ngIf="this.errorMessageAllergies">
+                                    <p class="error">{{this.errorMessageAllergies}}</p>
+                                </div>
                             </div>
                         </div>
                         <div *ngIf="this.showOtherInput" 
@@ -224,6 +228,11 @@
             <mat-label>Notes</mat-label>
             <textarea matInput placeholder="Notes" [(ngModel)]="this.notes" maxlength="250"></textarea>
         </mat-form-field>
+
+        <div *ngIf="this.errorMessageNotes" class="error-notes">
+            <p class="error">{{this.errorMessageNotes}}</p>
+        </div>
+
         <div *ngIf="isLoading" class="shimmer loading-notes"></div>
         <div *ngIf="!isLoading" class="button-wrapper">
             <button mat-flat-button color="primary" [disabled]="this.isNotesUnchanged()"

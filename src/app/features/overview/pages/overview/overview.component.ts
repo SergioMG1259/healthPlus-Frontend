@@ -30,6 +30,7 @@ export class OverviewComponent implements OnInit {
   ]
   appointmentsToday: AppointmentResponseDTO[] = []
   patients: PatientResponseDTO[] = []
+  patientName: string = ''
 
   displayedColumns: string[] = ['patientName', 'gender', 'age', 'phone', 'createdAt']
   dataSource = [{},{},{},{},{}]
@@ -70,6 +71,7 @@ export class OverviewComponent implements OnInit {
       ]
       this.appointmentsToday = e.appointments
       this.dataSource = e.patients
+      this.patientName = e.patientName
       this.isLoading = false
     })
   }

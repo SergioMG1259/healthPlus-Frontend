@@ -13,11 +13,17 @@ export class SpecialistService {
 
   private apiUrl: string = environment.API_BASE_URL
 
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTc0MDk4NTQ5OX0.YJAOr8YVqyrJtc5wZFwU-4_sbMIt3VmPCOrh5kolBN8uvZr0OW5clqtzMk82Y__tpBXNEjeADzNqEGWYRCISAw'
-    })
+  private getHttpOptions(withAuth: boolean = true) {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' })
+
+    if (withAuth) {
+      const token = sessionStorage.getItem('accessTokenHealthPlus')
+      if (token) {
+        headers = headers.set('Authorization', `Bearer ${token}`)
+      }
+    }
+
+    return { headers }
   }
 
   constructor(private http: HttpClient) { }
@@ -46,14 +52,14 @@ export class SpecialistService {
   }
 
   getOverview(specialistId: number) {
-    return this.http.get<Overview>(`${this.apiUrl}/specialists/overview/${specialistId}`, this.httpOptions)
+    return this.http.get<Overview>(`${this.apiUrl}/specialists/overview/${specialistId}`, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
   }
 
   findSpecialistById(specialistId: number) {
-    return this.http.get<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${specialistId}`, this.httpOptions)
+    return this.http.get<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${specialistId}`, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
@@ -61,7 +67,7 @@ export class SpecialistService {
 
   updateSpecialist(specialistId: number, specialistUpdateDTO: SpecialistUpdateDTO) {
     return this.http.put<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${specialistId}`,
-      specialistUpdateDTO, this.httpOptions)
+      specialistUpdateDTO, this.getHttpOptions())
     .pipe(
       retry(2),
       catchError(this.handleError))

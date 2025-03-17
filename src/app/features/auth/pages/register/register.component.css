@@ -1,0 +1,108 @@
+:host {
+    background-color: var(--background-components);
+}
+.wrapper {
+    background-color: var(--background-components);
+    flex-wrap: wrap-reverse;
+    height: 100vh;
+}
+h1 {
+    font-weight: 600;
+}
+.left, .right {
+    flex: 1 1 50%; /* Ambos divs ocupan inicialmente el 50% del ancho */
+    height: 100%; /* Ambos divs ocupan inicialmente el 100% de la altura del wrapper */
+}
+.right {
+    overflow: hidden;
+    padding: 10px 10px 10px 0px;
+    position: relative;
+}
+.brand {
+    color: var(--tertiary-text);
+    font-size: 1.6rem;
+    font-weight: 600;
+    left: 30px;
+    position: absolute;
+    top: 30px;
+}
+.left {
+    padding: 70px 15px;
+}
+.background {
+    height: 100%;
+    width: 100%;
+}
+/* .background img {
+    height: 360px;
+    margin-top: -100px;
+    width: 80%;
+    max-width: 450px;
+} */
+.background img {
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+}
+.form-wrapper {
+    margin: auto;
+    max-width: 450px;
+}
+h1, .text {
+    color: var(--primary-text);
+}
+.input {
+    width: 100%;
+}
+.row {
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.row-input {
+    flex: 1;
+    min-width: 160px;
+}
+form {
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+}
+mat-checkbox {
+    width: fit-content;
+}
+.to-login {
+    color: var(--primary-text);
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+.to-login a {
+    color: var(--primary-color);
+}
+.error {
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: row;
+        height: auto;
+        min-height: 100vh;
+    }
+    .right {
+        flex-basis: 100%;
+        height: 160px;
+        padding: 10px;
+    }
+    .background {
+        overflow: hidden;
+    }
+    .background img {
+        height: 100%;
+        width: 100%;
+    }
+    .left {
+        flex-basis: 100%;
+        height: calc(100% - 160px);
+        padding: 10px;
+    }
+}

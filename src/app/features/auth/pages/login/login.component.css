@@ -1,0 +1,89 @@
+.wrapper {
+    background-color: var(--background-components);
+    flex-wrap: wrap;
+    height: 100vh;
+}
+h1 {
+    font-weight: 600;
+}
+.left, .right {
+    flex: 1 1 50%;
+    height: 100%;
+}
+.left {
+    padding: 10px 0px 10px 10px;
+    position: relative;
+}
+.right {
+    padding: 70px 15px;
+}
+.brand {
+    color: var(--tertiary-text);
+    font-size: 1.6rem;
+    font-weight: 600;
+    left: 30px;
+    position: absolute;
+    top: 30px;
+}
+.background {
+    height: 100%;
+    width: 100%;
+}
+.background img {
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+}
+.form-wrapper {
+    margin: auto;
+    max-width: 450px;
+}
+h1, .text {
+    color: var(--primary-text);
+}
+.input {
+    width: 100%;
+}
+form {
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+}
+mat-checkbox {
+    width: fit-content;
+}
+.to-register {
+    color: var(--primary-text);
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+.to-register a {
+    color: var(--primary-color);
+}
+.error {
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: row;
+        min-height: 100vh;
+    }
+    .left {
+        flex-basis: 100%;
+        height: 160px;
+        padding: 10px;
+    }
+    .background {
+        overflow: hidden;
+    }
+    .background img {
+        width: 100%;
+        height: 100%;
+    }
+    .right {
+        flex-basis: 100%;
+        height: calc(100% - 160px);
+        padding: 10px;
+    }
+}

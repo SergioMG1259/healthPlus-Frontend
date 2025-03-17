@@ -11,6 +11,7 @@ import { NotesUpdateDTO } from '../../models/NotesUpdateDTO';
 import { AllergyService } from 'src/app/services/allergy.service';
 import { AllergyGroupCreateDTO } from '../../models/AllergyGroupCreateDTO';
 import { AllergyRequestDTO } from '../../models/AllergyRequestDTO';
+import { error } from 'console';
 
 @Component({
   selector: 'app-patient-details',
@@ -51,6 +52,10 @@ export class PatientDetailsComponent implements OnInit {
   notes:string | null = null
   originalFormValue: any
   originalValueNotes: string | null = this.notes
+  waitingResponseApiAllergies: boolean = false
+  waitingResponseApiNotes: boolean = false
+  errorMessageAllergies: string | null = null
+  errorMessageNotes: string | null = null
 
   constructor(private _formBuilder: FormBuilder, private _patientService: PatientService, private route: ActivatedRoute, 
     private _dialogService: MatDialog, private _allergyService: AllergyService) { }
@@ -123,22 +128,26 @@ export class PatientDetailsComponent implements OnInit {
     })
   }
 
-  isNotesUnchanged():boolean {
+  isNotesUnchanged(): boolean {
     const normalizedNotes = this.notes?.trim() || null
     const normalizedOriginalNotes = this.originalValueNotes?.trim() || null
     
-    return normalizedNotes == normalizedOriginalNotes
+    return normalizedNotes == normalizedOriginalNotes || this.waitingResponseApiNotes
   }
 
   updateNotes(): void {
+
+    this.waitingResponseApiNotes = true
     const notesUpdateDTO:NotesUpdateDTO = {notes: this.notes}
     this._patientService.updateNotes(this.patientId, notesUpdateDTO).subscribe(e => {
       this.originalValueNotes = e.notes
-    })
+      this.waitingResponseApiNotes = false
+      this.errorMessageNotes = null
+    }, error => {this.errorMessageNotes = error, this.waitingResponseApiNotes = false})
   }
 
   isSaveDisabled(): boolean {
-    return this.allergiesForm.invalid || this.isUnchanged()
+    return this.allergiesForm.invalid || this.isUnchanged() || this.waitingResponseApiAllergies
   }
 
   // Verificar si el formulario sigue igual que al inicio
@@ -147,6 +156,8 @@ export class PatientDetailsComponent implements OnInit {
   }
 
   updateAllergies() {
+
+    this.waitingResponseApiAllergies = true
     const allergiesMapToId = Array.from(this.allergyMap.entries())
     .filter(([id, name]) => this.allergiesForm.get('allergies')?.get(name)?.value)
     .map(([id]) => id)
@@ -160,8 +171,11 @@ export class PatientDetailsComponent implements OnInit {
     }
 
     this._allergyService.updateAllergiesInPatient(this.patientId, allergyGroupCreateDTO).subscribe(e => {
+
       this.originalFormValue = this.allergiesForm.getRawValue()
-    })
+      this.waitingResponseApiAllergies = false
+      this.errorMessageAllergies = null
+    }, error => {this.errorMessageAllergies = error, this.waitingResponseApiAllergies = false})
   }
 
   ngOnInit(): void {

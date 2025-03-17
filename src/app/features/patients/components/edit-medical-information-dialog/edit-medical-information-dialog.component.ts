@@ -19,6 +19,8 @@ export class EditMedicalInformationDialogComponent implements OnInit {
 
   medicalInformation: FormGroup = this._formBuilder.group({})
   originalValues: any
+  waitingResponseApi = false
+  errorMessage: string | null = null
 
   constructor(public dialogRef: MatDialogRef<EditMedicalInformationDialogComponent>, 
       @Inject(MAT_DIALOG_DATA) public data:BasicInformation, private _formBuilder: FormBuilder, 
@@ -45,7 +47,7 @@ export class EditMedicalInformationDialogComponent implements OnInit {
   }
 
   isSaveDisabled(): boolean {
-    return this.medicalInformation.invalid || this.isUnchanged()
+    return this.medicalInformation.invalid || this.isUnchanged() || this.waitingResponseApi
   }
 
   // Verificar si el formulario sigue igual que al inicio
@@ -54,11 +56,14 @@ export class EditMedicalInformationDialogComponent implements OnInit {
   }
 
   updateMedicalInformation():void {
+
+    this.waitingResponseApi = true
     const medicalInfo: MedicalInformationUpdateDTO = this.medicalInformation.getRawValue() as MedicalInformationUpdateDTO
     this._patientService.updateMedicalInformation(this.data.basicInformation.id, medicalInfo).subscribe(e => {
+      this.errorMessage = null
       this.onCloseClickEdit(e)
-    })
-    // console.log(medicalInfo)
+      this.waitingResponseApi = false
+    }, error => {this.errorMessage = error, this.waitingResponseApi = false})
   }
 
   ngOnInit(): void {

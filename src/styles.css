@@ -289,7 +289,7 @@ input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 .mat-form-field-appearance-outline .mat-form-field-suffix {
-  top: 0.15em !important;
+  top: 0.25em !important;
 }
 .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button {
   color: var(--secondary-text);

@@ -22,6 +22,8 @@ export class ProfileComponent implements OnInit {
   originalValues: any = null
   errorMessage: string | null = null
   errorMessagePassword: string | null = null
+  waitingResponseApi: boolean = false
+  waitingResponseApiPassword: boolean = false
 
   constructor(private _specialistService: SpecialistService, private _formBuilder: FormBuilder,
     private authService: AuthService) {
@@ -47,7 +49,7 @@ export class ProfileComponent implements OnInit {
   }
 
   isSaveDisabled(): boolean {
-    return this.specialistInformation.invalid || this.isUnchanged()
+    return this.specialistInformation.invalid || this.isUnchanged() || this.waitingResponseApi
   }
 
   isUnchanged(): boolean {
@@ -66,22 +68,29 @@ export class ProfileComponent implements OnInit {
   }
 
   onClickUpdateSpecialist(): void {
+
+    this.waitingResponseApi = true
     const specialistUpdateDTO: SpecialistUpdateDTO = this.specialistInformation.getRawValue() as SpecialistUpdateDTO
     this._specialistService.updateSpecialist(1, specialistUpdateDTO).subscribe( specialist => {
       this.originalValues = this.specialistInformation.getRawValue()
       this.errorMessage = null
-    }, error => this.errorMessage = error)
+      this.waitingResponseApi = false
+    }, error => {this.errorMessage = error, this.waitingResponseApi = false})
   }
 
   onClickChangePassword(): void {
+
+    this.waitingResponseApiPassword = true
     const changePasswordDTO: ChangePasswordDTO = this.changePasswordForm.getRawValue() as ChangePasswordDTO
     this.authService.changePassword(1, changePasswordDTO).subscribe( e => {
       this.changePasswordForm.reset()
       this.changingPassword = false
       this.errorMessagePassword = null
+      this.waitingResponseApiPassword = false
     }, error => {
       this.errorMessagePassword = error
       this.changePasswordForm.reset()
+      this.waitingResponseApiPassword = false
     })
   }
 

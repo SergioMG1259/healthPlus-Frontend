@@ -1,5 +1,8 @@
-<p class="welcome-message">Welcome, Dr. Sergio</p>
-<p class="diary-message">Have a nice day at great work</p>
+<p *ngIf="!isLoading" class="welcome-message">Welcome, Dr. {{this.patientName}}</p>
+<p *ngIf="!isLoading" class="diary-message">Have a nice day at great work</p>
+
+<div *ngIf="isLoading" class="text-loading shimmer"></div>
+<div *ngIf="isLoading" class="text-loading shimmer"></div>
 
 <section class="metrics">
     <ng-container *ngFor="let metric of cardMetrics">

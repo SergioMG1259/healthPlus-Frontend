@@ -24,6 +24,7 @@ export class EditAppointemntDialogComponent implements OnInit {
   today:Date = new Date()
   originalValues: any
   errorMessage:string|null = null
+  waitingResponseApi: boolean = false
 
   constructor(public dialogRef: MatDialogRef<EditAppointemntDialogComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: AppointemntDetails, private _fb: FormBuilder,
@@ -55,6 +56,7 @@ export class EditAppointemntDialogComponent implements OnInit {
 
   updateAppointment(): void {
     
+    this.waitingResponseApi = true
     const date = this.form.get('dateField')?.value
     const startHour = this.form.get('startField')?.value
     const endHour = this.form.get('endField')?.value
@@ -85,14 +87,18 @@ export class EditAppointemntDialogComponent implements OnInit {
     this._appointmentService.updateAppointment(this.data.appointment.id, appointment).subscribe(e => {
       this.errorMessage = null
       this.onCloseClickUpdate(e)
-    }, error => {this.errorMessage = error})
+      this.waitingResponseApi = false
+    }, error => {this.errorMessage = error, this.waitingResponseApi = false})
   }
 
   deleteAppointmet() {
+
+    this.waitingResponseApi = true
     this._appointmentService.deleteAppointment(this.data.appointment.id).subscribe(e => {
       this.errorMessage = null
       this.onCloseClickDelete()
-    }, error => {this.errorMessage = error})
+      this.waitingResponseApi = false
+    }, error => {this.errorMessage = error, this.waitingResponseApi = false})
   }
 
   isSaveDisabled(): boolean {

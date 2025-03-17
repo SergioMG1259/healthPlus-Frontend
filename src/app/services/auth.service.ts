@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 import { catchError, retry, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ChangePasswordDTO } from '../features/specialist/models/ChangePasswordDTO';
+import { LoginDTO } from '../features/auth/models/LoginDTO';
+import { UserCreateDTO } from '../features/auth/models/UserCreateDTO';
+import { AuthResponseDTO } from '../features/auth/models/AuthResponseDTO';
+import { AccessTokenResponseDTO } from '../features/auth/models/AccessTokenResponseDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +15,17 @@ export class AuthService {
 
   private apiUrl: string = environment.API_BASE_URL
 
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTc0MDk4NTQ5OX0.YJAOr8YVqyrJtc5wZFwU-4_sbMIt3VmPCOrh5kolBN8uvZr0OW5clqtzMk82Y__tpBXNEjeADzNqEGWYRCISAw'
-    })
+  private getHttpOptions(withAuth: boolean = true) {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' })
+
+    if (withAuth) {
+      const token = sessionStorage.getItem('accessTokenHealthPlus')
+      if (token) {
+        headers = headers.set('Authorization', `Bearer ${token}`)
+      }
+    }
+
+    return { headers }
   }
 
   constructor(private http: HttpClient) { }
@@ -43,9 +53,35 @@ export class AuthService {
     return throwError(errorMessage)
   }
 
+  login(loginDTO: LoginDTO) {
+    return this.http.post<AuthResponseDTO>(`${this.apiUrl}/auth/login`, loginDTO, 
+      {withCredentials: true, ...this.getHttpOptions(false)})
+      .pipe(
+        retry(2),
+        catchError(this.handleError))
+  }
+
+  registerSpecialist(userCreateDTO: UserCreateDTO) {
+    return this.http.post<boolean>(`${this.apiUrl}/auth/register/specialist`, userCreateDTO, 
+      this.getHttpOptions())
+      .pipe(
+        retry(2),
+        catchError(this.handleError))
+  }
+
+  refreshToken() {
+    return this.http.post<AccessTokenResponseDTO>(`${this.apiUrl}/auth/refresh`, {}, { headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    }), withCredentials: true })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => error)
+        }))
+  }
+
   changePassword(specialistId: number, changePasswordDTO: ChangePasswordDTO) {
     return this.http.post<boolean>(`${this.apiUrl}/auth/changePassword/specialist/${specialistId}`, changePasswordDTO, 
-      this.httpOptions)
+      this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))

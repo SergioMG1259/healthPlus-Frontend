@@ -14,11 +14,17 @@ export class AppointmentService {
 
   private apiUrl: string = environment.API_BASE_URL
 
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTc0MDk4NTQ5OX0.YJAOr8YVqyrJtc5wZFwU-4_sbMIt3VmPCOrh5kolBN8uvZr0OW5clqtzMk82Y__tpBXNEjeADzNqEGWYRCISAw'
-    })
+  private getHttpOptions(withAuth: boolean = true) {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' })
+
+    if (withAuth) {
+      const token = sessionStorage.getItem('accessTokenHealthPlus')
+      if (token) {
+        headers = headers.set('Authorization', `Bearer ${token}`)
+      }
+    }
+
+    return { headers }
   }
 
   constructor(private http: HttpClient) { }
@@ -48,7 +54,7 @@ export class AppointmentService {
 
   findAppointmentsWeeklyBySpecialistId(specialistId: number, appointmentDateRequestDTO: AppointmentDateRequestDTO) {
     return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${specialistId}/weekly`, 
-      appointmentDateRequestDTO, this.httpOptions)
+      appointmentDateRequestDTO, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
@@ -56,7 +62,7 @@ export class AppointmentService {
 
   findAppointmentsMonthlyBySpecialistId(specialistId: number, appointmentDateRequestDTO: AppointmentDateRequestDTO) {
     return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${specialistId}/monthly`, 
-      appointmentDateRequestDTO, this.httpOptions)
+      appointmentDateRequestDTO, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
@@ -64,7 +70,7 @@ export class AppointmentService {
 
   addAppointment(specialistId: number, patientId: number, appointmentCreateDTO: AppointmentCreateDTO) {
     return this.http.post<AppointmentResponseDTO>(`${this.apiUrl}/appointments/specialist/${specialistId}/patient/${patientId}`, 
-      appointmentCreateDTO, this.httpOptions)
+      appointmentCreateDTO, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
@@ -72,14 +78,14 @@ export class AppointmentService {
 
   updateAppointment(appointmentId: number, appointmentUpdateDTO: AppointmentUpdateDTO) {
     return this.http.put<AppointmentResponseDTO>(`${this.apiUrl}/appointments/${appointmentId}`, 
-      appointmentUpdateDTO, this.httpOptions)
+      appointmentUpdateDTO, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
   }
 
   deleteAppointment(appointmentId: number) {
-    return this.http.delete<void>(`${this.apiUrl}/appointments/${appointmentId}`, this.httpOptions)
+    return this.http.delete<void>(`${this.apiUrl}/appointments/${appointmentId}`, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))

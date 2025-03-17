@@ -5,6 +5,7 @@ export interface Overview {
     totalPatients: number,
     totalAppointments: number,
     totalEarning: number,
+    patientName: string, 
     patients: PatientResponseDTO[],
     appointments: AppointmentResponseDTO[]
 }

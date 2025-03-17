@@ -84,9 +84,14 @@
             <input matInput placeholder="Price" type="number" formControlName="priceField" required>
         </mat-form-field>
 
+        <div *ngIf="this.errorMessage">
+            <p class="error">{{this.errorMessage}}</p>
+        </div>
+
         <footer class="flex footer-overlay">
-            <button mat-button color="primary" (click)="closeOverlay()">Cancel</button>
-            <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="this.saveAppointment()">Save</button>
+            <button mat-button color="primary" (click)="closeOverlay()" [disabled]="this.waitingResponseApi">Cancel</button>
+            <button mat-flat-button color="primary" [disabled]="form.invalid || this.waitingResponseApi"
+            (click)="this.saveAppointment()">Save</button>
         </footer>
 
     </form>

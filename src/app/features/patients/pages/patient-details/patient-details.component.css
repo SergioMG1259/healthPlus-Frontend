@@ -163,3 +163,6 @@ textarea {
     height: 275px;
     width: 100%;
 }
+.error-notes {
+    margin-top: 10px;
+}

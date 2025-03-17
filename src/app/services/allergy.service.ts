@@ -12,11 +12,17 @@ export class AllergyService {
 
   private apiUrl: string = environment.API_BASE_URL
 
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTc0MDE4Mjc1NH0.44uzCiG6d6QnG9eoUK5tX2_FGdC4BRiXwcEzXhcAfD3vpnxoUNvNiLLx4IBoehpngXb57RT56dQOP81S1wNM6g'
-    })
+  private getHttpOptions(withAuth: boolean = true) {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' })
+
+    if (withAuth) {
+      const token = sessionStorage.getItem('accessTokenHealthPlus')
+      if (token) {
+        headers = headers.set('Authorization', `Bearer ${token}`)
+      }
+    }
+
+    return { headers }
   }
 
   constructor(private http: HttpClient) { }
@@ -46,7 +52,7 @@ export class AllergyService {
 
   updateAllergiesInPatient(patientId:number, allergyGroupCreateDTO: AllergyGroupCreateDTO) {
     return this.http.put<AllergyGroupResponseDTO>(`${this.apiUrl}/allergies/patient/${patientId}`, 
-      allergyGroupCreateDTO, this.httpOptions)
+      allergyGroupCreateDTO, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))

@@ -51,6 +51,14 @@
     height: 30px;
     width: 100%;
 }
+.text-loading {
+    border-radius: 5px;
+    height: 30px;
+    max-width: 280px;
+}
+.text-loading:nth-child(2) {
+    margin-top: 10px;
+}
 .no-patients {
     font-size: 1rem;
     text-align: center;

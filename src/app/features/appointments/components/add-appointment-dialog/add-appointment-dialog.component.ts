@@ -34,6 +34,7 @@ export class AddAppointmentDialogComponent implements OnInit {
   hoursSub!: Subscription
   today:Date = new Date()
   errorMessage:string|null = null
+  waitingResponseApi: boolean = false
 
   constructor(public dialogRef: MatDialogRef<AddAppointmentDialogComponent>, private _fb: FormBuilder,
     private _patientService: PatientService, private _appointmentService: AppointmentService) { }
@@ -85,6 +86,7 @@ export class AddAppointmentDialogComponent implements OnInit {
 
   createAppointment(): void {
 
+    this.waitingResponseApi = true
     const date = this.form.get('dateField')?.value
     const startHour = this.form.get('startField')?.value
     const endHour = this.form.get('endField')?.value
@@ -115,7 +117,8 @@ export class AddAppointmentDialogComponent implements OnInit {
     this._appointmentService.addAppointment(1, patientId, appointment).subscribe(e => {
       this.errorMessage = null
       this.onCloseClickAdd(e)
-    }, error => {this.errorMessage = error})
+      this.waitingResponseApi = false
+    }, error => {this.errorMessage = error, this.waitingResponseApi = false})
   }
 
   ngOnInit(): void {

@@ -36,9 +36,13 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="small input">
-            <mat-label>Heart rate (bpm )</mat-label>
+            <mat-label>Heart rate (bpm)</mat-label>
             <input matInput placeholder="E.g. 75" type="number" formControlName="heartRate" required>
         </mat-form-field>
+
+        <div *ngIf="this.errorMessage">
+            <p class="error">{{this.errorMessage}}</p>
+        </div>
     </form>
     <footer>
         <button mat-flat-button color="primary" (click)="this.updateMedicalInformation()"

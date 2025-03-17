@@ -21,7 +21,7 @@
         <div *ngIf="this.isLoading" class="input shimmer"></div>
 
         <mat-form-field appearance="outline" class="input" *ngIf="!this.isLoading">
-            <mat-label>Choose a date</mat-label>
+            <mat-label>Birthdate</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="birthDate" required>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -43,12 +43,14 @@
     </div>
     <mat-form-field appearance="outline" class="input" *ngIf="!this.isLoading">
         <mat-label>Specialty</mat-label>
-        <mat-select disableOptionCentering placeholder="Specialty" formControlName="specialty">
+        <mat-select disableOptionCentering placeholder="Specialty" formControlName="specialty" required>
           <mat-option value="CARDIOLOGIST">Cardiologist</mat-option>
-          <mat-option value="ELECTROPHYSIOLOGIST">Electrophysiologist</mat-option>
-          <mat-option value="SPORTS_CARDIOLOGIST">Sports cardiologist</mat-option>
-          <mat-option value="PEDIATRIC_CARDIOLOGIST">Pediatric cardiologist</mat-option>
-          <mat-option value="GERIATRIC_CARDIOLOGIST">Geriatric cardiologist</mat-option>
+          <mat-option value="DERMATOLOGIST">Dermatologist</mat-option>
+          <mat-option value="NEUROLOGIST">Neurologist</mat-option>
+          <mat-option value="PEDIATRICIAN">Pediatrician</mat-option>
+          <mat-option value="GASTROENTEROLOGIST">Gastroenterologist</mat-option>
+          <mat-option value="PSYCHIATRIST">Psychiatrist</mat-option>
+          <mat-option value="RHEUMATOLOGIST">Rheumatologist</mat-option>
         </mat-select>
     </mat-form-field>
     <div *ngIf="this.isLoading" class="input shimmer"></div>
@@ -88,7 +90,7 @@
         </mat-form-field>
         <div class="buttons">
             <button mat-button color="primary" (click)="this.onClickShowChangePassword()">Cancel</button>
-            <button mat-flat-button color="primary" [disabled]="this.changePasswordForm.invalid"
+            <button mat-flat-button color="primary" [disabled]="this.changePasswordForm.invalid || this.waitingResponseApiPassword"
             (click)="this.onClickChangePassword()">Change</button>
         </div>
         <div *ngIf="this.errorMessagePassword">

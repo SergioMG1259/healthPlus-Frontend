@@ -1,0 +1,82 @@
+<section class="flex wrapper">
+    <div class="left">
+        <div class="form-wrapper">
+            <h1>Join us today</h1>
+            <p class="text">It only takes a moment</p>
+            <form [formGroup]="this.registerForm" class="flex">
+                <div class="flex row">
+                    <mat-form-field appearance="outline" class="row-input">
+                        <mat-label>Names</mat-label>
+                        <input matInput placeholder="First names" formControlName="names" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="row-input">
+                        <mat-label>Last names</mat-label>
+                        <input matInput placeholder="Last names" formControlName="lastNames" required>
+                    </mat-form-field>
+                </div>
+
+                <mat-form-field appearance="outline" class="input">
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="Email" type="email" formControlName="email" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="input">
+                  <mat-label>Password</mat-label>
+                  <input matInput [type]="hidePassword ? 'password' : 'text'" maxlength="30" formControlName="password"
+                      required>
+                  <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide current password'" [attr.aria-pressed]="hidePassword">
+                    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </mat-form-field>
+
+                <div class="flex row">
+                    <mat-form-field appearance="outline" class="row-input">
+                        <mat-label>Birthdate</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="birthDate" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="row-input">
+                        <mat-label>Medical institution</mat-label>
+                        <input matInput placeholder="Medical institution" formControlName="medicalInstitution" required>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex row">
+                    <mat-form-field appearance="outline" class="row-input">
+                        <mat-label>Specialty</mat-label>
+                        <mat-select disableOptionCentering placeholder="Specialty" formControlName="specialty" required>
+                            <mat-option value="CARDIOLOGIST">Cardiologist</mat-option>
+                            <mat-option value="DERMATOLOGIST">Dermatologist</mat-option>
+                            <mat-option value="NEUROLOGIST">Neurologist</mat-option>
+                            <mat-option value="PEDIATRICIAN">Pediatrician</mat-option>
+                            <mat-option value="GASTROENTEROLOGIST">Gastroenterologist</mat-option>
+                            <mat-option value="PSYCHIATRIST">Psychiatrist</mat-option>
+                            <mat-option value="RHEUMATOLOGIST">Rheumatologist</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="row-input">
+                        <mat-label>Years of experience</mat-label>
+                        <input matInput placeholder="Years of experience" type="number" formControlName="yearsOfExperience" required>
+                    </mat-form-field>
+                </div>
+
+                <button mat-flat-button color="primary" [disabled]="this.registerForm.invalid"
+                (click)="this.onClickRegister()">Sign up</button>
+            </form>
+            <p class="to-login">Already have an account? <a href="/login">Log in</a></p>
+            <div *ngIf="this.errorMessage">
+                <p class="error">{{this.errorMessage}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <span class="brand">HealthPlus</span>
+        <div class="flex background">
+            <img src="https://img.freepik.com/vector-gratis/fondo-degradado-lineas-azules-dinamicas_23-2148995756.jpg?t=st=1741383183~exp=1741386783~hmac=313bf0cccae4002eebe42da6d3ac4627944d87d32038da5eeeb8cf630626d788&w=1380" alt="">
+        </div>
+    </div>
+</section>

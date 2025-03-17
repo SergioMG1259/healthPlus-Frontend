@@ -17,11 +17,17 @@ export class PatientService {
 
   private apiUrl: string = environment.API_BASE_URL
 
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlJPTEVfU1BFQ0lBTElTVCIsImV4cCI6MTc0MDk4NTQ5OX0.YJAOr8YVqyrJtc5wZFwU-4_sbMIt3VmPCOrh5kolBN8uvZr0OW5clqtzMk82Y__tpBXNEjeADzNqEGWYRCISAw'
-    })
+  private getHttpOptions(withAuth: boolean = true) {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' })
+
+    if (withAuth) {
+      const token = sessionStorage.getItem('accessTokenHealthPlus')
+      if (token) {
+        headers = headers.set('Authorization', `Bearer ${token}`)
+      }
+    }
+
+    return { headers }
   }
 
   constructor(private http: HttpClient) { }
@@ -90,7 +96,7 @@ export class PatientService {
     }
 
     return this.http.get<PatientResponseDTO[]>(`${this.apiUrl}/patients/filter/specialist/${specialistId}`,{
-        ...this.httpOptions,
+        ...this.getHttpOptions(),
         params,
       })
         .pipe(retry(2), catchError(this.handleError))
@@ -98,14 +104,14 @@ export class PatientService {
 
   addPatient(specialistId: number, patientCreateDTO: PatientCreateDTO) {
     return this.http.post<PatientResponseDTO>(`${this.apiUrl}/patients/specialist/${specialistId}`, patientCreateDTO,
-      this.httpOptions)
+      this.getHttpOptions())
     .pipe(
       retry(2),
       catchError(this.handleError))
   }
 
  findPatientDetails(patientId:number) {
-    return this.http.get<PatientDetailsDTO>(`${this.apiUrl}/patients/${patientId}`, this.httpOptions)
+    return this.http.get<PatientDetailsDTO>(`${this.apiUrl}/patients/${patientId}`, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
@@ -113,7 +119,7 @@ export class PatientService {
 
   updateMedicalInformation(patientId:number, medicalInformation:MedicalInformationUpdateDTO) {
     return this.http.put<MedicalInformationResponseDTO>(`${this.apiUrl}/patients/${patientId}/updateMedicalInfo`, 
-      medicalInformation, this.httpOptions)
+      medicalInformation, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
@@ -121,7 +127,7 @@ export class PatientService {
 
   updatePatientById(patientId:number, patientUpdateDTO: PatientUpdateDTO) {
     return this.http.put<PatientResponseDTO>(`${this.apiUrl}/patients/${patientId}`, 
-      patientUpdateDTO, this.httpOptions)
+      patientUpdateDTO, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
@@ -129,14 +135,14 @@ export class PatientService {
 
   updateNotes(patientId:number, notesUpdateDTO: NotesUpdateDTO) {
     return this.http.put<PatientResponseDTO>(`${this.apiUrl}/patients/${patientId}/updateNotes`, 
-      notesUpdateDTO, this.httpOptions)
+      notesUpdateDTO, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
   }
 
   deletePatient(patientId: number) {
-    return this.http.delete<void>(`${this.apiUrl}/patients/${patientId}`, this.httpOptions)
+    return this.http.delete<void>(`${this.apiUrl}/patients/${patientId}`, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))

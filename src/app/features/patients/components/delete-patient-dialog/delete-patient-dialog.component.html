@@ -11,6 +11,6 @@
 
     <footer class="flex">
         <button mat-button color="primary" class="cancel" (click)="this.onCloseClick()">Cancel</button>
-        <button mat-flat-button color="warn" (click)="this.onClickDelete()">Delete</button>
+        <button mat-flat-button color="warn" (click)="this.onClickDelete()" [disabled]="this.waitingResponseApi">Delete</button>
     </footer>
 </div>

@@ -63,8 +63,8 @@
         </div>
 
         <footer class="flex footer">
-            <button mat-button color="warn" (click)="this.deleteAppointmet()">Delete</button>
-            <button mat-flat-button color="primary" [disabled]="this.isSaveDisabled()"
+            <button mat-button color="warn" [disabled]="this.waitingResponseApi" (click)="this.deleteAppointmet()">Delete</button>
+            <button mat-flat-button color="primary" [disabled]="this.isSaveDisabled() || this.waitingResponseApi"
             (click)="this.updateAppointment()">Edit</button>
         </footer>
     </form>

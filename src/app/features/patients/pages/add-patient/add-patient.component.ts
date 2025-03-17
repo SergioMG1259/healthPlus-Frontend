@@ -60,6 +60,7 @@ export class AddPatientComponent implements OnInit {
   private _resizeSub!:Subscription
   orientation:StepperOrientation ="horizontal"
   errorMessage:string|null = null
+  waitingResponseApi = false
 
   constructor(private _formBuilder: FormBuilder, private _breakpointObserver: BreakpointObserver,
     private _patientService: PatientService, private _router:Router) { }
@@ -94,6 +95,7 @@ export class AddPatientComponent implements OnInit {
 
   onClickAddPatient() {
 
+    this.waitingResponseApi = true
     const allergiesMapToId = Array.from(this.allergyMap.entries())
     .filter(([id, name]) => this.allergiesForm.get('allergies')?.get(name)?.value)
     .map(([id]) => id)
@@ -120,8 +122,9 @@ export class AddPatientComponent implements OnInit {
     }
     this._patientService.addPatient(1, patientCreateDTO).subscribe(e => {
       this.errorMessage = null
+      this.waitingResponseApi = false
       this._router.navigate(['/patients'])
-    }, error => {this.errorMessage = error})
+    }, error => {this.errorMessage = error, this.waitingResponseApi = false})
   }
 
   ngOnInit(): void {

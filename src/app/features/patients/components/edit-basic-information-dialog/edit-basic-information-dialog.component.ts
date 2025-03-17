@@ -20,6 +20,8 @@ export class EditBasicInformationDialogComponent implements OnInit {
 
   basicInformation: FormGroup = this._formBuilder.group({})
   originalValues: any
+  waitingResponseApi = false
+  errorMessage: string | null = null
 
   constructor(public dialogRef: MatDialogRef<EditBasicInformationDialogComponent>, 
     @Inject(MAT_DIALOG_DATA) public data:BasicInformation, private _formBuilder: FormBuilder,
@@ -50,7 +52,7 @@ export class EditBasicInformationDialogComponent implements OnInit {
   }
 
   isSaveDisabled(): boolean {
-    return this.basicInformation.invalid || this.isUnchanged()
+    return this.basicInformation.invalid || this.isUnchanged() || this.waitingResponseApi
   }
 
   // Verificar si el formulario sigue igual que al inicio
@@ -69,11 +71,15 @@ export class EditBasicInformationDialogComponent implements OnInit {
     })
   }
 
-  onCloseClickEdit():void {
+  onCloseClickEdit(): void {
+
+    this.waitingResponseApi = true
     const patientUpdateDTO: PatientUpdateDTO = this.basicInformation.getRawValue() as PatientUpdateDTO
     this._patientService.updatePatientById(1, patientUpdateDTO).subscribe(e=> {
+      this.errorMessage = null
       this.updatePatient(e)
-    })
+      this.waitingResponseApi = false
+    }, error => {this.errorMessage = error, this.waitingResponseApi = false})
   }
 
   ngOnInit(): void {

@@ -11,6 +11,7 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 import { PatientResponseDTO } from 'src/app/features/patients/models/PatientResponseDTO';
 import { PatientService } from 'src/app/services/patient.service';
 import { AppointmentCreateDTO } from '../../models/AppointmentCreateDTO';
+import { error } from 'console';
 
 @Component({
   selector: 'app-weekly-calendar',
@@ -50,6 +51,8 @@ export class WeeklyCalendarComponent implements OnInit {
 
   startDateOverlay: Date | null = null
   endDateOverlay: Date | null = null
+  waitingResponseApi: boolean = false
+  errorMessage: string | null = null
 
   constructor(private _renderer: Renderer2, private _viewContainerRef: ViewContainerRef, 
     private _appointmentOverlayService: AppointmentOverlayCalendarService, private _fb: FormBuilder, private _dialog: MatDialog,
@@ -226,6 +229,7 @@ export class WeeklyCalendarComponent implements OnInit {
 
   saveAppointment(): void {
 
+    this.waitingResponseApi = true
     const date = new Date(this.startDateOverlay!)
     date.setHours(0)
     date.setMinutes(0)
@@ -259,7 +263,9 @@ export class WeeklyCalendarComponent implements OnInit {
       this.appointments.push(newAppointment)
       this.closeOverlay()
       this.resetValues()
-    })
+      this.errorMessage = null
+      this.waitingResponseApi = false
+    }, error=> {this.errorMessage = error, this.waitingResponseApi = false})
   }
 
   removeAppointmentRange(): void {
@@ -342,6 +348,7 @@ export class WeeklyCalendarComponent implements OnInit {
       }))
     })
 
+    // Para cuando se agrega un appointment desde el botón "Agregar appointment" fuera de este componente
     this.appointmentAddSub = this.appointmentAdd$.subscribe(appointment => {
       const newAppointment = {...appointment,
         startDate: new Date(appointment.startDate), endDate: new Date(appointment.endDate)}

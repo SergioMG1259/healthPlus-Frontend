@@ -11,6 +11,7 @@ import { PatientService } from 'src/app/services/patient.service';
 export class DeletePatientDialogComponent implements OnInit {
 
   errorMessage: string | null = null
+  waitingResponseApi = false
 
   constructor(public dialogRef: MatDialogRef<DeletePatientDialogComponent>, @Inject(MAT_DIALOG_DATA) public data:number,
   private _patientService: PatientService) { }
@@ -20,10 +21,13 @@ export class DeletePatientDialogComponent implements OnInit {
   }
 
   onClickDelete(): void {
+
+    this.waitingResponseApi = true
     this._patientService.deletePatient(this.data).subscribe(e => {
       this.errorMessage = null
       this.deletePatient()
-    }, error => {this.errorMessage = error})
+      this.waitingResponseApi = false
+    }, error => {this.errorMessage = error, this.waitingResponseApi = false})
   }
 
   deletePatient(): void {
