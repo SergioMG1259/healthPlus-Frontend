@@ -19,6 +19,7 @@
 }
 .list-options {
     flex-direction: column;
+    height: calc(100vh - 120px);
     padding: 16px;
     row-gap: 10px;
 }
@@ -42,4 +43,23 @@ mat-icon {
 .active {
     background-color: var(--primary-color);
     color: var(--tertiary-text);
+}
+.option:last-child {
+    cursor: pointer;
+    margin-top: auto;
+}
+.option:last-child .option-link {
+    color: var(--warn-color);
+}
+
+@media (max-width: 768px) {
+    .list-options {
+        flex-direction: column;
+        height: auto;
+        padding: 16px;
+        row-gap: 10px;
+    }
+    .option:last-child {
+        margin-top: none;
+    }
 }

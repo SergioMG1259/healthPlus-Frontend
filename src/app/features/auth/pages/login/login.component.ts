@@ -28,15 +28,19 @@ export class LoginComponent implements OnInit {
     const loginDTO: LoginDTO = this.loginForm.getRawValue() as LoginDTO
 
     this._authService.login(loginDTO).subscribe( response => {
-      // Guardar datos en sessionStorage
-      sessionStorage.setItem('userRolIdHealthPlus', response.userRoleId.toString())
-      sessionStorage.setItem('roleHealthPlus', response.role)
-      sessionStorage.setItem('accessTokenHealthPlus', response.accessToken)
-      sessionStorage.setItem('isLoggedInHealthPlus', 'true')
-      // sessionStorage.setItem('refreshTokenHealthPlus', response.refreshToken)
+
+      localStorage.setItem('userRolIdHealthPlus', response.userRoleId.toString())
+      localStorage.setItem('roleHealthPlus', response.role)
+      localStorage.setItem('accessTokenHealthPlus', response.accessToken)
+      localStorage.setItem('isLoggedInHealthPlus', 'true')
+      
+      if (loginDTO.rememberMe) {
+        localStorage.setItem('rememberMeHealthPlus', 'true')
+      }
+
+      this._router.navigate(['/overview'])
       this.errorMessage = null
       this.waitingResponseApi = false
-      this._router.navigate(['/overview'])
     }, error => {this.errorMessage = error, this.waitingResponseApi = false})
   }
 

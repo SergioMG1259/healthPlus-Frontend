@@ -10,10 +10,9 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(): boolean {
+    
     // Buscar el estado de autenticación en sessionStorage y localStorage
-    const isLoggedIn =
-      sessionStorage.getItem('isLoggedInHealthPlus') == 'true' ||
-      localStorage.getItem('isLoggedInHealthPlus') == 'true'
+    const isLoggedIn = localStorage.getItem('isLoggedInHealthPlus') == 'true'
 
     if (isLoggedIn) {
       return true

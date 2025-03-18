@@ -12,9 +12,7 @@ export class NoAuthGuard implements CanActivate {
   canActivate(): boolean {
 
     // Verificar si el usuario ya está autenticado
-    const isLoggedIn =
-      sessionStorage.getItem('isLoggedInHealthPlus') == 'true' ||
-      localStorage.getItem('isLoggedInHealthPlus') == 'true'
+    const isLoggedIn = localStorage.getItem('isLoggedInHealthPlus') == 'true'
 
     if (isLoggedIn) {
       this.router.navigate(['/overview'])

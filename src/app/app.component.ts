@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +7,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'healthPlus-Frontend';
+
+  @HostListener("window:beforeunload",["$event"])
+  clearLocalStorage() {
+    if(localStorage.getItem('rememberMeHealthPlus') == null && localStorage.getItem('isLoggedInHealthPlus')) {
+      localStorage.removeItem('userRolIdHealthPlus')
+      localStorage.removeItem('roleHealthPlus')
+      localStorage.removeItem('accessTokenHealthPlus')
+      localStorage.removeItem('isLoggedInHealthPlus')
+      localStorage.removeItem('rememberMeHealthPlus')
+    }
+  }
 }

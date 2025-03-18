@@ -19,7 +19,7 @@ export class AuthService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' })
 
     if (withAuth) {
-      const token = sessionStorage.getItem('accessTokenHealthPlus')
+      const token = localStorage.getItem('accessTokenHealthPlus')
       if (token) {
         headers = headers.set('Authorization', `Bearer ${token}`)
       }
@@ -70,13 +70,20 @@ export class AuthService {
   }
 
   refreshToken() {
-    return this.http.post<AccessTokenResponseDTO>(`${this.apiUrl}/auth/refresh`, {}, { headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    }), withCredentials: true })
+    return this.http.post<AccessTokenResponseDTO>(`${this.apiUrl}/auth/refresh`, {},
+      {withCredentials: true, ...this.getHttpOptions(false)})
       .pipe(
         catchError((error: HttpErrorResponse) => {
           return throwError(() => error)
         }))
+  }
+
+  logout() {
+    return this.http.post<void>(`${this.apiUrl}/auth/logout`, {},
+      {withCredentials: true, ...this.getHttpOptions()})
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
   changePassword(specialistId: number, changePasswordDTO: ChangePasswordDTO) {
