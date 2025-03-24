@@ -11,12 +11,20 @@
 </section>
 
 <section class="grid graphics">
-    <mat-card>
-        <mat-card-title>Patients ratio</mat-card-title>
+    <mat-card class="patients-ratio">
+        <mat-card-title>New patients ratio</mat-card-title>
+        <mat-card-content>
+            <app-patients-chart *ngIf="!this.isLoading" [labels]="this.patientChartLabel" [patients]="this.patientChartCounts"></app-patients-chart>
+            <div *ngIf="this.isLoading" class="chart-loading shimmer"></div>
+        </mat-card-content>
     </mat-card>
 
-    <mat-card>
+    <mat-card class="patients-ratio">
         <mat-card-title>Earning ratio</mat-card-title>
+        <mat-card-content>
+            <app-earning-chart *ngIf="!this.isLoading" [labels]="this.earningChartLabel" [earnings]="this.earningChartCounts"></app-earning-chart>
+            <div *ngIf="this.isLoading" class="chart-loading shimmer"></div>
+        </mat-card-content>
     </mat-card>
 </section>
 
@@ -24,6 +32,10 @@
     <mat-card class="card-graphic-circle">
         <mat-card-title>Gender</mat-card-title>
         <mat-card-subtitle>Patient gender percentage</mat-card-subtitle>
+        <mat-card-content>
+            <app-gender-chart *ngIf="!this.isLoading" [labels]="this.genderChartLabel" [gender]="this.genderChartCounts"></app-gender-chart>
+            <div *ngIf="this.isLoading" class="chart-loading shimmer"></div>
+        </mat-card-content>
     </mat-card>
 
     <mat-card class="card-appointment">

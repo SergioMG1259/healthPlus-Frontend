@@ -1,0 +1,18 @@
+.chart-wrapper {
+    display: flex;
+    justify-content: center;
+    /* min-width: 500px;
+    max-width: 700px; */
+    min-width: 480px;
+    position: relative;
+    width: 100%;
+    overflow-x: hidden;
+}
+canvas {
+    height: 230px;
+}
+@media screen and (max-width : 768px) {
+    /* .wrapper {
+        min-width: 420px;
+    } */
+}

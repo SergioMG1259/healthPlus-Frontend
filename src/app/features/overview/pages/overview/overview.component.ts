@@ -28,6 +28,12 @@ export class OverviewComponent implements OnInit {
       amount :  null
     }
   ]
+  earningChartLabel: string[] = []
+  earningChartCounts: number[] = []
+  patientChartLabel: string[] = []
+  patientChartCounts: number[] = []
+  genderChartLabel: string[] = []
+  genderChartCounts: number[] = []
   appointmentsToday: AppointmentResponseDTO[] = []
   patients: PatientResponseDTO[] = []
   patientName: string = ''
@@ -69,6 +75,12 @@ export class OverviewComponent implements OnInit {
           amount :  e.totalEarning
         }
       ]
+      this.earningChartLabel = e.earningChart.labels
+      this.earningChartCounts = e.earningChart.counts
+      this.patientChartLabel = e.patientChart.labels
+      this.patientChartCounts = e.patientChart.counts
+      this.genderChartLabel = e.genderChart.labels
+      this.genderChartCounts = e.genderChart.counts
       this.appointmentsToday = e.appointments
       this.dataSource = e.patients
       this.patientName = e.patientName

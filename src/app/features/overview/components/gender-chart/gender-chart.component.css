@@ -1,0 +1,12 @@
+.wrapper {
+    display: flex;
+    height: 280px;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+@media screen and (max-width : 768px) {
+    .wrapper {
+        height: 210px;
+    }
+}

@@ -34,17 +34,17 @@
     margin: 8px 0px 0px 5px
 }
 .appointments .icon-container mat-icon{
-    color: #4db0c4;
+    color: #ed874c;
 }
 .appointments {
-    background: #2e839b;
-    background: -webkit-linear-gradient(to top right, #2e839b,#4daec2,#62cfe0);
-    background: linear-gradient(to top right,#2e839b,#4daec2,#62cfe0);  
+    background: #eb6842;
+    background: -webkit-linear-gradient(to top right, #eb6842,#ed874c,#efa054);
+    background: linear-gradient(to top right,#eb6842,#ed874c,#efa054);
 }
 .appointments .icon-container {
-    box-shadow: 5px 5px 0px 0px #53b8cb;
-    -webkit-box-shadow: 5px 5px 0px 0px #53b8cb;
-    -moz-box-shadow: 5px 5px 0px 0px #53b8cb;
+    box-shadow: 5px 5px 0px 0px #f1965f;
+    -webkit-box-shadow: 5px 5px 0px 0px #f1965f;
+    -moz-box-shadow: 5px 5px 0px 0px #f1965f;
 }
 .patients .icon-container mat-icon {
     color: #9f6af5;
@@ -73,17 +73,17 @@
     -moz-box-shadow: 5px 5px 0px 0px #68a7db;
 }
 .earning .icon-container mat-icon {
-    color: #ed874c;
+    color: #4db0c4;
 }
 .earning {
-    background: #eb6842;
-    background: -webkit-linear-gradient(to top right, #eb6842,#ed874c,#efa054);
-    background: linear-gradient(to top right,#eb6842,#ed874c,#efa054);  
+    background: #2e839b;
+    background: -webkit-linear-gradient(to top right, #2e839b,#4daec2,#62cfe0);
+    background: linear-gradient(to top right,#2e839b,#4daec2,#62cfe0);
 }
 .earning .icon-container {
-    box-shadow: 5px 5px 0px 0px #f1965f;
-    -webkit-box-shadow: 5px 5px 0px 0px #f1965f;
-    -moz-box-shadow: 5px 5px 0px 0px #f1965f;
+    box-shadow: 5px 5px 0px 0px #53b8cb;
+    -webkit-box-shadow: 5px 5px 0px 0px #53b8cb;
+    -moz-box-shadow: 5px 5px 0px 0px #53b8cb;
 }
 
 

@@ -6,12 +6,33 @@
 }
 .hour {
     height: 60px;
+    position: relative;
+}
+.hour-text {
+    color: var(--primary-text);
+    position: absolute;
+    top: -7px;
+}
+.last-hour {
+    bottom: 0px;
+    position: absolute;
 }
 
 .wrapper-week {
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
+
+    position: relative;
+}
+.line {
+    /* border-radius: 5px 5px 0px 0px; */
+    position: absolute;
+    left: 0px;
+    border: solid 2px var(--primary-color);
+    min-width: 840px;
+    width: 100%;
+    z-index: 3;
 }
 .header-cells {
     color: var(--primary-text);

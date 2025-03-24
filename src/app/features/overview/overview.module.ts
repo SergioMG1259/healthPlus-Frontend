@@ -7,13 +7,19 @@ import { CardMetricComponent } from './components/card-metric/card-metric.compon
 import { MaterialModule } from 'src/app/core/material/material.module';
 import { TodaysAppointmentsComponent } from './components/todays-appointments/todays-appointments.component';
 import { SharedModule } from "../../shared/shared.module";
+import { GenderChartComponent } from './components/gender-chart/gender-chart.component';
+import { PatientsChartComponent } from './components/patients-chart/patients-chart.component';
+import { EarningChartComponent } from './components/earning-chart/earning-chart.component';
 
 
 @NgModule({
   declarations: [
     OverviewComponent,
     CardMetricComponent,
-    TodaysAppointmentsComponent
+    TodaysAppointmentsComponent,
+    GenderChartComponent,
+    PatientsChartComponent,
+    EarningChartComponent
   ],
   imports: [
     CommonModule,

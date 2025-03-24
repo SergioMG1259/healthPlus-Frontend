@@ -43,12 +43,6 @@ export class AuthInterceptor implements HttpInterceptor {
     return this._authService.refreshToken().pipe(
       switchMap((response: AccessTokenResponseDTO) => {
 
-        // if (sessionStorage.getItem('isLoggedInHealthPlus') != null)
-        //   sessionStorage.setItem('accessTokenHealthPlus', response.accessToken)
-        // else if (localStorage.getItem('isLoggedInHealthPlus') != null)
-        //   localStorage.setItem('accessTokenHealthPlus', response.accessToken)
-
-        // this._sessionService.setToken(response.accessToken)
         localStorage.setItem('accessTokenHealthPlus', response.accessToken)
 
         return next.handle(this.cloneRequestWithToken(request, response.accessToken))

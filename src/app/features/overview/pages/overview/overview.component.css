@@ -16,9 +16,12 @@
 }
 .graphics {
     margin-top: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
     grid-column-gap: 20px;
     grid-row-gap: 20px;
+}
+.patients-ratio {
+    overflow-x: auto;
 }
 .link {
     color: var(--primary-color);
@@ -53,7 +56,7 @@
 }
 .text-loading {
     border-radius: 5px;
-    height: 30px;
+    height: 25px;
     max-width: 280px;
 }
 .text-loading:nth-child(2) {
@@ -63,7 +66,11 @@
     font-size: 1rem;
     text-align: center;
 }
-
+.chart-loading {
+    border-radius: 5px;
+    height: 130px;
+    width: 100%;
+}
 @media screen and (max-width : 768px) {
     .graphics {
         grid-template-columns: repeat(1, 1fr);

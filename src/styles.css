@@ -91,7 +91,7 @@ input[type="text"]::placeholder {
 }
 .mat-card {
   background-color: var(--background-components);
-  border-radius: 5px;
+  border-radius: 5px !important;
   color: var(--primary-text);
 }
 .mat-card-title {

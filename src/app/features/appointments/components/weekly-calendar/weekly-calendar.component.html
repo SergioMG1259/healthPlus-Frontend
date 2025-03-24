@@ -2,10 +2,14 @@
     <div class="hour-column">
         <div class="header-hour"></div>
         <div class="hour" *ngFor="let hour of [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]; let i = index">
-            <p>{{i + 6 + ":00"}}</p>
+            <p class="hour-text">{{i + 6 + ":00"}}</p>
+            <p *ngIf="i == 16" class="last-hour">{{i + 7 + ":00"}}</p>
         </div>
     </div>
     <div class="wrapper-week">
+        <div class="line" *ngIf="this.indexDate.getHours() >= 6 && this.indexDate.getHours() <= 23"
+        [style.top]="(this.indexDate.getHours() - 6)*60 + 54 + this.indexDate.getMinutes() + 'px'"></div>
+
         <div class="grid header-cells">
             <div class="header-cell"  *ngFor="let day of daysWeek; let i = index" [ngClass]="{'today': this.areDatesEqual(day)}">
                 <p>{{this.daysName[i]}}</p>

@@ -7,5 +7,18 @@ export interface Overview {
     totalEarning: number,
     patientName: string, 
     patients: PatientResponseDTO[],
-    appointments: AppointmentResponseDTO[]
+    appointments: AppointmentResponseDTO[],
+    patientChart: ChartDTO,
+    earningChart: EarningChartDTO,
+    genderChart: ChartDTO
+}
+
+interface ChartDTO {
+    labels: string[],
+    counts: number[]
+}
+
+interface EarningChartDTO {
+    labels: string[],
+    counts: number[]
 }

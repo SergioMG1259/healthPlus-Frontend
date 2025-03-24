@@ -21,7 +21,7 @@ export class PatientService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' })
 
     if (withAuth) {
-      const token = sessionStorage.getItem('accessTokenHealthPlus')
+      const token = localStorage.getItem('accessTokenHealthPlus')
       if (token) {
         headers = headers.set('Authorization', `Bearer ${token}`)
       }
@@ -54,13 +54,6 @@ export class PatientService {
     }
     return throwError(errorMessage)
   }
-
-  // getPatients(specialistId: number){
-  //   return this.http.get<PatientResponseDTO[]>(`${this.apiUrl}/patients/specialist/${specialistId}`, this.httpOptions)
-  //     .pipe(
-  //       retry(2),
-  //       catchError(this.handleError))
-  // }
 
   getPatientsWithFilters(
     specialistId: number,

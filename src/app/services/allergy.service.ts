@@ -16,7 +16,7 @@ export class AllergyService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' })
 
     if (withAuth) {
-      const token = sessionStorage.getItem('accessTokenHealthPlus')
+      const token = localStorage.getItem('accessTokenHealthPlus')
       if (token) {
         headers = headers.set('Authorization', `Bearer ${token}`)
       }

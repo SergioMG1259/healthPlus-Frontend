@@ -63,7 +63,7 @@ export class AuthService {
 
   registerSpecialist(userCreateDTO: UserCreateDTO) {
     return this.http.post<boolean>(`${this.apiUrl}/auth/register/specialist`, userCreateDTO, 
-      this.getHttpOptions())
+      this.getHttpOptions(false))
       .pipe(
         retry(2),
         catchError(this.handleError))
