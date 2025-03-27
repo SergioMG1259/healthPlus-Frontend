@@ -18,7 +18,7 @@ import { AuthModule } from './features/auth/auth.module';
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    AuthModule
+    AuthModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

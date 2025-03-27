@@ -154,6 +154,9 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </div>
+    <p *ngIf="this.dataSource.data.length == 0" class="no-patients">
+        There are no patients
+    </p>
     <mat-paginator pageSize="10"
         appCustomPaginator [appCustomLength]="this.dataSource.data.length"[isLoadingChange]="this.isLoadingChange$"
         (page)="changePage($event)"

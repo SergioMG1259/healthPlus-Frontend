@@ -21,8 +21,8 @@ export class AuthInterceptor implements HttpInterceptor {
     localStorage.removeItem('roleHealthPlus')
     localStorage.removeItem('accessTokenHealthPlus')
     localStorage.removeItem('isLoggedInHealthPlus')
-    if(localStorage.getItem('rememberMeHealthPlus'))
-      localStorage.removeItem('rememberMeHealthPlus')
+    // if(localStorage.getItem('rememberMeHealthPlus'))
+    //   localStorage.removeItem('rememberMeHealthPlus')
 
     this._router.navigate(['/login'])
   }

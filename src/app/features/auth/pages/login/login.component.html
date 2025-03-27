@@ -24,15 +24,15 @@
                   </button>
                 </mat-form-field>
 
-                <mat-checkbox color="primary" class="checkbox" formControlName="rememberMe" >Remember me</mat-checkbox>
+                <!-- <mat-checkbox color="primary" class="checkbox" formControlName="rememberMe" >Remember me</mat-checkbox> -->
 
                 <button mat-flat-button color="primary" [disabled]="this.loginForm.invalid || this.waitingResponseApi" 
                 (click)="this.onClickLogin()">Login</button>
             </form>
-            <p class="to-register">Don't have account? <a href="/register">Sign up</a></p>
             <div *ngIf="this.errorMessage">
                 <p class="error">{{this.errorMessage}}</p>
             </div>
+            <p class="to-register">Don't have account? <a href="/register">Sign up</a></p>
         </div>
     </div>
 </section>

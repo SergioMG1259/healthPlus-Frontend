@@ -13,7 +13,6 @@
     <ng-container *ngIf="this.isLoading; else loaded">
         <div class="flex patient-appointment" *ngFor="let item of [0,1,2]">
             <div class="flex">
-                <!-- <img class="patient-image" src="https://cdn-icons-png.flaticon.com/512/1430/1430453.png" alt="patient image"> -->
                 <div class="info">
                     <p class="patient-name loading shimmer"></p>
                     <p class="patient-issue loading shimmer"></p>
@@ -27,7 +26,7 @@
     <ng-template #loaded>
 
         <ng-container *ngIf="appointments.length > 0; else noAppointments">
-            <div class="flex patient-appointment" *ngFor="let appointment of appointments">
+            <div class="flex patient-appointment" *ngFor="let appointment of appointments | slice:0:3">
                 <div class="flex">  
                     <div class="info">
                         <p class="patient-name">{{appointment.patient.names + " " + appointment.patient.lastNames}}</p>
@@ -37,6 +36,9 @@
                 <span class="hour">
                     {{appointment.startDate | date:'HH:mm'}}
                 </span>
+            </div>
+            <div class="show-others" *ngIf="appointments.length > 3">
+                <a [routerLink]="['/appointments']">Show all (+{{ appointments.length - 3 }})</a>
             </div>
         </ng-container>
 

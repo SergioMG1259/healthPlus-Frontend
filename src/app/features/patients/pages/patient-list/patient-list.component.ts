@@ -193,7 +193,7 @@ export class PatientListComponent implements OnInit {
           this.female = female
           this.male = male
           
-          return this._patientService.getPatientsWithFilters(1,{searchByNameAndLastName: this.inputSearch, female: this.female,
+          return this._patientService.getPatientsWithFilters({searchByNameAndLastName: this.inputSearch, female: this.female,
             male: this.male, minAge: this.minAge, maxAge: this.maxAge, sortBy: this.orderBy})
           // this._cdr.detectChanges()
           // setTimeout(() => {

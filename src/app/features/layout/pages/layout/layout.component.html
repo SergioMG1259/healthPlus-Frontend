@@ -1,6 +1,6 @@
 <mat-sidenav-container class="sidenav-container">
     <mat-sidenav opened [mode]="this.mode" #sidenav class="sidenav background-components">
-      <app-sidenav></app-sidenav>
+      <app-sidenav (closeSidenavEvent)="closeSideNav()"></app-sidenav>
     </mat-sidenav>
   
     <mat-sidenav-content class="background">

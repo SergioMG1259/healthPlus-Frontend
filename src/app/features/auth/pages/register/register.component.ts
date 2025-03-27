@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { onlyNumbersValidator } from 'src/app/features/patients/functions/onlyNumberValidator';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserCreateDTO } from '../../models/UserCreateDTO';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +26,7 @@ export class RegisterComponent implements OnInit {
   errorMessage: string | null = null
   waitingResponseApi = false
 
-  constructor(private _formBuilder: FormBuilder, private _authService: AuthService) { }
+  constructor(private _formBuilder: FormBuilder, private _authService: AuthService, private _router: Router) { }
 
   onClickRegister(): void {
 
@@ -44,7 +45,14 @@ export class RegisterComponent implements OnInit {
       }
     }
 
-    this._authService.registerSpecialist(userCreateDTO).subscribe( e => {
+    this._authService.registerSpecialist(userCreateDTO).subscribe( response => {
+
+      localStorage.setItem('userRolIdHealthPlus', response.userRoleId.toString())
+      localStorage.setItem('roleHealthPlus', response.role)
+      localStorage.setItem('accessTokenHealthPlus', response.accessToken)
+      localStorage.setItem('isLoggedInHealthPlus', 'true')
+      
+      this._router.navigate(['/overview'])
       this.errorMessage = null
       this.waitingResponseApi = false
     }, error => {this.errorMessage = error, this.waitingResponseApi = false})

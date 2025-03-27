@@ -67,10 +67,10 @@
                 <button mat-flat-button color="primary" [disabled]="this.registerForm.invalid"
                 (click)="this.onClickRegister()">Sign up</button>
             </form>
-            <p class="to-login">Already have an account? <a href="/login">Log in</a></p>
             <div *ngIf="this.errorMessage">
                 <p class="error">{{this.errorMessage}}</p>
             </div>
+            <p class="to-login">Already have an account? <a href="/login">Log in</a></p>
         </div>
     </div>
     <div class="right">

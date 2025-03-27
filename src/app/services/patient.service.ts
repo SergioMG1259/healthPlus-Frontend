@@ -56,7 +56,6 @@ export class PatientService {
   }
 
   getPatientsWithFilters(
-    specialistId: number,
     filters: {
       searchByNameAndLastName: string|null,
       female: boolean,
@@ -88,15 +87,15 @@ export class PatientService {
       params = params.set('sortBy', filters.sortBy)
     }
 
-    return this.http.get<PatientResponseDTO[]>(`${this.apiUrl}/patients/filter/specialist/${specialistId}`,{
+    return this.http.get<PatientResponseDTO[]>(`${this.apiUrl}/patients/filter/specialist/${localStorage.getItem('userRolIdHealthPlus')}`, {
         ...this.getHttpOptions(),
         params,
       })
         .pipe(retry(2), catchError(this.handleError))
   }
 
-  addPatient(specialistId: number, patientCreateDTO: PatientCreateDTO) {
-    return this.http.post<PatientResponseDTO>(`${this.apiUrl}/patients/specialist/${specialistId}`, patientCreateDTO,
+  addPatient(patientCreateDTO: PatientCreateDTO) {
+    return this.http.post<PatientResponseDTO>(`${this.apiUrl}/patients/specialist/${localStorage.getItem('userRolIdHealthPlus')}`, patientCreateDTO,
       this.getHttpOptions())
     .pipe(
       retry(2),

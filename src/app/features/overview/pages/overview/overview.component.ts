@@ -55,7 +55,8 @@ export class OverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.specialistService.getOverview(1).pipe(delay(2000)).subscribe( e => {
+    this.specialistService.getOverview().pipe(delay(2000)).subscribe( e => {
+      
       this.cardMetrics = [
         {
           category: "patients",

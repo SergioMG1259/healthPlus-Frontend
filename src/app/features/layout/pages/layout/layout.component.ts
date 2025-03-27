@@ -10,13 +10,18 @@ import { MatDrawerMode, MatSidenav } from '@angular/material/sidenav';
 })
 export class LayoutComponent implements OnInit {
 
-  @ViewChild('sidenav',{ static: true }) sidenav!: MatSidenav;
+  @ViewChild('sidenav',{ static: true }) sidenav!: MatSidenav
 
   private _resizeSub!:Subscription
 
   public mode:MatDrawerMode = 'side'
 
   constructor(private breakpointObserver: BreakpointObserver) { }
+
+  closeSideNav() {
+    if (this.mode == 'over')
+      this.sidenav.close()
+  }
 
   ngOnInit(): void {
     this._resizeSub = this.breakpointObserver.observe(['(max-width: 768px)']).subscribe((state: BreakpointState) => {

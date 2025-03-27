@@ -1,10 +1,10 @@
 <section class="flex header">
     <div class="flex date-range">
-        <button mat-icon-button aria-label="prev ..." (click)="this.prev()">
+        <button mat-icon-button [attr.aria-label]="'Prev' + this.type == 'month'?'month':'week'" (click)="this.prev()">
             <mat-icon>chevron_left</mat-icon>
         </button>
         <span>{{this.dateRange}}</span>
-        <button mat-icon-button aria-label="next ..." (click)="this.next()">
+        <button mat-icon-button [attr.aria-label]="'Next' + this.type == 'month'?'month':'week'" (click)="this.next()">
             <mat-icon>chevron_right</mat-icon>
         </button>
     </div>

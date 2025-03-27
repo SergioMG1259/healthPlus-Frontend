@@ -6,6 +6,7 @@ import { onlyNumbersValidator } from '../../functions/onlyNumberValidator';
 import { PatientService } from 'src/app/services/patient.service';
 import { PatientUpdateDTO } from '../../models/PatientUpdateDTO';
 import { PatientResponseDTO } from '../../models/PatientResponseDTO';
+import { ActivatedRoute } from '@angular/router';
 
 interface BasicInformation {
   basicInformation: PatientDetailsDTO
@@ -75,7 +76,7 @@ export class EditBasicInformationDialogComponent implements OnInit {
 
     this.waitingResponseApi = true
     const patientUpdateDTO: PatientUpdateDTO = this.basicInformation.getRawValue() as PatientUpdateDTO
-    this._patientService.updatePatientById(1, patientUpdateDTO).subscribe(e=> {
+    this._patientService.updatePatientById(this.data.basicInformation.id, patientUpdateDTO).subscribe(e=> {
       this.errorMessage = null
       this.updatePatient(e)
       this.waitingResponseApi = false

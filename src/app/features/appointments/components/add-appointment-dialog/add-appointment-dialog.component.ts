@@ -69,7 +69,7 @@ export class AddAppointmentDialogComponent implements OnInit {
   private filterPatients(value: string|null): Observable<PatientResponseDTO[]> {
     if (value == '')
       value = null
-    return this._patientService.getPatientsWithFilters(1, {searchByNameAndLastName: value, female: true,
+    return this._patientService.getPatientsWithFilters({searchByNameAndLastName: value, female: true,
       male: true, minAge: null, maxAge: null, sortBy: null})
   }
 
@@ -114,7 +114,7 @@ export class AddAppointmentDialogComponent implements OnInit {
     }
     const patientId:number = this.form.get('patientField')?.value
 
-    this._appointmentService.addAppointment(1, patientId, appointment).subscribe(e => {
+    this._appointmentService.addAppointment(patientId, appointment).subscribe(e => {
       this.errorMessage = null
       this.onCloseClickAdd(e)
       this.waitingResponseApi = false

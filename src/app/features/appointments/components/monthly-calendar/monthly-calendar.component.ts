@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { Observable, Subscription, switchMap } from 'rxjs';
+import { debounceTime, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { AppointmentResponseDTO } from '../../models/AppointmentResponseDTO';
 
@@ -77,11 +77,12 @@ export class MonthlyCalendarComponent implements OnInit {
   ngOnInit(): void {
     // this.fillCalendar()
     this.indexDateSub = this.indexDate$.pipe(
-      switchMap((date)=> {
+      tap((date) => { 
         this.indexDate = date
         this.fillCalendar()
-        return this._appointmentService.findAppointmentsMonthlyBySpecialistId(1,{date: this.indexDate})
-      })
+      }),
+      debounceTime(500),
+      switchMap(()=> this._appointmentService.findAppointmentsMonthlyBySpecialistId({date: this.indexDate}))
     ).subscribe(e => {
       this.appointments = e.map(appointment => ({
         ...appointment,

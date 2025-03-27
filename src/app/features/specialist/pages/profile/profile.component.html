@@ -53,16 +53,18 @@
           <mat-option value="RHEUMATOLOGIST">Rheumatologist</mat-option>
         </mat-select>
     </mat-form-field>
+    
     <div *ngIf="this.isLoading" class="input shimmer"></div>
+
+    <div *ngIf="this.errorMessage">
+        <p class="error">{{this.errorMessage}}</p>
+    </div>
+
     <div class="buttons" *ngIf="!this.isLoading">
         <button mat-button color="primary" (click)="this.onClickShowChangePassword()" 
         *ngIf="!this.changingPassword">Change password</button>
         <button mat-flat-button color="primary" [disabled]="this.isSaveDisabled()"
         (click)="this.onClickUpdateSpecialist()">Save</button>
-    </div>
-    
-    <div *ngIf="this.errorMessage">
-        <p class="error">{{this.errorMessage}}</p>
     </div>
 </form>
 
@@ -88,13 +90,13 @@
               <mat-icon>{{hideNewPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
         </mat-form-field>
+        <div *ngIf="this.errorMessagePassword">
+            <p class="error">{{this.errorMessagePassword}}</p>
+        </div>
         <div class="buttons">
             <button mat-button color="primary" (click)="this.onClickShowChangePassword()">Cancel</button>
             <button mat-flat-button color="primary" [disabled]="this.changePasswordForm.invalid || this.waitingResponseApiPassword"
             (click)="this.onClickChangePassword()">Change</button>
-        </div>
-        <div *ngIf="this.errorMessagePassword">
-            <p class="error">{{this.errorMessagePassword}}</p>
         </div>
     </form>
 </ng-container>

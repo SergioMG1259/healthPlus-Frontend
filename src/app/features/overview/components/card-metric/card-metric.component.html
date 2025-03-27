@@ -7,6 +7,6 @@
         <mat-icon>{{iconsDictionary[metric.category]}}</mat-icon>
     </div>
     <h2 class="category">Total {{metric.category}}</h2>
-    <p *ngIf="metric.amount" class="amount"> {{metric.category == 'earning'? 'S/' : ''}} {{metric.amount}}</p>
-    <div *ngIf="!metric.amount" class="loading-shimmer shimmer"></div>
+    <p *ngIf="metric.amount != null" class="amount"> {{metric.category == 'earning'? 'S/' : ''}} {{metric.amount}}</p>
+    <div *ngIf="metric.amount == null" class="loading-shimmer shimmer"></div>
 </div>

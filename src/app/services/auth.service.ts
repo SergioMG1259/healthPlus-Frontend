@@ -62,8 +62,8 @@ export class AuthService {
   }
 
   registerSpecialist(userCreateDTO: UserCreateDTO) {
-    return this.http.post<boolean>(`${this.apiUrl}/auth/register/specialist`, userCreateDTO, 
-      this.getHttpOptions(false))
+    return this.http.post<AuthResponseDTO>(`${this.apiUrl}/auth/register/specialist`, userCreateDTO, 
+      {withCredentials: true, ...this.getHttpOptions(false)})
       .pipe(
         retry(2),
         catchError(this.handleError))
@@ -86,8 +86,8 @@ export class AuthService {
       )
   }
 
-  changePassword(specialistId: number, changePasswordDTO: ChangePasswordDTO) {
-    return this.http.post<boolean>(`${this.apiUrl}/auth/changePassword/specialist/${specialistId}`, changePasswordDTO, 
+  changePassword(changePasswordDTO: ChangePasswordDTO) {
+    return this.http.post<boolean>(`${this.apiUrl}/auth/changePassword/specialist/${localStorage.getItem('userRolIdHealthPlus')}`, changePasswordDTO, 
       this.getHttpOptions())
       .pipe(
         retry(2),

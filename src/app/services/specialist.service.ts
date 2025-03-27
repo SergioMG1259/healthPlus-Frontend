@@ -51,22 +51,22 @@ export class SpecialistService {
     return throwError(errorMessage)
   }
 
-  getOverview(specialistId: number) {
-    return this.http.get<Overview>(`${this.apiUrl}/specialists/overview/${specialistId}`, this.getHttpOptions())
+  getOverview() {
+    return this.http.get<Overview>(`${this.apiUrl}/specialists/overview/${localStorage.getItem('userRolIdHealthPlus')}`, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
   }
 
-  findSpecialistById(specialistId: number) {
-    return this.http.get<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${specialistId}`, this.getHttpOptions())
+  findSpecialistById() {
+    return this.http.get<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${localStorage.getItem('userRolIdHealthPlus')}`, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
   }
 
-  updateSpecialist(specialistId: number, specialistUpdateDTO: SpecialistUpdateDTO) {
-    return this.http.put<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${specialistId}`,
+  updateSpecialist(specialistUpdateDTO: SpecialistUpdateDTO) {
+    return this.http.put<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${localStorage.getItem('userRolIdHealthPlus')}`,
       specialistUpdateDTO, this.getHttpOptions())
     .pipe(
       retry(2),

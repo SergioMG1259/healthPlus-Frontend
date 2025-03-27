@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { tick } from '@angular/core/testing';
 import Chart from 'chart.js/auto';
 
 @Component({
@@ -44,6 +45,9 @@ export class EarningChartComponent implements OnInit {
             grid: {
               display: false
             }
+          },
+          y: {
+            min: 0
           }
         },
         responsive: true,

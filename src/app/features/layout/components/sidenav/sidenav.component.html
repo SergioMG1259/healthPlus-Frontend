@@ -4,28 +4,28 @@
 </div>
 <ul class="flex list-options">
     <li class="option">
-        <a [routerLink]="['/overview']" routerLinkActive="active" class="flex option-link">
+        <a [routerLink]="['/overview']" routerLinkActive="active" class="flex option-link" (click)="onClickCloseSidenav()">
             <mat-icon>dashboard</mat-icon> Overview
         </a>
     </li>
     <li class="option">
-        <a [routerLink]="['/patients']" routerLinkActive="active" class="flex option-link">
+        <a [routerLink]="['/patients']" routerLinkActive="active" class="flex option-link" (click)="onClickCloseSidenav()">
             <mat-icon>accessible</mat-icon> Patients
         </a>
     </li>
     <li class="option">
-        <a [routerLink]="['/appointments']" routerLinkActive="active" class="flex option-link">
+        <a [routerLink]="['/appointments']" routerLinkActive="active" class="flex option-link" (click)="onClickCloseSidenav()">
             <mat-icon>calendar_month</mat-icon> Appointments
         </a>
     </li>
     <li class="option">
-        <a [routerLink]="['/profile']" routerLinkActive="active" class="flex option-link">
+        <a [routerLink]="['/profile']" routerLinkActive="active" class="flex option-link" (click)="onClickCloseSidenav()">
             <mat-icon>person</mat-icon> Profile
         </a>
     </li>
 
     <li class="option">
-        <a class="flex option-link" (click)="this.onClickLogOut()">
+        <a class="flex option-link" (click)="this.onClickLogOut(); onClickCloseSidenav()">
             <mat-icon>logout</mat-icon> Log out
         </a>
     </li>

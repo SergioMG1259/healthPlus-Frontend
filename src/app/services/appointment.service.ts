@@ -52,24 +52,24 @@ export class AppointmentService {
     return throwError(errorMessage)
   }
 
-  findAppointmentsWeeklyBySpecialistId(specialistId: number, appointmentDateRequestDTO: AppointmentDateRequestDTO) {
-    return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${specialistId}/weekly`, 
+  findAppointmentsWeeklyBySpecialistId(appointmentDateRequestDTO: AppointmentDateRequestDTO) {
+    return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${localStorage.getItem('userRolIdHealthPlus')}/weekly`, 
       appointmentDateRequestDTO, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
   }
 
-  findAppointmentsMonthlyBySpecialistId(specialistId: number, appointmentDateRequestDTO: AppointmentDateRequestDTO) {
-    return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${specialistId}/monthly`, 
+  findAppointmentsMonthlyBySpecialistId(appointmentDateRequestDTO: AppointmentDateRequestDTO) {
+    return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${localStorage.getItem('userRolIdHealthPlus')}/monthly`, 
       appointmentDateRequestDTO, this.getHttpOptions())
       .pipe(
         retry(2),
         catchError(this.handleError))
   }
 
-  addAppointment(specialistId: number, patientId: number, appointmentCreateDTO: AppointmentCreateDTO) {
-    return this.http.post<AppointmentResponseDTO>(`${this.apiUrl}/appointments/specialist/${specialistId}/patient/${patientId}`, 
+  addAppointment(patientId: number, appointmentCreateDTO: AppointmentCreateDTO) {
+    return this.http.post<AppointmentResponseDTO>(`${this.apiUrl}/appointments/specialist/${localStorage.getItem('userRolIdHealthPlus')}/patient/${patientId}`, 
       appointmentCreateDTO, this.getHttpOptions())
       .pipe(
         retry(2),

@@ -78,6 +78,13 @@ mat-icon {
     color: var(--warn-color);
 }
 
+.no-patients {
+    color: var(--primary-text);
+    font-size: 1rem;
+    margin-top: 16px;
+    text-align: center;
+}
+
 @media screen and (max-width : 412px) {
     .top {
         gap: 15px;

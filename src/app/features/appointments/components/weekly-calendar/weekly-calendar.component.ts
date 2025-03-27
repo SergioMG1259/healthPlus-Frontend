@@ -3,7 +3,7 @@ import { AppointmentOverlayCalendarService } from '../../services/appointment-ov
 import { PatientShortResponseDTO } from 'src/app/features/patients/models/PatientShortResponseDTO';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppointmentResponseDTO } from '../../models/AppointmentResponseDTO';
-import { debounceTime, Observable, startWith, Subscription, switchMap } from 'rxjs';
+import { debounceTime, Observable, startWith, Subscription, switchMap, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditAppointemntDialogComponent } from '../edit-appointemnt-dialog/edit-appointemnt-dialog.component';
 import { DetailsAppointmentDialogComponent } from '../details-appointment-dialog/details-appointment-dialog.component';
@@ -257,7 +257,7 @@ export class WeeklyCalendarComponent implements OnInit {
       endDate: endDate,
       issue: this.form.get('issueField')?.value
     }
-    this._appointmentService.addAppointment(1, this.form.get('patientField')?.value, appointment).subscribe(e => {
+    this._appointmentService.addAppointment(this.form.get('patientField')?.value, appointment).subscribe(e => {
       const newAppointment = {...e,
         startDate: new Date(e.startDate), endDate: new Date(e.endDate)}
       this.appointments.push(newAppointment)
@@ -329,17 +329,18 @@ export class WeeklyCalendarComponent implements OnInit {
   private filterPatients(value: string|null): Observable<PatientResponseDTO[]> {
     if (value == '')
       value = null
-    return this._patientService.getPatientsWithFilters(1, {searchByNameAndLastName: value, female: true,
+    return this._patientService.getPatientsWithFilters({searchByNameAndLastName: value, female: true,
       male: true, minAge: null, maxAge: null, sortBy: null})
   }
 
   ngOnInit(): void {
     this.indexDateSub = this.indexDate$.pipe(
-      switchMap((date) => {
+      tap((date) => { 
         this.indexDate = date
-        this.fillWeek()
-        return this._appointmentService.findAppointmentsWeeklyBySpecialistId(1, {date: this.indexDate})
-      })
+        this.fillWeek() // Se ejecuta inmediatamente
+      }),
+      debounceTime(500), // Solo afecta la llamada a la API
+      switchMap((date) => this._appointmentService.findAppointmentsWeeklyBySpecialistId({ date }))
     ).subscribe(e => {
       this.appointments = e.map(appointment => ({
         ...appointment,

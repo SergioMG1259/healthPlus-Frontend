@@ -14,7 +14,8 @@
     <mat-card class="patients-ratio">
         <mat-card-title>New patients ratio</mat-card-title>
         <mat-card-content>
-            <app-patients-chart *ngIf="!this.isLoading" [labels]="this.patientChartLabel" [patients]="this.patientChartCounts"></app-patients-chart>
+            <app-patients-chart *ngIf="!this.isLoading" [labels]="this.patientChartLabel" [patients]="this.patientChartCounts">
+            </app-patients-chart>
             <div *ngIf="this.isLoading" class="chart-loading shimmer"></div>
         </mat-card-content>
     </mat-card>
@@ -22,7 +23,8 @@
     <mat-card class="patients-ratio">
         <mat-card-title>Earning ratio</mat-card-title>
         <mat-card-content>
-            <app-earning-chart *ngIf="!this.isLoading" [labels]="this.earningChartLabel" [earnings]="this.earningChartCounts"></app-earning-chart>
+            <app-earning-chart *ngIf="!this.isLoading" [labels]="this.earningChartLabel" [earnings]="this.earningChartCounts">
+            </app-earning-chart>
             <div *ngIf="this.isLoading" class="chart-loading shimmer"></div>
         </mat-card-content>
     </mat-card>
@@ -33,7 +35,11 @@
         <mat-card-title>Gender</mat-card-title>
         <mat-card-subtitle>Patient gender percentage</mat-card-subtitle>
         <mat-card-content>
-            <app-gender-chart *ngIf="!this.isLoading" [labels]="this.genderChartLabel" [gender]="this.genderChartCounts"></app-gender-chart>
+            <app-gender-chart *ngIf="!this.isLoading && (this.genderChartCounts[0] != 0 || this.genderChartCounts[1] != 0)" [labels]="this.genderChartLabel" [gender]="this.genderChartCounts">
+            </app-gender-chart>
+            <p *ngIf="this.genderChartCounts[0] == 0 && this.genderChartCounts[1] == 0" class="no-patients">
+                There are no patients yet
+            </p>
             <div *ngIf="this.isLoading" class="chart-loading shimmer"></div>
         </mat-card-content>
     </mat-card>
@@ -48,7 +54,7 @@
     <mat-card class="card-table">
         <mat-card-title-group class="group-title">
             <mat-card-title class="title-no-margin">Recent patients</mat-card-title>
-            <a href="" class="link">Show all</a>
+            <a [routerLink]="['/patients']" class="link">Show all</a>
         </mat-card-title-group>
         <mat-card-content class="card-content-table">
             

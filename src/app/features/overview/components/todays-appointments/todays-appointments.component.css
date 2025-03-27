@@ -30,22 +30,17 @@
     margin-top: 10px;
     padding-top: 15px;
     row-gap: 10px;
-    max-height: 179.2px;
+    /* max-height: 179.2px; */
 }
 .patient-appointment {
     justify-content: space-between;
     width: 100%;
 }
-/* .patient-image {
-    border: solid 2px var(--secondary-light);
-    border-radius: 50%;
-    height: 40px;
-    margin-right: 8px;
-    width: 40px;
-} */
+
 .patient-name {
     color: var(--primary-text-light);
-    font-size: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 .patient-name.loading {
     height: 24px;
@@ -67,6 +62,8 @@
     color: var(--secondary-text-light);
     font-size: 14px;
     line-height: 2;
+    text-align: right;
+    width: 47px;
 }
 .hour.loading {
     width: 28.38px;
@@ -76,12 +73,19 @@
     font-size: 1rem;
     text-align: center;
 }
-
-@media screen and (max-width : 360px){
-    .hour {
-        font-size: 12px;
-    }
+.show-others {
+    text-align: center;
 }
+.show-others a{
+    color: var(--primary-color);
+    font-size: 1rem;
+    margin-top: 10px;
+}
+/* @media screen and (max-width : 360px){
+    .hour {
+        font-size: 13px;
+    }
+} */
 
 @media screen and (max-width : 768px) {
     /*DAYS*/
@@ -92,10 +96,7 @@
         font-size: 14px;
         padding: 3px;
     }
-    .current-week {
-        font-size: 14px;
-    }
-    .patient-name {
-        font-size: 14px;
+    .current-week, .patient-name, .show-others a {
+        font-size: 0.9rem;
     }
 }

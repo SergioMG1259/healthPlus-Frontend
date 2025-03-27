@@ -71,7 +71,7 @@ export class ProfileComponent implements OnInit {
 
     this.waitingResponseApi = true
     const specialistUpdateDTO: SpecialistUpdateDTO = this.specialistInformation.getRawValue() as SpecialistUpdateDTO
-    this._specialistService.updateSpecialist(1, specialistUpdateDTO).subscribe( specialist => {
+    this._specialistService.updateSpecialist(specialistUpdateDTO).subscribe( specialist => {
       this.originalValues = this.specialistInformation.getRawValue()
       this.errorMessage = null
       this.waitingResponseApi = false
@@ -82,7 +82,7 @@ export class ProfileComponent implements OnInit {
 
     this.waitingResponseApiPassword = true
     const changePasswordDTO: ChangePasswordDTO = this.changePasswordForm.getRawValue() as ChangePasswordDTO
-    this.authService.changePassword(1, changePasswordDTO).subscribe( e => {
+    this.authService.changePassword(changePasswordDTO).subscribe( e => {
       this.changePasswordForm.reset()
       this.changingPassword = false
       this.errorMessagePassword = null
@@ -95,7 +95,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._specialistService.findSpecialistById(1).subscribe( specialist => {
+    this._specialistService.findSpecialistById().subscribe( specialist => {
       this.specialistInformation.patchValue({
         names: specialist.names,
         lastNames: specialist.lastNames,

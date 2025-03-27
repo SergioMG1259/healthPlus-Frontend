@@ -120,7 +120,7 @@ export class AddPatientComponent implements OnInit {
       address: this.secondStep.get('address')!.value!,
       allergiesGroup: allergyGroupCreateDTO
     }
-    this._patientService.addPatient(1, patientCreateDTO).subscribe(e => {
+    this._patientService.addPatient(patientCreateDTO).subscribe(e => {
       this.errorMessage = null
       this.waitingResponseApi = false
       this._router.navigate(['/patients'])

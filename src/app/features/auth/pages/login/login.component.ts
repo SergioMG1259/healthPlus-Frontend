@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.maxLength(30)]],
-    rememberMe: [false]
+    // rememberMe: [false]
   })
   errorMessage: string | null = null
   waitingResponseApi: boolean = false
@@ -34,9 +34,9 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('accessTokenHealthPlus', response.accessToken)
       localStorage.setItem('isLoggedInHealthPlus', 'true')
       
-      if (loginDTO.rememberMe) {
-        localStorage.setItem('rememberMeHealthPlus', 'true')
-      }
+      // if (loginDTO.rememberMe) {
+      //   localStorage.setItem('rememberMeHealthPlus', 'true')
+      // }
 
       this._router.navigate(['/overview'])
       this.errorMessage = null

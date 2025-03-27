@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent implements OnInit {
+
+  @Output() closeSidenavEvent = new EventEmitter<void>()
 
   constructor(private _authService: AuthService, private _router: Router) { }
 
@@ -21,6 +23,10 @@ export class SidenavComponent implements OnInit {
         localStorage.removeItem('rememberMeHealthPlus')
       this._router.navigate(['/login'])
     })
+  }
+
+  onClickCloseSidenav() {
+    this.closeSidenavEvent.emit()
   }
 
   ngOnInit(): void {

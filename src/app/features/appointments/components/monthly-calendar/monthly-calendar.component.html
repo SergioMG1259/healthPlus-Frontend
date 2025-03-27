@@ -15,7 +15,7 @@
                 {{cell.day.getDate()}}
             </div>
             <div class="flex cell-footer">
-                <ng-container *ngFor="let event of getAppointmentsForDay(cell.day).appointments">
+                <ng-container *ngFor="let appointment of getAppointmentsForDay(cell.day).appointments">
                     <div class="appointment"></div>
                 </ng-container>
                 <p *ngIf="getAppointmentsForDay(cell.day).remaining > 0" class="events-remainings">
