@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/pages/login/login.component';
 import { RegisterComponent } from './features/auth/pages/register/register.component';
 import { NoAuthGuard } from './features/auth/guards/no-auth.guard';
+import { NotFoundComponent } from './features/layout/pages/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,9 @@ const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     canActivate: [NoAuthGuard]
+  }, {
+    path:'**',
+    component:NotFoundComponent
   }
 ];
 

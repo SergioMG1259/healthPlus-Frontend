@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit {
     yearsOfExperience: [null, [Validators.required, onlyNumbersValidator()]],
     specialty: [null, Validators.required]
   })
+  today: Date = new Date()
   errorMessage: string | null = null
   waitingResponseApi = false
 

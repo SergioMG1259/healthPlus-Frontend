@@ -54,14 +54,14 @@ export class SpecialistService {
   getOverview() {
     return this.http.get<Overview>(`${this.apiUrl}/specialists/overview/${localStorage.getItem('userRolIdHealthPlus')}`, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
   findSpecialistById() {
     return this.http.get<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${localStorage.getItem('userRolIdHealthPlus')}`, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
@@ -69,7 +69,7 @@ export class SpecialistService {
     return this.http.put<SpecialistResponseDTO>(`${this.apiUrl}/specialists/${localStorage.getItem('userRolIdHealthPlus')}`,
       specialistUpdateDTO, this.getHttpOptions())
     .pipe(
-      retry(2),
+      retry(1),
       catchError(this.handleError))
   }
 }

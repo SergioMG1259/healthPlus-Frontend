@@ -91,21 +91,21 @@ export class PatientService {
         ...this.getHttpOptions(),
         params,
       })
-        .pipe(retry(2), catchError(this.handleError))
+        .pipe(retry(1), catchError(this.handleError))
   }
 
   addPatient(patientCreateDTO: PatientCreateDTO) {
     return this.http.post<PatientResponseDTO>(`${this.apiUrl}/patients/specialist/${localStorage.getItem('userRolIdHealthPlus')}`, patientCreateDTO,
       this.getHttpOptions())
     .pipe(
-      retry(2),
+      retry(1),
       catchError(this.handleError))
   }
 
  findPatientDetails(patientId:number) {
     return this.http.get<PatientDetailsDTO>(`${this.apiUrl}/patients/${patientId}`, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
@@ -113,7 +113,7 @@ export class PatientService {
     return this.http.put<MedicalInformationResponseDTO>(`${this.apiUrl}/patients/${patientId}/updateMedicalInfo`, 
       medicalInformation, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
@@ -121,7 +121,7 @@ export class PatientService {
     return this.http.put<PatientResponseDTO>(`${this.apiUrl}/patients/${patientId}`, 
       patientUpdateDTO, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
@@ -129,14 +129,14 @@ export class PatientService {
     return this.http.put<PatientResponseDTO>(`${this.apiUrl}/patients/${patientId}/updateNotes`, 
       notesUpdateDTO, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
   deletePatient(patientId: number) {
     return this.http.delete<void>(`${this.apiUrl}/patients/${patientId}`, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 }

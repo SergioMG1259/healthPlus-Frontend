@@ -21,6 +21,7 @@ export class EditBasicInformationDialogComponent implements OnInit {
 
   basicInformation: FormGroup = this._formBuilder.group({})
   originalValues: any
+  today: Date = new Date()
   waitingResponseApi = false
   errorMessage: string | null = null
 

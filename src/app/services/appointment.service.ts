@@ -56,7 +56,7 @@ export class AppointmentService {
     return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${localStorage.getItem('userRolIdHealthPlus')}/weekly`, 
       appointmentDateRequestDTO, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
@@ -64,7 +64,7 @@ export class AppointmentService {
     return this.http.post<AppointmentResponseDTO[]>(`${this.apiUrl}/appointments/specialist/${localStorage.getItem('userRolIdHealthPlus')}/monthly`, 
       appointmentDateRequestDTO, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
@@ -72,7 +72,7 @@ export class AppointmentService {
     return this.http.post<AppointmentResponseDTO>(`${this.apiUrl}/appointments/specialist/${localStorage.getItem('userRolIdHealthPlus')}/patient/${patientId}`, 
       appointmentCreateDTO, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
@@ -80,14 +80,14 @@ export class AppointmentService {
     return this.http.put<AppointmentResponseDTO>(`${this.apiUrl}/appointments/${appointmentId}`, 
       appointmentUpdateDTO, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
   deleteAppointment(appointmentId: number) {
     return this.http.delete<void>(`${this.apiUrl}/appointments/${appointmentId}`, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 }

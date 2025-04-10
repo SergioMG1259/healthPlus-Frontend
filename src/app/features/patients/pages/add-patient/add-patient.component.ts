@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 export class AddPatientComponent implements OnInit {
 
  showOtherInput:boolean = false
+ today: Date = new Date()
 
  firstStep = this._formBuilder.group({
     names: ['', Validators.required],

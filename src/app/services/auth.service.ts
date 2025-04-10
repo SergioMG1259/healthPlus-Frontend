@@ -57,7 +57,7 @@ export class AuthService {
     return this.http.post<AuthResponseDTO>(`${this.apiUrl}/auth/login`, loginDTO, 
       {withCredentials: true, ...this.getHttpOptions(false)})
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
@@ -65,7 +65,7 @@ export class AuthService {
     return this.http.post<AuthResponseDTO>(`${this.apiUrl}/auth/register/specialist`, userCreateDTO, 
       {withCredentials: true, ...this.getHttpOptions(false)})
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 
@@ -82,6 +82,7 @@ export class AuthService {
     return this.http.post<void>(`${this.apiUrl}/auth/logout`, {},
       {withCredentials: true, ...this.getHttpOptions()})
       .pipe(
+        retry(1),
         catchError(this.handleError)
       )
   }
@@ -90,7 +91,7 @@ export class AuthService {
     return this.http.post<boolean>(`${this.apiUrl}/auth/changePassword/specialist/${localStorage.getItem('userRolIdHealthPlus')}`, changePasswordDTO, 
       this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 }

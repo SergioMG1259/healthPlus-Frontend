@@ -33,7 +33,7 @@
                 <div class="flex row">
                     <mat-form-field appearance="outline" class="row-input">
                         <mat-label>Birthdate</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="birthDate" required>
+                        <input matInput [matDatepicker]="picker" formControlName="birthDate" [max]="this.today" required>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
@@ -76,7 +76,7 @@
     <div class="right">
         <span class="brand">HealthPlus</span>
         <div class="flex background">
-            <img src="https://img.freepik.com/vector-gratis/fondo-degradado-lineas-azules-dinamicas_23-2148995756.jpg?t=st=1741383183~exp=1741386783~hmac=313bf0cccae4002eebe42da6d3ac4627944d87d32038da5eeeb8cf630626d788&w=1380" alt="">
+            <img src="/assets/images/5559852.jpg" alt="background">
         </div>
     </div>
 </section>

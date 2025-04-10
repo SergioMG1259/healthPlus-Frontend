@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, delay, distinctUntilChanged, filter, Observable, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, switchMap } from 'rxjs';
 import { FilterPatientService } from '../../services/filter-patient.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { PatientResponseDTO } from '../../models/PatientResponseDTO';
@@ -203,7 +203,7 @@ export class PatientListComponent implements OnInit {
         }
         return []
       })
-    ).pipe(delay(1000)).subscribe(e => {
+    ).subscribe(e => {
 
       if (e) {
         this.dataSource.data = e

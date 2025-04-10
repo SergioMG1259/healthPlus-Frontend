@@ -54,7 +54,7 @@ export class AllergyService {
     return this.http.put<AllergyGroupResponseDTO>(`${this.apiUrl}/allergies/patient/${patientId}`, 
       allergyGroupCreateDTO, this.getHttpOptions())
       .pipe(
-        retry(2),
+        retry(1),
         catchError(this.handleError))
   }
 }

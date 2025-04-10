@@ -1,0 +1,12 @@
+.wrapper {
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    height: calc(100vh - 86px);
+    justify-content: center;
+    width: 100%;
+}
+.wrapper p {
+    color: var(--secondary-text);
+    font-size: 1.4rem;
+}

@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   specialistInformation: FormGroup = this._formBuilder.group({})
   changePasswordForm: FormGroup = this._formBuilder.group({})
   originalValues: any = null
+  today: Date = new Date()
   errorMessage: string | null = null
   errorMessagePassword: string | null = null
   waitingResponseApi: boolean = false

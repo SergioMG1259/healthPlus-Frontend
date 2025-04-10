@@ -146,6 +146,9 @@ tr.mat-row:last-child .mat-cell:last-child {
 .mat-paginator-range-actions {
   flex-wrap: wrap;
 }
+.mat-paginator-range-label {
+  position: relative !important;
+}
 .mat-paginator {
   background-color: transparent;
 }
