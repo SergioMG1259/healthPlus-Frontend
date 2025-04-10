@@ -231,20 +231,5 @@ export class CustomPaginatorDirective {
     if(this._loadingSubscription)
       this._loadingSubscription.unsubscribe()
   }
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes['isLoading'] && !changes['isLoading'].firstChange) {
-  //     console.log("sssss")
-  //     this.ren.setStyle(this.elementRef.nativeElement, 'display', 'block')
-  //     this.styleDefaultPagination()
-  //     this.createPagesDivRef()
-  //     this.buildButtons()
-  //     this.matPaginator.page.pipe(
-  //       map((e) => [e.previousPageIndex?? 0, e.pageIndex]),
-  //       startWith([this.matPaginator.pageIndex, this.matPaginator.pageIndex])
-  //     )
-  //     .subscribe(([prev,current]) => {this.changeActiveButtonStyles(prev,current)})
-  //   }
-    
-  // }
 
 }

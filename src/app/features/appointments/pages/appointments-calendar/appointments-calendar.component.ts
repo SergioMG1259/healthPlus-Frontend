@@ -20,10 +20,6 @@ export class AppointmentsCalendarComponent implements OnInit {
 
   get dateRange(): string {
 
-    // if (this.type == 'day') {
-    //   return this.indexDate.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' })
-
-    // } 
     if (this.type == 'week') {
       
       const startOfWeek = new Date(this.indexDate)

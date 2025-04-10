@@ -11,7 +11,6 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 import { PatientResponseDTO } from 'src/app/features/patients/models/PatientResponseDTO';
 import { PatientService } from 'src/app/services/patient.service';
 import { AppointmentCreateDTO } from '../../models/AppointmentCreateDTO';
-import { error } from 'console';
 
 @Component({
   selector: 'app-weekly-calendar',
