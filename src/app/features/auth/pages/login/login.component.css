@@ -64,6 +64,19 @@ mat-checkbox {
     margin-top: 10px;
     word-wrap: break-word;
 }
+.credentials-wrapper {
+    background-color: rgba(6, 109, 212, 0.11);
+    border: solid 1px transparent;
+    border-radius: 5px;
+    margin-top: 20px;
+    padding: 10px;
+}
+.credentials-wrapper p {
+    color: var(--primary-text);
+}
+.credentials-wrapper p:nth-child(2) {
+    margin-top: 10px;
+}
 
 @media (max-width: 768px) {
     .wrapper {
