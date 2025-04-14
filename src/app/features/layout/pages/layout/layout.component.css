@@ -32,7 +32,7 @@
 
 @media screen and (max-width : 768px){
     .router-outlet {
-        padding: 0px 10px 10px 10px;
+        padding: 0px 12px 10px 10px;
     }
     .toolbar {
         padding-left: 10px;
