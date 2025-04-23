@@ -63,7 +63,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if (request.url.includes('/auth/refresh')) {
+    if (request.url.includes('/auth/refresh') || request.url.includes('/auth/login')) {
       return next.handle(request)
     }
 
